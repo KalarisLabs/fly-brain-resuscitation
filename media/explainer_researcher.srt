@@ -1,0 +1,100 @@
+1
+00:00:00,600 --> 00:00:12,225
+A whole-brain Drosophila connectome model predicts a duration- and sign-dependent potassium trap after anoxia, and a reset-based route to functional recovery.
+
+2
+00:00:13,467 --> 00:00:26,439
+The model is a leaky integrate-and-fire network on the FAFB version 783 connectome: one hundred and thirty-nine thousand neurons, and three point seven million connections.
+
+3
+00:00:26,589 --> 00:00:41,539
+A phenomenological energy and potassium layer spans seventy-nine neuropils, with diffusion, regenerative potassium release, depolarisation block, and an injury integral that leads to stochastic neuron death.
+
+4
+00:00:42,800 --> 00:00:49,713
+Validation of the LIF layer against the reference whole-brain model (details in the paper).
+
+5
+00:00:50,933 --> 00:00:58,380
+Intact model: per-neuron spike counts drive neurite glow (FAFB v783 skeletons, 5,307-neuron subset).
+
+6
+00:00:58,530 --> 00:01:09,795
+LC4 100 Hz → DNp01 217/223 Hz (L/R) during the 300-ms stimulus.
+
+7
+00:01:09,945 --> 00:01:19,099
+Glow persistence (trail) is a display choice; timing is the simulated 5-ms epochs, slowed ~27×.
+
+8
+00:01:19,249 --> 00:01:28,765
+Sugar GRNs 150 Hz → MN9 132 Hz.
+
+9
+00:01:30,000 --> 00:01:39,708
+Anoxia (supply = 0) from t = 2 s; neurite hue tracks per-neuron ATP, haze tracks per-neuropil [K+]o.
+
+10
+00:01:39,858 --> 00:01:48,582
+Spreading depolarisation: mean [K+]o > 15 mM 7.2 s after onset; max 44.7 mM.
+
+11
+00:01:48,732 --> 00:01:57,224
+Burst ≤ 18.5 Hz/neuron, then depolarisation block; mean ATP 11% at 32 s.
+
+12
+00:02:02,000 --> 00:02:08,828
+Naive (abrupt) reoxygenation after 30 s, default sign rule [K02].
+
+13
+00:02:10,946 --> 00:02:20,569
+696-neuron driver set leads (~296 vs 42 Hz mean); centred on antennal-lobe LNs — not established [K14].
+
+14
+00:02:20,719 --> 00:02:31,707
+Self-sustained K+-coupled runaway, peak 304 Hz/neuron; ionic, survives removal of all synapses [K07].
+
+15
+00:02:31,857 --> 00:02:43,442
+AL local neurons inhibitory: 30-s runaway 0/3 FAFB [K03]; after 180 s it persists (MCNS naive FII_norm −0.135) [K04].
+
+16
+00:02:44,667 --> 00:02:54,929
+Quiet and active states coexist; K+ clamp at 5 mM collapses the runaway (2.4 Hz/neuron); hysteresis ≥ 13 mV [K07].
+
+17
+00:02:56,133 --> 00:03:01,724
+20-s total activity block at reoxygenation (block_all).
+
+18
+00:03:03,938 --> 00:03:11,726
+[K+]o < 6 mM by t = 36 s; ATP 94% at 40 s; released network stays at baseline.
+
+19
+00:03:13,276 --> 00:03:26,006
+FII_norm 1.001 / 0.953 at 30 / 180 s anoxia; 2–5 s blocks fail; works when started 20 s late [K05].
+
+20
+00:03:33,587 --> 00:03:47,156
+Probe after reset: MN9 132 Hz (intact 132 Hz). Releasing at K+/ATP normalisation (11 s) re-ignites [K06].
+
+21
+00:03:48,400 --> 00:03:58,023
+180 s anoxia: runaway in 48/48 parameter sets (FAFB) and 5/5 MCNS runs; rescue 48/48 at 30 s, 34/48 at 180 s [K01, K05].
+
+22
+00:03:59,267 --> 00:04:11,556
+Post-reset loss is neuron death; top-1% hub protection ~30× (FAFB) and 84× (MCNS) more efficient per neuron [K09].
+
+23
+00:04:12,800 --> 00:04:21,548
+'Brain death' (silent, unresponsive) only with ≥ 97.9% of neurons dead (92 of 1,209 FAFB runs) [K08].
+
+24
+00:04:22,800 --> 00:04:47,057
+Limitations. This is a simplified model, with constants not fitted to Drosophila. The thirty-second trap is sign-sensitive, and the driver core is likely a sign artefact. The cooling effect is set by the injury rule. And wiring predicts recovery after the reset, but not trapping. None of this is evidence about living tissue, clinical brain death, or human resuscitation.
+
+25
+00:04:48,267 --> 00:04:56,183
+Research and primary compute by Srihari Muralikrishnan, Kalaris Labs. Data from the FlyWire Codex.
+

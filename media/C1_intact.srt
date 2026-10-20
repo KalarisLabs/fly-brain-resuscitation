@@ -1,0 +1,12 @@
+1
+00:00:00,700 --> 00:00:05,117
+An intact model fly brain, wired from the FlyWire connectome.
+
+2
+00:00:05,900 --> 00:00:12,451
+A looming shadow drives the visual LC4 neurons, and the giant-fibre escape neurons answer.
+
+3
+00:00:20,700 --> 00:00:24,200
+Then a taste of sugar reaches the feeding motor neuron.
+

@@ -1,0 +1,12 @@
+1
+00:00:02,300 --> 00:00:08,829
+At two seconds, the oxygen supply is cut to zero, and energy begins to drain from every neuron.
+
+2
+00:00:09,100 --> 00:00:15,544
+Seconds later, potassium floods out of the cells, and a wave of depolarisation sweeps across the brain.
+
+3
+00:00:18,100 --> 00:00:21,728
+After a brief burst of firing, the network falls silent.
+

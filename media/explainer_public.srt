@@ -1,0 +1,88 @@
+1
+00:00:00,600 --> 00:00:06,915
+Can a brain come back? A whole-brain simulation of oxygen loss and recovery, in the fruit fly.
+
+2
+00:00:08,133 --> 00:00:13,144
+This is a computer model of a fruit fly brain, built from a real wiring map.
+
+3
+00:00:14,233 --> 00:00:22,128
+Scientists traced all 139,255 neurons and their connections from electron-microscope images (FlyWire).
+
+4
+00:00:22,278 --> 00:00:29,042
+We made every neuron a simple spiking cell. Show it a looming shadow, and the escape neurons fire.
+
+5
+00:00:29,192 --> 00:00:32,863
+Give it a taste of sugar, and the feeding motor neuron answers.
+
+6
+00:00:36,800 --> 00:00:38,918
+Now we cut off the oxygen.
+
+7
+00:00:42,900 --> 00:00:46,315
+Energy (ATP) runs out, and potassium leaks out of the cells.
+
+8
+00:00:50,900 --> 00:00:56,683
+A wave of depolarisation sweeps across the brain. Real insect brains do this too.
+
+9
+00:00:59,900 --> 00:01:01,901
+Then everything goes quiet.
+
+10
+00:01:08,800 --> 00:01:13,473
+When oxygen suddenly comes back, the model brain does not simply wake up.
+
+11
+00:01:16,194 --> 00:01:21,400
+Potassium and spikes feed each other, and the brain gets stuck in a seizure-like storm.
+
+12
+00:01:24,499 --> 00:01:28,276
+It is very active, but it no longer responds like itself.
+
+13
+00:01:32,285 --> 00:01:42,121
+This 30-second case depends on how some neurons' signs are set. After 3 minutes without oxygen, the trap appears either way.
+
+14
+00:01:43,333 --> 00:01:49,500
+Same injury, two endings: an abrupt restart traps the network; a pause lets it recover.
+
+15
+00:01:53,333 --> 00:01:58,689
+Now the trick: when oxygen returns, hold all activity off for 20 seconds.
+
+16
+00:02:00,433 --> 00:02:04,882
+While the brain is quiet, potassium washes out and energy comes back.
+
+17
+00:02:08,433 --> 00:02:11,204
+Release the brakes, and the brain stays calm.
+
+18
+00:02:25,333 --> 00:02:29,665
+Taste sugar again: the feeding neuron responds just as before.
+
+19
+00:02:33,400 --> 00:02:40,075
+In the model, a truly silent, unresponsive brain only happened when almost every neuron (≥ 97.9%) had died.
+
+20
+00:02:42,400 --> 00:02:50,615
+Protecting just the 1% most-connected neurons helped about 30 times more per neuron than protecting everything.
+
+21
+00:02:51,867 --> 00:03:06,332
+To be clear: this is a simplified computer simulation, not a living brain. It does not show that brain-dead animals, or people, can be revived. But it does suggest ideas that real experiments in flies can test.
+
+22
+00:03:07,533 --> 00:03:14,447
+Research by Srihari Muralikrishnan, at Kalaris Labs. Brain data from the FlyWire connectome.
+

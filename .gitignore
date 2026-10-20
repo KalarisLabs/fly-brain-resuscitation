@@ -19,3 +19,5 @@ outputs/
 !experiments/mechanism/drivers.npz
 !experiments/mechanism/drivers_extra.npz
 modal/bundles/
+
+Microsoft/

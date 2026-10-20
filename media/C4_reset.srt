@@ -1,0 +1,16 @@
+1
+00:00:00,600 --> 00:00:05,849
+This time, all activity is held off for the first twenty seconds of reoxygenation.
+
+2
+00:00:07,500 --> 00:00:10,616
+Potassium washes out, and energy recovers.
+
+3
+00:00:15,500 --> 00:00:19,747
+When the block is released, the network returns to its quiet baseline.
+
+4
+00:00:32,900 --> 00:00:37,744
+A sugar probe now drives the feeding neuron just as in the intact brain.
+

@@ -1,0 +1,16 @@
+1
+00:00:00,600 --> 00:00:03,951
+Oxygen returns abruptly after thirty seconds.
+
+2
+00:00:07,900 --> 00:00:13,384
+A small set of neurons ignites first, and potassium and spikes begin to feed each other.
+
+3
+00:00:15,500 --> 00:00:17,878
+The runaway spreads through the whole brain.
+
+4
+00:00:23,500 --> 00:00:31,970
+With corrected signs for antennal-lobe neurons, this short-anoxia runaway does not occur; after three minutes of anoxia, it does.
+

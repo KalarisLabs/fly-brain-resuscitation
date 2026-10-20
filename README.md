@@ -1,136 +1,159 @@
-# fly-brain-resuscitation
+<div align="center">
 
-**In-silico anoxia, "brain death" and resuscitation on whole *Drosophila* connectomes.**
-A leaky-integrate-and-fire (LIF) whole-brain model of FlyWire FAFB v783 (139,255 neurons, 3,732,460 connections), extended with a phenomenological metabolic and ionic layer. Damage-percolation analyses cover FAFB, BANC, MANC and MCNS.
+<img src="assets/banner.png" alt="FAFB v783 model brain during the reperfusion runaway (simulation)" width="100%"/>
 
-> **Scope.** Every result in this repository is a **prediction of a computational model** with phenomenological constants that were not fitted to fly tissue. Nothing here shows that a real brain-dead animal can be revived, that resuscitation preserves the original neural pathways, or that the results transfer to other species. No biological brain has ever been resuscitated from brain death, and this work does not claim otherwise.
+# Reviving a model fly brain
 
+### Anoxia, brain death and resuscitation in a connectome-constrained simulation of the adult *Drosophila* brain
 
-## What is in here
+[![Paper](https://img.shields.io/badge/paper-PDF-1f2937?style=flat-square)](paper/paper.pdf)
+[![Data: FlyWire Codex](https://img.shields.io/badge/data-FlyWire%20Codex%20FAFB%20v783-0e7490?style=flat-square)](https://codex.flywire.ai/about_codex)
+[![Code: MIT](https://img.shields.io/badge/code-MIT-4b5563?style=flat-square)](LICENSE)
+[![Python 3.11](https://img.shields.io/badge/python-3.11-374151?style=flat-square)](environment.yml)
+[![ORCID](https://img.shields.io/badge/ORCID-0009--0004--0220--0361-a3e635?style=flat-square)](https://orcid.org/0009-0004-0220-0361)
 
-| path | content |
-|---|---|
-| `src/` | simulator engines `flysim.py` → `flysim_dyn.py` → `flysim_mech.py` (each adds options whose defaults leave numerics unchanged), `flysim_cns.py` (MCNS/BANC loaders), `perclib.py` (percolation/reachability engine), `light.py`, `toynet.py` (300-neuron synthetic connectome), `fbr_paths.py` (all paths), `build/` (cache builders) |
-| `experiments/` | one folder per track (`sim`, `structure`, `dynamics`, `mechanism`, `replication`, `index`, `smoke`): sweep drivers, analysis scripts, `configs/` with the exact condition grids |
-| `modal/` | container entry scripts used for the cloud sweeps, a bundle builder and a Modal app template |
-| `results/` | summary tables (CSV/JSON, about 8 MB), one folder per track |
-| `docs/` | [METHODS](docs/METHODS.md) · [REPRODUCE](docs/REPRODUCE.md) · [HYPOTHESES](docs/HYPOTHESES.md) (preregistration and verdicts) · [LIMITATIONS](docs/LIMITATIONS.md) · [RESULTS_SUMMARY](docs/RESULTS_SUMMARY.md) · [SYNTHESIS](docs/SYNTHESIS.md) · [VALIDATION_PROTOCOL](docs/VALIDATION_PROTOCOL.md) · paper PDFs and LaTeX in [paper/](paper/) · full track reports in [docs/reports/](docs/reports/) · bibliography and parameter table in [docs/lit/](docs/lit/) |
-| `tests/` | pytest suite on the toy connectome: LIF stationarity, metabolic test (a), anoxia, FII metric, engine identity |
-| `data/` | download instructions only; no FlyWire data is committed |
+**Srihari Muralikrishnan** · [Kalaris Labs](http://kalarislabs.com/)
 
-## Key findings (model predictions; numbers from results/KEY_CLAIMS.json)
+</div>
 
-1. **Headline: in a connectome-constrained LIF model with a phenomenological K+/ATP layer, abrupt reoxygenation can trap the model brain in a self-sustained K+-coupled high-activity state; a 10-20 s total activity block releases it. The trap is robust after long (180 s) anoxia and sign-sensitive after short (30 s) anoxia.** (180 s: runaway in 48/48 parameter sets (FAFB) and 5/5 MCNS runs; 30 s with antennal-lobe local neurons inhibitory: 0/3 FAFB runaway; confidence: high (180 s); moderate (30 s sign sensitivity)) [K01]
-2. **Setting antennal-lobe local neurons inhibitory (147 sign changes in FAFB, 219 in MCNS) removed the high-rate runaway and the identity loss after 30 s anoxia. MCNS and FAFB-proxy kept a weak low-rate oscillation that the preregistered classifier still counts as runaway.** (FAFB variant A 0/3 runaway (late 0.035-0.17 Hz/neuron, raw FII 0.915-0.936); MCNS FII_norm 1.000 [0.996, 1.002] (3.0 Hz/neuron residual), delta +0.949 [+0.918, +0.977]; FAFB-proxy 0.859 (0.82 Hz/neuron); confidence: moderate (n = 3 FAFB, n = 5 MCNS/proxy; variants B, C not run)) [K03]
-3. **After 180 s anoxia the runaway persisted with corrected antennal-lobe signs, and the 20-s total block still rescued identity.** (MCNS naive FII_norm -0.135 (FSA 0.897) vs block 0.989; FAFB-proxy naive -0.125 vs block 0.965; confidence: moderate-high) [K04]
-4. **A 20-s total activity block at reperfusion restored the stimulus-response map; 2-5 s blocks failed; the block worked even when started 20 s late.** (FAFB FII_norm 1.001 / 0.953 at 30 / 180 s anoxia; rescue in 48/48 parameter sets at 30 s, 34/48 (0.71 [0.58, 0.83]) at 180 s; confidence: high) [K05]
-5. **Releasing the block as soon as K+ and ATP had normalised was not enough: the network re-ignited.** (closed-loop criterion met after 11 s; MCNS runaway 5/5 (11.3 Hz/neuron), delta vs 20-s block -0.071 [-0.081, -0.058]; FAFB-proxy delta -0.674 [-0.742, -0.624]; confidence: moderate (MCNS + proxy only, 180 s, default signs)) [K06]
-6. **The maintained runaway is ionic, not synaptic: it survives removal of all synapses and collapses when activity-dependent K+ accumulation is removed; quiet and active states coexist in the intact network.** (all synapses off: 109/134 Hz/neuron; K+ clamp 5 mM: 2.4/2.3 Hz/neuron; hysteresis >= 13 mV; confidence: high within model (default signs)) [K07]
-7. **Simulated 'brain death' (silent and unresponsive) occurred only with near-total neuron death; the model never produced a silent but structurally intact brain.** (92 runs, all with >= 97.9% of neurons dead (of 1,209 FAFB runs); confidence: high (model property; FAFB only)) [K08]
-8. **After the reset, remaining identity loss was due to neuron death; protecting the top 1% most-connected neurons was far more efficient per neuron than whole-brain protection, in two connectomes.** (FAFB ~30x (0.578 -> 0.703); MCNS 84x (+0.201 [+0.127, +0.278]); random sets no gain; confidence: high) [K09]
-9. **Cooling before/during the insult widened the recoverable window, but the size of the effect is set by the model's injury rule; cooling only during reperfusion was harmful.** (D_max 359 / 271 / 149 / 124 model-s at 17 / 22 / 29 / 33 C; Q10_window 2.09 [1.99, 2.19]; confidence: high that it holds; magnitude is by construction, not a prediction) [K10]
-10. **Graded (ramped or pulsed) reperfusion did not beat abrupt reperfusion plus a block (preregistered H3 falsified, direction reversed).** (360 s: ramp30 delta FII_norm -0.331 [-0.583, -0.130]; ramp60 +6.6 pp dead; confidence: high within model (no oxidative/inflammatory mechanisms modelled)) [K11]
-11. **Structurally, random neuron loss degrades sensorimotor reachability gradually (no sharp threshold), whereas hub- or demand-targeted loss is far more destructive, in all four connectomes.** (FAFB random f_c 0.800 (width 0.671); area-weighted 0.277 (ratio 0.346); hub 0.033 (ratio 0.041); direction replicates 4/4; confidence: high (direction); magnitudes differ across datasets (f_c max/min up to 23.35)) [K12]
-12. **Wiring statistics predict how much identity returns after the reset, but not whether the network gets trapped.** (post-reset FII: cross-validated R2 0.964 [0.940, 0.978] (excitatory core size); runaway among viable networks: AUC 0.53 (chance); confidence: moderate (FAFB only, 1,118 of 1,209 runs, default signs, no standalone report)) [K13]
-13. **The small 'driver core' (0.5% of neurons) that rescued after 30 s anoxia under default signs is not established: it is centred on the antennal-lobe neurons whose sign correction removes the 30-s runaway.** (279 of 696 driver neurons in the antennal lobes; after 180 s, 20% of the brain had to be blocked; confidence: low (likely sign artefact) - do not message as a finding) [K14]
-14. **Scope: all results are predictions of a simplified simulation (connectome-constrained LIF + phenomenological metabolism, constants not fitted to Drosophila). They are not evidence about living tissue, clinical brain death or human resuscitation; resuscitation of a brain-dead organism has not been demonstrated.** (3,487 analysed simulated condition-seed runs; dynamics in 2 connectomes (FAFB, MCNS); BANC dynamics not analysed; confidence: n/a (mandatory caveat for all messaging)) [K15]
+---
 
-Full verdicts: [docs/SYNTHESIS.md](docs/SYNTHESIS.md); summary table: [docs/RESULTS_SUMMARY.md](docs/RESULTS_SUMMARY.md); limitations: [docs/LIMITATIONS.md](docs/LIMITATIONS.md); proposed fly experiments: [docs/VALIDATION_PROTOCOL.md](docs/VALIDATION_PROTOCOL.md).
+> [!IMPORTANT]
+> **What we found.** In a model of the whole adult fly brain (139,255 neurons, FlyWire FAFB v783), switching oxygen back on abruptly after a long outage (180 s) traps the network in a self-sustaining high-activity state, and its stimulus-response "identity" does not come back. A **20-second total activity block at reperfusion resets it**, and the identity returns. After a short outage (30 s), whether the trap appears depends on the transmitter sign assigned to antennal-lobe local neurons: making them inhibitory, as they are in real flies, removes the high-rate runaway.
 
-## Figure gallery
+> [!CAUTION]
+> This is a simplified simulation: leaky integrate-and-fire neurons on a real wiring diagram, with a phenomenological K⁺/ATP layer whose constants were not fitted to *Drosophila*. It is a source of testable predictions, not evidence about living tissue. No real brain was revived.
 
-| ![Dynamics: brain-death map over insult type and duration](docs/figures/dynamics/fig1_brain_death_map.png) |
-|:--|
-| *Dynamics: brain-death map over insult type and duration* |
+## Watch
 
-| ![Dynamics: activity, energy and K+ traces after 180 s anoxia (naive vs reset)](docs/figures/dynamics/fig2_traces_D180.png) |
-|:--|
-| *Dynamics: activity, energy and K+ traces after 180 s anoxia (naive vs reset)* |
+<table>
+<tr>
+<td width="50%" align="center">
+<a href="media/explainer_public.mp4"><img src="assets/explainer_public.gif" width="100%" alt="Public explainer"/></a><br/>
+<b>Explainer: the story</b> · 3:18<br/><sub>Plain-language walkthrough, narrated</sub>
+</td>
+<td width="50%" align="center">
+<a href="media/explainer_researcher.mp4"><img src="assets/explainer_researcher.gif" width="100%" alt="Researcher explainer"/></a><br/>
+<b>Explainer: methods and results</b> · 5:00<br/><sub>Model, experiments, numbers, limitations</sub>
+</td>
+</tr>
+<tr>
+<td align="center">
+<a href="media/C1_intact.mp4"><img src="assets/C1_intact.gif" width="100%" alt="Intact brain"/></a><br/>
+<b>1 · Intact</b> · 29 s<br/><sub>Looming and taste stimuli propagate to descending and motor neurons</sub>
+</td>
+<td align="center">
+<a href="media/C2_anoxia.mp4"><img src="assets/C2_anoxia.gif" width="100%" alt="Anoxia"/></a><br/>
+<b>2 · Oxygen off</b> · 32 s<br/><sub>ATP falls, a K⁺ front spreads, the brain goes silent</sub>
+</td>
+</tr>
+<tr>
+<td align="center">
+<a href="media/C3_runaway.mp4"><img src="assets/C3_runaway.gif" width="100%" alt="Runaway"/></a><br/>
+<b>3 · Naive reperfusion</b> · 33 s<br/><sub>Oxygen back on: a K⁺-coupled runaway takes over</sub>
+</td>
+<td align="center">
+<a href="media/C4_reset.mp4"><img src="assets/C4_reset.gif" width="100%" alt="Reset"/></a><br/>
+<b>4 · Block and reset</b> · 40 s<br/><sub>A 20-s total block, then the original responses return</sub>
+</td>
+</tr>
+</table>
 
-| ![Dynamics: resuscitation protocol ranking (FII_norm)](docs/figures/dynamics/fig3_resuscitation_ranking.png) |
-|:--|
-| *Dynamics: resuscitation protocol ranking (FII_norm)* |
+<sub>Click a preview for the full 1080p narrated video (release assets). Colours are driven by simulated spike rates and extracellular K⁺; geometry is FAFB v783 skeletons, synapses and somata. Every frame is a simulation.</sub>
 
-| ![Dynamics: (a) recovery window vs temperature (H4); (b) FII_norm vs dead fraction (H1)](docs/figures/dynamics/fig4_H4_H1.png) |
-|:--|
-| *Dynamics: (a) recovery window vs temperature (H4); (b) FII_norm vs dead fraction (H1)* |
+## How it works
 
-| ![Dynamics: ageing / reserve and targeted hub protection](docs/figures/dynamics/fig5_ageing_hubprotection.png) |
-|:--|
-| *Dynamics: ageing / reserve and targeted hub protection* |
+```mermaid
+flowchart LR
+    A["FlyWire connectomes<br/>FAFB v783 · MCNS v1.0<br/>BANC v888 · MANC v1.2.1"] --> B["LIF network<br/>(Shiu et al. 2024 parameters)"]
+    B --> C["Metabolic layer<br/>O₂ → ATP → Na⁺/K⁺ pump<br/>extracellular K⁺ diffusion"]
+    C --> D{"Insults"}
+    D --> D1["Anoxia 7–480 s"]
+    D --> D2["Temperature 17–33 °C"]
+    D --> D3["Neuron death / hub loss"]
+    D1 & D2 & D3 --> E{"Reperfusion strategies"}
+    E --> E1["Abrupt"]
+    E --> E2["Ramped / pulsed"]
+    E --> E3["Total block 2–20 s"]
+    E --> E4["Closed-loop release"]
+    E1 & E2 & E3 & E4 --> F["Readouts<br/>Functional identity index (FII)<br/>sensorimotor reach"]
+```
 
-| ![Mechanism: runaway and reset robustness across 48 LHS parameter sets](docs/figures/mechanism/fig_M1_robustness.png) |
-|:--|
-| *Mechanism: runaway and reset robustness across 48 LHS parameter sets* |
+## Key results
 
-| ![Mechanism: excitotoxic reperfusion term and the H3 re-test](docs/figures/mechanism/fig_M2_excitotoxic_H3.png) |
-|:--|
-| *Mechanism: excitotoxic reperfusion term and the H3 re-test* |
+| # | Result | Evidence | Confidence |
+|:-:|---|---|---|
+| 1 | After 180 s anoxia, abrupt reperfusion traps the model in a self-sustained runaway | 48/48 FAFB parameter sets; 5/5 MCNS runs | high |
+| 2 | After 30 s anoxia, the trap is sign-sensitive: making antennal-lobe local neurons inhibitory removes the high-rate runaway and the identity loss (a weak low-rate oscillation remains in MCNS) | FAFB 0/3 runaway; MCNS FII<sub>norm</sub> 1.000 (3.0 Hz/neuron residual) | moderate |
+| 3 | A 20-s total block at reperfusion restores the stimulus-response map; 2–5 s blocks fail; it still works when started 20 s late | FAFB FII<sub>norm</sub> 1.001 / 0.953 at 30 / 180 s | high |
+| 4 | Releasing the block as soon as K⁺ and ATP normalise (11 s) is not enough: the network re-ignites | MCNS 5/5 runaway | moderate |
+| 5 | The trapped state is ionic, not synaptic: it survives removing all synapses and collapses when K⁺ accumulation is clamped | 109/134 Hz with synapses off; 2.4/2.3 Hz with K⁺ clamp | high (model) |
+| 6 | Model "brain death" (silent and unresponsive) needed near-total neuron death | all 92 such runs had ≥97.9 % dead | high (model) |
+| 7 | Protecting the top 1 % most-connected neurons is far more efficient per neuron than whole-brain protection | ~30× FAFB; 84× MCNS | high |
+| 8 | Graded (ramped or pulsed) reperfusion did not beat abrupt reperfusion plus a block | preregistered H3 falsified | high (model) |
+| 9 | Random neuron loss degrades reachability gradually; hub-targeted loss is far more destructive | FAFB f<sub>c</sub> 0.800 random vs 0.033 hub-targeted | high (direction) |
 
-| ![Mechanism: attractor driver core and targeted reset](docs/figures/mechanism/fig_M3_anatomy_targeted.png) |
-|:--|
-| *Mechanism: attractor driver core and targeted reset* |
+Full numbers, intervals and caveats: [paper](paper/paper.pdf) · [supplement](paper/SUPPLEMENT.pdf) · [`docs/`](docs/).
 
-| ![Mechanism: bistability and hysteresis of the intact network](docs/figures/mechanism/fig_M4_bistability.png) |
-|:--|
-| *Mechanism: bistability and hysteresis of the intact network* |
+<details>
+<summary><b>What this model can and cannot say about brain death and resuscitation</b></summary>
 
-| ![Structure: sensorimotor reach vs damage fraction, four connectomes](docs/figures/structure/fig1_reach_vs_damage.png) |
-|:--|
-| *Structure: sensorimotor reach vs damage fraction, four connectomes* |
+- **Can:** show which wiring and ionic conditions let a whole-brain network return to its pre-insult input-output map, and which interventions (a total block at reperfusion, hub protection, cooling before the insult) widen that window *in the model*.
+- **Cannot:** model oxidative stress, inflammation, glia, the blood-brain barrier, synaptic plasticity or memory storage. "Identity" here means the stimulus-response map of a fixed wiring diagram, not memories or experience.
+- **Next step:** a real-fly validation protocol (optogenetic silencing at reoxygenation with GtACR or shibire<sup>ts</sup>, proboscis-extension and escape readouts) is in [`docs/`](docs/).
 
-| ![Structure: targeted / random critical-fraction ratios](docs/figures/structure/fig2_targeted_vs_random_ratio.png) |
-|:--|
-| *Structure: targeted / random critical-fraction ratios* |
-
-| ![Structure: metric failure order and controls](docs/figures/structure/fig3_metrics_and_controls.png) |
-|:--|
-| *Structure: metric failure order and controls* |
-
-| ![Structure: keystone cell types](docs/figures/structure/fig4_keystone_types.png) |
-|:--|
-| *Structure: keystone cell types* |
-
-| ![Simulator: LIF validation against Shiu et al. 2024 readouts](docs/figures/sim/fig_lif_validation_v3.png) |
-|:--|
-| *Simulator: LIF validation against Shiu et al. 2024 readouts* |
-
-| ![Simulator: metabolic layer unit tests (anoxia, reoxygenation, reset)](docs/figures/sim/fig_metab_anoxia_v2.png) |
-|:--|
-| *Simulator: metabolic layer unit tests (anoxia, reoxygenation, reset)* |
-
+</details>
 
 ## Quickstart
 
 ```bash
-git clone https://github.com/KalarisLabs/fly-brain-resuscitation && cd fly-brain-resuscitation
-conda env create -f environment.yml && conda activate flybrain     # or: pip install -r requirements.txt
-pip install -e . && pytest -q                                       # toy-network tests, ~1 min, no data needed
-python experiments/smoke/toy_protocol.py                            # insult -> reperfusion + block -> probe on the toy net
+git clone https://github.com/KalarisLabs/fly-brain-resuscitation.git
+cd fly-brain-resuscitation
+conda env create -f environment.yml && conda activate flybrain
+pytest -q                       # unit tests on a tiny synthetic network
 ```
 
-Full-connectome runs need the FlyWire downloads (several GB, not committed):
+Connectome tables are not redistributed. Download them from [FlyWire Codex](https://codex.flywire.ai/) (FAFB v783 neurons and Princeton synapse table) and see [`data/`](data/) for the expected file names. The scripts in [`scripts/`](scripts/) regenerate each figure; [`experiments/`](experiments/) holds the sweep definitions.
 
-```bash
-python scripts/fetch_data.py --check                    # lists required files, where they go and what is missing
-python scripts/prepare_caches.py --fafb                 # builds the simulator caches (validated bit-exact)
-python -c "import sys; sys.path.insert(0,'src'); import flysim_mech as fs; m=fs.load_model('princeton5'); \
-r=fs.run(m,1000,stim=[dict(idx=m.idx(fs.SHIU_SUGAR_GRN),rate=150)]); print(fs.rates(r,m.idx([fs.SHIU_MN9])))"
+<details>
+<summary><b>Repository layout</b></summary>
+
+| Path | Contents |
+|---|---|
+| `src/` | simulator (LIF + metabolic layer), structure and dynamics analysis |
+| `experiments/` | sweep and follow-up experiment definitions |
+| `scripts/` | figure and table reproduction |
+| `results/` | summary tables (CSV/MD) |
+| `paper/` | paper, review copy, supplement |
+| `docs/` | methods, results summary, limitations, validation protocol |
+| `tests/` | pytest unit tests |
+| `modal/` | cloud sweep launchers |
+
+</details>
+
+## Cite
+
+```bibtex
+@misc{muralikrishnan2026flybrain,
+  title  = {Anoxia, brain death and resuscitation in a connectome-constrained simulation of the adult Drosophila brain},
+  author = {Muralikrishnan, Srihari},
+  year   = {2026},
+  note   = {Preprint, Kalaris Labs},
+  url    = {https://github.com/KalarisLabs/fly-brain-resuscitation}
+}
 ```
 
-[docs/REPRODUCE.md](docs/REPRODUCE.md) gives the exact command for every table and figure. One FAFB model uses about 0.5–1 GB of RAM per process.
-
-## Data provenance and licence
-
-The connectome data come from FlyWire and Codex ([codex.flywire.ai](https://codex.flywire.ai/)) and are distributed under CC-BY. The repository does not redistribute any of it. [data/README.md](data/README.md) lists the files and how to obtain them, and [DATA_LICENSE.md](DATA_LICENSE.md) lists the attribution and citations you must give when using them. The code is MIT-licensed ([LICENSE](LICENSE)).
+See also [`CITATION.cff`](CITATION.cff).
 
 ## Credits
 
-- **Author:** Srihari Muralikrishnan, Co-Founder & R&D Lead, Kalaris Labs ([ORCID 0009-0004-0220-0361](https://orcid.org/0009-0004-0220-0361), GitHub [@sriharideveloper](https://github.com/sriharideveloper)). Sole author; research direction and primary compute.
-- **Secondary compute provider:** Sayan Chowdhury, Founder & CEO, Kalaris Labs.
-- **Kalaris Labs** ([kalarislabs.com](http://kalarislabs.com/), [github.com/KalarisLabs](https://github.com/KalarisLabs/)): Myriad and Research Agent Skills.
-- **AI:** Aryan Kumar Jha (Kalaris Labs). AI system: Claude (Anthropic). Claude is an AI tool, not an author.
-- **Data:** FlyWire / Codex: FAFB v783, BANC, MANC and MCNS connectomes (CC-BY). Cite them as described in [DATA_LICENSE.md](DATA_LICENSE.md): [about Codex](https://codex.flywire.ai/about_codex), [FlyWire principles](https://flywire.ai/principles.html), [about FlyWire](https://codex.flywire.ai/about_flywire).
-- **Contact:** hello@kalarislabs.com
+| | |
+|---|---|
+| **Research, direction and primary compute** | Srihari Muralikrishnan, [Kalaris Labs](http://kalarislabs.com/) ([ORCID](https://orcid.org/0009-0004-0220-0361), [@sriharideveloper](https://github.com/sriharideveloper)) |
+| **Secondary compute provision and institutional support** | Sayan Chowdhury, Founder & CEO, Kalaris Labs |
+| **AI work** | Aryan Kumar Jha, Kalaris Labs |
+| **Agent tooling** | Kalaris Labs [Myriad](https://github.com/KalarisLabs/myriad) and [Research Agent Skills](https://github.com/KalarisLabs/research-agent-skills) |
+| **AI system** | Claude (Anthropic), used for analysis, code and drafting under the author's direction; disclosed in the paper, not an author |
+| **Connectome data** | [FlyWire Codex](https://codex.flywire.ai/about_codex) and the [FlyWire consortium](https://codex.flywire.ai/about_flywire): FAFB v783, BANC v888, MANC v1.2.1, MCNS v1.0, used under the [FlyWire principles](https://flywire.ai/principles.html) |
 
-See [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) and [CITATION.cff](CITATION.cff).
+Contact: hello@kalarislabs.com · Code MIT ([LICENSE](LICENSE)) · Data terms: [DATA_LICENSE.md](DATA_LICENSE.md)
