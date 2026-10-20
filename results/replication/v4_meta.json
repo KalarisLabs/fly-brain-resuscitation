@@ -1,0 +1,107 @@
+{
+ "MCNS": {
+  "n": 106,
+  "n_base": 10,
+  "ceiling": {
+   "resp": 0.9972008484902604,
+   "all": 0.9971931763627984,
+   "vnc": 0.996352048896993
+  },
+  "resp_probes": [
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [
+   "LC4"
+  ],
+  "reach_base": 0.9986101459346768,
+  "w_syn": 0.0538
+ },
+ "MCNS_alln": {
+  "n": 25,
+  "n_base": 5,
+  "ceiling": {
+   "resp": 0.996050269648787,
+   "all": 0.9960489658437962,
+   "vnc": 0.9922484390230644
+  },
+  "resp_probes": [
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [
+   "LC4"
+  ],
+  "reach_base": 0.9986101459346768,
+  "w_syn": 0.0538
+ },
+ "MCNS_wlo": {
+  "n": 15,
+  "n_base": 3,
+  "ceiling": {
+   "resp": 0.9973867773071592,
+   "all": 0.9974011446450199,
+   "vnc": 0.8703882797784891
+  },
+  "resp_probes": [
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [
+   "LC4"
+  ],
+  "reach_base": 0.9986101459346769,
+  "w_syn": 0.0434
+ },
+ "FAFBproxy": {
+  "n": 40,
+  "n_base": 5,
+  "ceiling": {
+   "resp": 0.9921569791148658,
+   "all": 0.9921569791148658
+  },
+  "resp_probes": [
+   "sugar",
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [],
+  "reach_base": 0.986572438162544,
+  "w_syn": 0.185
+ },
+ "FAFBproxy_alln": {
+  "n": 25,
+  "n_base": 5,
+  "ceiling": {
+   "resp": 0.9921569791148658,
+   "all": 0.9921569791148658
+  },
+  "resp_probes": [
+   "sugar",
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [],
+  "reach_base": 0.986572438162544,
+  "w_syn": 0.185
+ }
+}

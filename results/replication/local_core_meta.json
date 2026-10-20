@@ -1,0 +1,42 @@
+{
+ "ceiling_MCNS": {
+  "resp": 0.9975368802610444,
+  "all": 0.9975369591043047,
+  "vnc": 0.9884318510489062
+ },
+ "ceiling_FAFB": {
+  "resp": 0.9939515663950473,
+  "all": 0.9939515663950473
+ },
+ "probes_MCNS": {
+  "resp_probes": [
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": [
+   "sugar",
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ]
+ },
+ "probes_FAFB": {
+  "resp_probes": [
+   "sugar",
+   "bitter",
+   "JO_aud",
+   "JO_wg",
+   "LC4",
+   "LC9",
+   "turnL"
+  ],
+  "vnc_resp_probes": []
+ }
+}

@@ -1,0 +1,2 @@
+dataset,n_removable,n_offpath_removed,f_offpath,base_reachN_L6,neg_reachN_L6,delta_reachN_L6,base_reachN_Linf,neg_reachN_Linf,delta_reachN_Linf,base_reachG_L6,neg_reachG_L6,delta_reachG_L6,base_redund_L6,neg_redund_L6,delta_redund_L6,base_influence_L6,neg_influence_L6,delta_influence_L6
+BANC,138356,37304,0.26962329064153345,0.7291455847890924,0.7291455847890924,0.0,0.786885518747337,0.786885518747337,0.0,0.9416957818491691,0.9416957818491691,0.0,43654.75239962559,43654.75239962559,0.0,583.5948589631225,583.5948589631225,0.0

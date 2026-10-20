@@ -1,0 +1,6 @@
+track,job_id,cores,mem_gib,est_hours,est_usd,actual_wall_s
+replication,14de3ae1-d0bf-412c-8841-c1a279754447,32,32,0.25,0.44,217
+mechanism,65ab4ca8-f0f7-49c1-a91e-349bbb189934,16,16,0.4,0.35,24
+visuals-activity(cpu-only gpu=none),dba06822-85de-46ce-8e42-8628abf054ba,8,16,0.4,0.18,
+replication,a9ef9894-0c76-4de2-89c9-6879f59167ff,32,32,0.40,0.70,269
+replication,ef7d8554-1bbc-4a61-a027-11bb646177dc,32,32,0.35,0.62,unknown (status probe lost; all 146 runs on Volume; container cap 3600 s => <=1.76 USD)

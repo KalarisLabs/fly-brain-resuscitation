@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fly-brain-resuscitation"
+version = "0.1.0"
+description = "Whole-connectome Drosophila LIF + metabolic simulator for in-silico anoxia, brain death and resuscitation (model predictions only)"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Srihari Muralikrishnan"}]
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.26", "scipy>=1.11", "pandas>=2.0", "pyarrow>=14", "matplotlib>=3.8"]
+
+[project.urls]
+Homepage = "http://kalarislabs.com/"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+py-modules = ["flysim", "flysim_dyn", "flysim_mech", "flysim_cns", "perclib", "light", "toynet", "fbr_paths"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 140
+extend-exclude = ["outputs", "data"]

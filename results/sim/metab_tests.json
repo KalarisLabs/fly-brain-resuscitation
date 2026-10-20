@@ -1,0 +1,262 @@
+{
+ "test_a": {
+  "identical_kspk0": true,
+  "default_n_neurons_differing": 312,
+  "default_max_abs_dHz": 14.0,
+  "default_rate_corr": 0.9990978711270913,
+  "MN9_lif": 140.0,
+  "MN9_metab_default": 141.0,
+  "baseline_nostim_spikes": 0,
+  "baseline_K_dev": 2.86102294921875e-06,
+  "baseline_e_min": 1.0,
+  "wall_lif": 13.518128156661987,
+  "wall_metab": 72.7762017250061,
+  "wall_metab_nostim_per_s": 17.648367881774902,
+  "passed": true
+ },
+ "test_bc": {
+  "speedup": 50.0,
+  "wall_s": 353.87348675727844,
+  "SD_onset_s_after_anoxia": 9.25,
+  "dep_frac_at_35s": 0.9952317690567664,
+  "K_mean_at_35s": 39.64131546020508,
+  "block_frac_at_35s": 0.9955549172381603,
+  "e_mean_at_39s": 0.06112394854426384,
+  "syn_frac_at_39s": 0.002255941042676568,
+  "pop_rate_late_anoxia_Hz_per_neuron": 0.4660873936303903,
+  "repolarized_s_after_reox": 4.25,
+  "e_mean_end": 0.9501863121986389,
+  "dep_frac_end": 0.0002944238986032818,
+  "K_mean_end": 12.80176067352295,
+  "dead_frac_end": 0.006857922516247172,
+  "J_mean_at_40s": 16.936084747314453,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 0.0,
+  "FII": {
+   "FII": 0.0,
+   "corr": -0.08353943567984908,
+   "recall": 0.6899441340782123,
+   "precision": 0.007044663738520336,
+   "n": 35173
+  },
+  "passed_b": true,
+  "passed_c": false
+ },
+ "test_c_short_anoxia": {
+  "anoxia_s": 7.0,
+  "v_offset": null,
+  "block_all": null,
+  "metab_extra": null,
+  "wall_s": 288.29688811302185,
+  "max_dep_frac": 0.6512441204983663,
+  "max_K": 36.309730529785156,
+  "e_min": 0.6685336232185364,
+  "J_mean_max": 1.2384768724441528,
+  "e_mean_end": 0.8270791172981262,
+  "dep_frac_end": 0.30422606010556175,
+  "K_mean_end": 23.517309188842773,
+  "dead_frac_end": 0.0,
+  "pop_Hz_per_neuron_80_92s": 91.98382822878891,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 0.0,
+  "FII": {
+   "FII": 0.0,
+   "corr": -0.07916620366572542,
+   "recall": 0.5837988826815642,
+   "precision": 0.0016808344659530491,
+   "n": 124492
+  },
+  "passed": false
+ },
+ "test_c_anesthesia": {
+  "anoxia_s": 30.0,
+  "v_offset": [
+   [
+    0,
+    0.0
+   ],
+   [
+    40.0,
+    -10.0
+   ],
+   [
+    60.0,
+    0.0
+   ]
+  ],
+  "block_all": null,
+  "metab_extra": null,
+  "wall_s": 272.8245761394501,
+  "max_dep_frac": 0.995339485117231,
+  "max_K": 47.566368103027344,
+  "e_min": 0.05706573650240898,
+  "J_mean_max": 18.01156234741211,
+  "e_mean_end": 0.9952941536903381,
+  "dep_frac_end": 0.0,
+  "K_mean_end": 5.527300834655762,
+  "dead_frac_end": 0.006010556173925541,
+  "pop_Hz_per_neuron_80_92s": 4.360863164697856,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 166.66666666666669,
+  "FII": {
+   "FII": 0.0,
+   "corr": -0.433178563200725,
+   "recall": 0.34916201117318435,
+   "precision": 0.016580448335322986,
+   "n": 7772
+  },
+  "passed": false
+ },
+ "test_c_reset": {
+  "anoxia_s": 30.0,
+  "v_offset": null,
+  "block_all": [
+   [
+    0,
+    false
+   ],
+   [
+    40.0,
+    true
+   ],
+   [
+    60.0,
+    false
+   ]
+  ],
+  "metab_extra": null,
+  "wall_s": 77.27609348297119,
+  "max_dep_frac": 0.995339485117231,
+  "max_K": 47.566368103027344,
+  "e_min": 0.05706573650240898,
+  "J_mean_max": 18.67582130432129,
+  "e_mean_end": 0.9999308586120605,
+  "dep_frac_end": 0.0,
+  "K_mean_end": 5.003597736358643,
+  "dead_frac_end": 0.006807655021363712,
+  "pop_Hz_per_neuron_80_92s": 0.0,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 113.33333333333334,
+  "FII": {
+   "FII": 0.635232961825008,
+   "corr": 0.70189321090541,
+   "recall": 0.9050279329608939,
+   "precision": 0.9050279329608939,
+   "n": 392
+  },
+  "passed": true
+ },
+ "test_c_short_reset": {
+  "anoxia_s": 7.0,
+  "v_offset": null,
+  "block_all": [
+   [
+    0,
+    false
+   ],
+   [
+    17.0,
+    true
+   ],
+   [
+    37.0,
+    false
+   ]
+  ],
+  "metab_extra": null,
+  "wall_s": 51.62688183784485,
+  "max_dep_frac": 0.036020250619367346,
+  "max_K": 21.974693298339844,
+  "e_min": 0.6685336232185364,
+  "J_mean_max": 0.03144407644867897,
+  "e_mean_end": 0.9999393820762634,
+  "dep_frac_end": 0.0,
+  "K_mean_end": 5.003035068511963,
+  "dead_frac_end": 0.0,
+  "pop_Hz_per_neuron_80_92s": 0.0,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 120.0,
+  "FII": {
+   "FII": 0.6860294519030922,
+   "corr": 0.7512624340550806,
+   "recall": 0.9106145251396648,
+   "precision": 0.9157303370786517,
+   "n": 388
+  },
+  "passed": true
+ },
+ "test_c_control_noanoxia": {
+  "anoxia_s": 0.0,
+  "v_offset": null,
+  "block_all": null,
+  "metab_extra": null,
+  "wall_s": 215.3935363292694,
+  "max_dep_frac": 0.0,
+  "max_K": 5.05898904800415,
+  "e_min": 0.9999203085899353,
+  "J_mean_max": 1.9920359806135934e-10,
+  "e_mean_end": 0.9999393820762634,
+  "dep_frac_end": 0.0,
+  "K_mean_end": 5.003035068511963,
+  "dead_frac_end": 0.0,
+  "pop_Hz_per_neuron_80_92s": 0.0,
+  "MN9_pre_Hz": 126.66666666666667,
+  "MN9_post_Hz": 120.0,
+  "FII": {
+   "FII": 0.6860294519030922,
+   "corr": 0.7512624340550806,
+   "recall": 0.9106145251396648,
+   "precision": 0.9157303370786517,
+   "n": 388
+  },
+  "passed": true
+ },
+ "focal": {
+  "core": [
+   "AME_R",
+   "LA_R",
+   "LOP_R",
+   "LO_R",
+   "ME_R"
+  ],
+  "wall_s": 599.7704110145569,
+  "K_peak_core": 42.5116081237793,
+  "n_noncore_K_gt_20": 26,
+  "noncore_top": [
+   [
+    "LA_L",
+    28.268983840942383
+   ],
+   [
+    "LOP_L",
+    27.856643676757812
+   ],
+   [
+    "ME_L",
+    27.535188674926758
+   ],
+   [
+    "LO_L",
+    26.393678665161133
+   ],
+   [
+    "OCG",
+    26.14110565185547
+   ],
+   [
+    "LH_R",
+    24.828189849853516
+   ],
+   [
+    "MB_CA_R",
+    24.44601821899414
+   ],
+   [
+    "MB_VL_R",
+    24.387653350830078
+   ]
+  ],
+  "dead_frac_end": 0.019360166600840167,
+  "adjacency": "geometric (D:\\FRUITFLY\\research\\cache\\fafb783_neuropil_adjacency_geometric.npy)"
+ }
+}

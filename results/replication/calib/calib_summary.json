@@ -1,0 +1,41 @@
+{
+ "FAFB": {
+  "w_pass_sugar": 0.266,
+  "w_crit_sugar": 0.27132,
+  "w_pass_any": 0.20927,
+  "w_crit_any": 0.21345,
+  "w_pass": 0.20927,
+  "w_crit": 0.21345,
+  "ratio_fafb_sugar": 0.6818516880436385,
+  "w_matched_sugar": 0.185,
+  "ratio_fafb_any": 0.8667135160459124,
+  "w_matched_any": 0.185,
+  "w_matched": 0.185
+ },
+ "MCNS": {
+  "w_pass_sugar": 0.19749,
+  "w_crit_sugar": 0.20144,
+  "w_pass_any": 0.06083,
+  "w_crit_any": 0.06205,
+  "w_pass": 0.06083,
+  "w_crit": 0.06205,
+  "ratio_fafb_sugar": 0.6818516880436385,
+  "w_matched_sugar": 0.1374,
+  "ratio_fafb_any": 0.8667135160459124,
+  "w_matched_any": 0.0538,
+  "w_matched": 0.0538
+ },
+ "BANC": {
+  "w_pass_sugar": 0.64397,
+  "w_crit_sugar": 0.65685,
+  "w_pass_any": 0.25187,
+  "w_crit_any": 0.25691,
+  "w_pass": 0.25187,
+  "w_crit": 0.25691,
+  "ratio_fafb_sugar": 0.6818516880436385,
+  "w_matched_sugar": 0.4479,
+  "ratio_fafb_any": 0.8667135160459124,
+  "w_matched_any": 0.2227,
+  "w_matched": 0.2227
+ }
+}

@@ -1,0 +1,1390 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{LibertinusSerif}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic,SmallCapsFont=*-Regular,SmallCapsFeatures={Letters=SmallCaps}]
+\setsansfont{LibertinusSans}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic]
+\setmonofont{LibertinusMono}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,Scale=0.9]
+\usepackage{unicode-math}\setmathfont{LibertinusMath-Regular.otf}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/]
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage[protrusion=true]{microtype}
+\usepackage{booktabs,longtable,array,calc,etoolbox,graphicx,xcolor,caption,float}
+\usepackage{cite}
+\usepackage[hidelinks=false,colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black,pdfauthor={Srihari Muralikrishnan},pdftitle={Supplementary Information},pdfsubject={Computational neuroscience preprint},pdfkeywords={connectome, Drosophila, anoxia, spreading depolarization, reperfusion, bistability, brain death}]{hyperref}
+\usepackage{fancyhdr}\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{black!60}Muralikrishnan --- preprint v1.0 (not peer reviewed). Model predictions only.}\fancyfoot[R]{\footnotesize\thepage}
+\captionsetup{font=small,labelformat=empty,justification=justified,singlelinecheck=false}
+\setlength{\LTcapwidth}{\textwidth}
+\newcounter{none}
+\AtBeginEnvironment{longtable}{\footnotesize\setlength{\tabcolsep}{3.5pt}}
+\setcounter{secnumdepth}{0}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{\sbox\pandoc@box{#1}\Gscale@div\@tempa{0.82\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}\Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}\ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi\ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}\else\usebox{\pandoc@box}\fi}
+\def\fps@figure{tbp}
+\makeatother
+\setlength{\parskip}{3pt plus 1pt}\setlength{\parindent}{0pt}
+\renewcommand{\refname}{References}
+\urlstyle{same}
+\graphicspath{{../}}
+\emergencystretch=2em
+\begin{document}
+{\Large\bfseries Supplementary Information\par}\vspace{0.5em}
+
+\textbf{A whole-brain \emph{Drosophila} connectome model predicts a duration- and sign-dependent potassium trap after anoxia and a reset-based route to functional recovery}
+
+Srihari Muralikrishnan (Kalaris Labs). Preprint v1.0, 2026-10-20. Contact: hello@kalarislabs.com
+
+All tables below were extracted programmatically from the analysis result files (\texttt{research/structure/STRUCTURE\_RESULTS.md}, \texttt{research/dynamics/DYNAMICS\_RESULTS.md}, \texttt{research/followup/mechanism/MECHANISM\_RESULTS.md}, \texttt{research/followup/replication/REPLICATION\_RESULTS.md}, \texttt{research/sim/README.md}, \texttt{research/lit/parameters.csv}, \texttt{research/followup/replication/tables/v4\_condition\_summary.csv}, \texttt{research/followup/mechanism/raw/sign\_res/}, \texttt{research/followup/index/tables/}) by \texttt{build\_paper.py}. The claim-by-claim synthesis is \texttt{research/SYNTHESIS.md}. They are not retyped. Every value describes the model, not real tissue.
+
+\subsection{S1. Preregistration (registered 2026-10-16, before any insult simulation)}\label{s1.-preregistration-registered-2026-10-16-before-any-insult-simulation}
+
+The full text is in \texttt{research/lit/preregistration.md}. Summary of hypotheses and falsification criteria:
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+H
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Key observable
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Supported if
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Falsified if
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+H1 sharp threshold & FII(f), Reach(f) & logistic preferred by ΔAIC ≤ −10, 10--90\% width ≤ 0.10, irrecoverable beyond f\_c & width \textgreater{} 0.25, or ΔAIC \textgreater{} −2, or recovery at f ≥ f\_c + 0.10 \\
+H2 targeted vulnerability & ρ(demand, death time); f\_c,targeted/f\_c,random & ρ ≤ −0.3 and ratio ≤ 0.7 (CI excludes 1) & ρ \textgreater{} −0.1 and ratio CI includes 1 \\
+H3 graded reperfusion & ΔFII staged − abrupt & ≥ +0.05 (CI excludes 0) in ≥2/3 severities, null negative control & ΔFII ≤ 0, or benefit survives without excitotoxic term \\
+H4 hypothermia & Q10\_window & within {[}0.67, 1.5{]} × model Q10 & D\_max ratio CI includes 1, or outside band \\
+H5 identity first & D50 ordering; regime coverage & D50\_FII lowest by ≥0.05; regime ≥5\% of grid & D50\_FII not lowest and coverage \textless{} 1\% \\
+H6 replication & outcome concordance & ≥3/4 connectomes match; f\_c max/min ≤ 1.5 & ≤2/4 match, or f\_c max/min \textgreater{} 2 \\
+\end{longtable}
+}
+
+Operational ``brain death'' (preregistered): \textless1\% of neurons spontaneously active for ≥1 s under baseline drive, no readout response (\textless{} 2 SD of noise), persisting after the protocol ends. As run (deviation S6): spontaneous fraction \textless{} 0.01 and no readout response \textgreater{} 8 Hz after the protocol. This is a model analogue of the clinical construct {[}Greer et al.~2023{]}, not a clinical determination.
+
+\subsection{S2. Simulator constants}\label{s2.-simulator-constants}
+
+\subsubsection{\texorpdfstring{Table S2a. Fast LIF layer and calibration (from \texttt{research/sim/README.md})}{Table S2a. Fast LIF layer and calibration (from research/sim/README.md)}}\label{table-s2a.-fast-lif-layer-and-calibration-from-researchsimreadme.md}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+constant
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+source
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+V\_rest = V\_reset & −52 mV & Shiu et al.~2024 \\
+V\_th & −45 mV & Shiu et al.~2024 \\
+τ\_m / τ\_syn & 20 ms / 5 ms & Shiu et al.~2024 \\
+refractory / delay & 2.2 ms / 1.8 ms & Shiu et al.~2024 \\
+w\_syn & 0.275 mV published; \textbf{0.185 mV used} (Princeton ≥5 matrix supercritical at 0.275) & calibrated here \\
+Poisson kick & 68.75 mV to v & Shiu et al.~2024 \\
+dt & 0.1 ms (fast), 5 ms (slow layer) & --- \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+readout (mean Hz)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+princeton5 w0.275
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+princeton5 w0.185
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+shiu783
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+MN9, sugar 50 / 100 / 200 Hz & 65.6 / 162.4 / 195.6 & 3.3 / 117.7 / 148.3 & 15.8 / 70.6 / 111.8 \\
+DNp01 L/R, LC4 100 Hz & 220 / 236 & 213 / 229 & -- \\
+DNg100 R, LC9 100 Hz & 124 & 116 & -- \\
+DNa02 L/R, left LC9+DNa02 180 Hz & 197 / 0 & n.r. & -- \\
+\end{longtable}
+}
+
+\subsubsection{\texorpdfstring{Table S2b. Slow metabolic/ionic layer (phenomenological, \textbf{not fitted to \emph{Drosophila} data})}{Table S2b. Slow metabolic/ionic layer (phenomenological, not fitted to Drosophila data)}}\label{table-s2b.-slow-metabolicionic-layer-phenomenological-not-fitted-to-drosophila-data}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+constant
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+default
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+calibrated set (dynamics, mechanism)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+LHS range (mechanism arm L)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+τ\_ATP & 20 s & \textbf{30 s} & 15--60 s (log) \\
+ATP reserve m & 4 × resting demand & 4 & 2--8 (log) \\
+demand exponent β (area\^{}β) & 0.5 & 0.5 & 0.25--1 \\
+r\_half (rate demand) & 100 Hz & 100 Hz & --- \\
+pump failure e\_ok & 0.75 & 0.75 & --- \\
+K₀ / K\_max & 5 / 80 mM & 5 / 80 mM & K\_max 50--100 mM \\
+g\_K (Nernst coupling) & 0.6 & 0.6 & 0.3--0.9 \\
+k\_rel (SD release) & 60 mM/s & 60 & 20--120 (log) \\
+k\_clr (clearance × pump) & 1 s⁻¹ & 1 & 0.5--2 (log) \\
+V\_sd & −30 ± 2 mV & same & --- \\
+depolarization block & h → 1 − σ((v\_rest,eff + 32)/2), τ\_h 10 ms & same & --- \\
+injury hazard & h\_max·J⁴/(J⁴ + J50⁴), h\_max 1/30 s⁻¹ & --- & --- \\
+J50 & 60 s & \textbf{600 s} & 300--1,200 s (log) \\
+Q10 demand / supply / pump / injury & 2.5 / 1.5 / 1.8 / --- & 2.5 / 1.5 / 1.8 / \textbf{2.5} & not varied \\
+speedup (slow-time compression) & --- & \textbf{50} & not varied (25--100 tested in arm A) \\
+glutamate sign & inhibitory & inhibitory & inhibitory or excitatory \\
+w\_syn & 0.185 & 0.185 & 0.15--0.25 \\
+\end{longtable}
+}
+
+\subsubsection{Table S2c. Calibration runs (dynamics arm A)}\label{table-s2c.-calibration-runs-dynamics-arm-a}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SD onset (model s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+tau20\_sp25\_D60\_reset & 9.0 & 0.000 & 1.001 \\
+tau20\_sp50\_D60\_reset & 9.5 & 0.000 & 1.001 \\
+tau20\_sp100\_D60\_reset & 10.0 & 0.000 & 0.998 \\
+tau30\_sp25\_D60\_reset & 11.5 & 0.000 & 1.001 \\
+tau30\_sp50\_D60\_reset & 12.5 & 0.000 & 1.001 \\
+tau30\_sp100\_D60\_reset & 13.5 & 0.000 & 0.998 \\
+tau40\_sp25\_D60\_reset & 14.0 & 0.000 & 1.001 \\
+tau40\_sp50\_D60\_reset & 15.5 & 0.000 & 1.001 \\
+tau40\_sp100\_D60\_reset & 16.5 & 0.000 & 0.998 \\
+J50\_60\_D120\_reset & 12.5 & 0.907 & 0.131 \\
+J50\_300\_D120\_reset & 12.5 & 0.017 & 0.951 \\
+sham\_naive & -- & 0.000 & 1.001 \\
+sham\_reset & -- & 0.000 & 1.001 \\
+sp25\_D30\_naive & 11.5 & 0.000 & -0.104 \\
+sp100\_D30\_naive & 13.5 & 0.000 & 0.065 \\
+\end{longtable}
+}
+
+\subsection{\texorpdfstring{S3. Literature parameter table (Table S1; \texttt{research/lit/parameters.csv}, 81 rows, 6 flagged UNVERIFIED)}{S3. Literature parameter table (Table S1; research/lit/parameters.csv, 81 rows, 6 flagged UNVERIFIED)}}\label{s3.-literature-parameter-table-table-s1-researchlitparameters.csv-81-rows-6-flagged-unverified}
+
+Values are as extracted from the cited sources. ``UNVERIFIED'' rows were not used as calibration targets.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+parameter
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+value
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+unit
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+species
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+context
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+source\_doi
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+confidence
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+K\_o\_rest\_fly\_brain & \textasciitilde10 & mM & D. melanogaster (+4 Drosophila spp.) & Resting CNS {[}K+{]}o, K+-selective microelectrode, cold and warm acclimated & 10.1242/jeb.179598 & high (full text) \\
+K\_o\_rest\_fly\_brain\_alt & 6.6 ± 0.3 & mM & D. melanogaster w1118 males & Baseline {[}K+{]}o before repetitive N2 anoxia & 10.1242/jeb.074468 & high (abstract) \\
+K\_o\_rest\_fly\_brain\_ouabain\_prep & 13.1 ± 2.8 & mM & D. melanogaster & Baseline between ouabain-induced repetitive surges & 10.1371/journal.pone.0028994 & high (full text) \\
+K\_o\_SD\_peak\_cold\_warm\_acclimated & 58.3 ± 3.7 & mM & D. melanogaster (25 °C acclimated) & Peak {[}K+{]}o during cold-induced SD & 10.1242/jeb.179598 & high (full text) \\
+K\_o\_SD\_peak\_cold\_cold\_acclimated & 44.4 ± 5.7 & mM & D. melanogaster (15 °C acclimated) & Peak {[}K+{]}o during cold-induced SD & 10.1242/jeb.179598 & high (full text) \\
+K\_o\_SD\_peak\_species\_range & 29.5 -- 57.9 & mM & Drosophila spp. (montana \ldots{} birchii) & Peak {[}K+{]}o at cold SD; \textasciitilde3--5x resting & 10.1242/jeb.179598 & high (full text) \\
+K\_o\_terminal\_plateau & 54.1 ± 13.9 & mM & D. melanogaster & Terminal loss of K+ homeostasis after repetitive ouabain comas (no recovery; death) & 10.1371/journal.pone.0028994 & high (full text) \\
+K\_hemolymph\_fold\_change\_2h\_anoxia & \textasciitilde3 & fold & D. melanogaster adult & Hemolymph {[}K+{]} after 2 h N2 anoxia; restored on reoxygenation & 10.1242/jeb.177147 & high (abstract+full text) \\
+t\_anoxic\_SD\_onset\_RT & 14.2 ± 0.3 & s & D. melanogaster (25 °C acclimated) & Time to half-amplitude DC drop after pure N2, room temperature & 10.1242/jeb.179598 & high (full text) \\
+t\_anoxic\_SD\_onset\_RT\_cold\_acclimated & 16.2 ± 0.6 & s & D. melanogaster (15 °C acclimated) & As above & 10.1242/jeb.179598 & high (full text) \\
+t\_anoxic\_SD\_onset\_species\_range & 10.5 -- 19.8 & s & Drosophila spp. & Time to anoxic SD at room temperature & 10.1242/jeb.179598 & high (full text) \\
+N2\_pulse\_threshold\_for\_K\_surge & between 5 and 90 (exact value not extracted) & s & D. melanogaster & N2 pulse duration stepped 5 s→90 s revealed a threshold for the {[}K+{]}o surge & 10.1371/journal.pone.0028994 & UNVERIFIED exact value (figure only) \\
+t\_paralysis\_anoxia\_adult & \textless30 & s & D. melanogaster adult & Behavioural paralysis after onset of anoxia & 10.1242/jeb.177147 & high (abstract) \\
+t\_loss\_of\_coordination\_anoxia & 60 -- 120 & s & D. melanogaster & Loss of coordination/falling in N2 & 10.1016/S0022-1910(96)00084-4 & high (abstract) \\
+anoxia\_duration\_with\_full\_recovery & up to 240 & min & D. melanogaster & Flies tolerated N2 up to 4 h and recovered; nonlinear duration--recovery relation & 10.1016/S0022-1910(96)00084-4 & high (abstract) \\
+recovery\_time\_after\_\textless2h\_anoxia & \textless=15 & min & D. melanogaster & First movement after reoxygenation (Krishnan 1997 as cited in Campbell 2018) & 10.1242/jeb.177147 & medium (secondary citation) \\
+recovery\_time\_after\_4h\_anoxia & \textasciitilde60 & min & D. melanogaster & Mobility recovery time (Krishnan 1997 as cited in Campbell 2018) & 10.1242/jeb.177147 & medium (secondary citation) \\
+LT50\_anoxia\_adult & 8.3 & h & D. melanogaster adult & Anoxia survival, 50\% lethal time & 10.1242/jeb.125849 & high (abstract) \\
+LT50\_anoxia\_larva & \textasciitilde1 & h & D. melanogaster L3 & Anoxia survival & 10.1242/jeb.125849 & high (abstract) \\
+survival\_2h\_anoxia\_adult & 100 & \% & D. melanogaster adult & Despite ATP 3\% of normal & 10.1242/jeb.177147 & high (abstract) \\
+ATP\_fraction\_15min\_anoxia & 0.35 & fraction of normoxic & D. melanogaster adult & Whole-body ATP (not brain-specific) & 10.1242/jeb.177147 & high (full text) \\
+ATP\_fraction\_30min\_anoxia & \textasciitilde0.03 & fraction of normoxic & D. melanogaster adult & Whole-body ATP; then stable to \textasciitilde8 h, further drop beyond & 10.1242/jeb.177147 & high (full text) \\
+tau\_ATP\_depletion\_anoxia & \textasciitilde14 & min & D. melanogaster adult & DERIVED: single-exponential fit to 1.0→0.35 in 15 min (tau=15/ln(1/0.35)); decline is faster than single exponential by 30 min & 10.1242/jeb.177147 & derived (assumption-dependent) \\
+metabolic\_rate\_in\_anoxia & \textasciitilde3 & \% of normoxic & D. melanogaster adult and larva & Metabolic suppression when immobile in anoxia & 10.1242/jeb.125849 & high (abstract) \\
+O2\_consumption\_low\_O2 & \textasciitilde20 & \% of control & D. melanogaster & O2 consumption in low-O2 atmospheres & 10.1016/S0022-1910(96)00084-4 & high (abstract) \\
+T\_cold\_SD\_warm\_acclimated & 5.3 ± 0.5 & °C & D. melanogaster (25 °C acclimated) & Temperature of cold-induced SD, 1 °C/min ramp & 10.1242/jeb.179598 & high (full text) \\
+T\_cold\_SD\_cold\_acclimated & 2.4 ± 0.4 & °C & D. melanogaster (15 °C acclimated) & As above & 10.1242/jeb.179598 & high (full text) \\
+T\_heat\_coma\_species\_range & 38.69 -- 45.11 & °C & Drosophila spp. (immigrans \ldots{} mojavensis) & Heat coma (Tcoma) under 0.25 °C/min ramp; coincides with CNS SD & 10.1242/jeb.218750 & high (full text, bioRxiv version) \\
+T\_heat\_SD\_D\_melanogaster & not extracted & °C & D. melanogaster & Species-specific heat-SD temperature reported in figures/tables only & 10.1242/jeb.218750 & UNVERIFIED \\
+static\_heat\_SD\_assay\_temperature & 38 & °C & Drosophila spp. & Constant-temperature exposure producing SD and heat coma within 1 h & 10.1242/jeb.218750 & high (full text) \\
+SD\_propagation\_velocity\_RT & 2.5 ± 0.3 & mm/min & D. melanogaster (warm acclimated) & KCl-induced SD, two-electrode measurement & 10.1152/ajpregu.00040.2025 & high (full text) \\
+Q10\_SD\_propagation\_velocity & 2.98 (warm acclimated); 2.13 (cold acclimated) & dimensionless & D. melanogaster & Temperature sensitivity of SD propagation & 10.1152/ajpregu.00040.2025 & high (full text) \\
+Q10\_SD\_onset\_slope & \textasciitilde1.6 & dimensionless & D. melanogaster & Temperature sensitivity of SD onset slope & 10.1152/ajpregu.00040.2025 & high (full text) \\
+Q10\_metabolic\_rate\_general & \textasciitilde2.2 -- 2.4 (at 15--35 °C) & dimensionless & general (ectotherms) & DERIVED from Boltzmann factor with assumed E=0.65 eV; E value not read from the retrieved abstract & 10.1126/science.1061967 & UNVERIFIED (derived) \\
+K\_o\_baseline\_drift\_repetitive\_anoxia\_17C & -1.1 ± 1.3 & mM (cumulative Δ) & D. melanogaster w1118 males & Total baseline variation during repetitive anoxia at 17 °C & 10.1242/jeb.074468 & high (abstract) \\
+K\_o\_baseline\_drift\_repetitive\_anoxia\_23C & 17.3 ± 1.4 & mM (cumulative Δ) & D. melanogaster w1118 males & As above, 23 °C & 10.1242/jeb.074468 & high (abstract) \\
+K\_o\_baseline\_drift\_repetitive\_anoxia\_29C & 332.7 ± 83.0 & mM (cumulative Δ) & D. melanogaster w1118 males & As above, 29 °C (cumulative sum, not a concentration) & 10.1242/jeb.074468 & high (abstract) \\
+energy\_share\_action\_potentials & 47 & \% of signalling energy & rodent grey matter & Attwell--Laughlin budget & 10.1097/00004647-200110000-00001 & high (abstract) \\
+energy\_share\_postsynaptic & 34 & \% of signalling energy & rodent grey matter & Attwell--Laughlin budget & 10.1097/00004647-200110000-00001 & high (abstract) \\
+energy\_share\_resting\_potential & 13 & \% of signalling energy & rodent grey matter & Attwell--Laughlin budget & 10.1097/00004647-200110000-00001 & high (abstract) \\
+energy\_share\_cortex\_updated & postsyn 50 / AP 21 / rest 20 / release 5 / recycling 4 & \% of signalling energy & rodent cortex & Updated budget with efficient APs & 10.1038/jcbfm.2012.35 & high (abstract) \\
+max\_fraction\_simultaneously\_active & \textless=15 & \% of neurons & rodent cortex (theory) & Energy-limited distributed coding prediction & 10.1097/00004647-200110000-00001 & high (abstract) \\
+AP\_energy\_variation\_between\_neuron\_types & \textgreater10 & fold & vertebrate and invertebrate models & Depends on Na+/K+ current overlap & 10.1371/journal.pcbi.1000840 & high (abstract) \\
+t\_anoxic\_depolarization\_mammal & 2 -- 5 & min after severe ischaemia onset & mammals (experimental) & Onset of potentially reversible anoxic depolarisation; injury begins with it & 10.1002/ana.25147 & high (abstract) \\
+t\_terminal\_SD\_human & 3.9 (IQR 2.6--6.3) & min after final perfusion drop & human (dying patients) & Terminal SD after withdrawal of life support & 10.1002/ana.25147 & high (abstract) \\
+ptiO2\_nonspreading\_depression\_human & 11 (IQR 7--14) & mmHg & human & Tissue pO2 at onset of electrical silencing & 10.1002/ana.25147 & high (abstract) \\
+CBF\_threshold\_protein\_synthesis & 0.55 & ml/g/min & mammal & Ischaemic flow threshold hierarchy & 10.1002/ana.410360404 & high (abstract) \\
+CBF\_threshold\_anaerobic\_glycolysis & 0.35 & ml/g/min & mammal & As above & 10.1002/ana.410360404 & high (abstract) \\
+CBF\_threshold\_energy\_failure & \textasciitilde0.20 & ml/g/min & mammal & Transmitter release and energy disturbance begin & 10.1002/ana.410360404 & high (abstract) \\
+CBF\_threshold\_anoxic\_depolarization & \textless0.15 & ml/g/min & mammal & Anoxic depolarisation & 10.1002/ana.410360404 & high (abstract) \\
+K\_o\_peak\_anoxic\_depolarization\_mammal & \textasciitilde60 (commonly cited) & mM & mammal & Not read in retrieved text (Hansen 1985 closed access) & 10.1152/physrev.1985.65.1.101 & UNVERIFIED \\
+window\_irreversible\_injury\_mammal\_normothermic & \textasciitilde5 (classical rule) & min & mammal & Classical estimate; not verified in retrieved text and contested by Hossmann 1973 and BrainEx & 10.1001/archneur.1973.00490300037004 & UNVERIFIED \\
+glycolytic\_flux\_increase\_ischaemia & 4 -- 7 & fold & mouse brain & After decapitation ischaemia & 10.1016/S0021-9258(18)51740-3 & high (abstract via record) \\
+neuron\_loss\_rate\_stroke & 1.9e6 & neurons/min & human & Untreated large-vessel ischaemic stroke & 10.1161/01.STR.0000196957.55928.ab & high (abstract) \\
+stroke\_evolution\_duration & 10 (6--18) & h & human & Onset to infarct completion & 10.1161/01.STR.0000196957.55928.ab & high (abstract) \\
+therapeutic\_hypothermia\_target & 32 -- 34 for 24 h & °C & human & After VF cardiac arrest & 10.1056/NEJMoa012689 & high (abstract) \\
+hypothermia\_favourable\_outcome & 55 vs 39 (RR 1.40, 95\% CI 1.08--1.81) & \% patients & human & Hypothermia vs normothermia, 6-month neurological outcome & 10.1056/NEJMoa012689 & high (abstract) \\
+postconditioning\_effective\_schedule & 3 cycles 30 s reperfusion/10 s occlusion; 10 cycles 10 s/10 s & s & rat (focal ischaemia) & Reduced infarct; gradual reperfusion also protective & 10.1002/jnr.21703 & high (abstract) \\
+postconditioning\_onset\_deadline & \textless3 & min after reperfusion & rat & Protection lost when started 3 min after reperfusion & 10.1002/jnr.21703 & high (abstract) \\
+postconditioning\_late\_window & up to 6 & h after focal ischaemia & rodent (review) & Reported delayed postconditioning protection & 10.1038/jcbfm.2009.13 & medium (review abstract) \\
+BrainEx\_postmortem\_interval & 4 & h & pig (isolated brain) & Warm post-mortem interval before ex vivo perfusion & 10.1038/s41586-019-1099-1 & high (full text) \\
+BrainEx\_perfusion\_duration & 6 & h & pig & Normothermic perfusion; cellular/synaptic activity restored, no global ECoG & 10.1038/s41586-019-1099-1 & high (full text) \\
+OrganEx\_warm\_ischaemia & 1 & h & pig (whole body) & Warm ischaemia before OrganEx perfusion & 10.1038/s41586-022-05016-1 & high (abstract) \\
+LIF\_V\_rest & -52 & mV & D. melanogaster model & Shiu et al.~whole-brain LIF & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_V\_reset & -52 & mV & D. melanogaster model & As above & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_V\_threshold & -45 & mV & D. melanogaster model & As above & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_R\_membrane & 10 & kOhm cm2 & D. melanogaster model & As above & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_C\_membrane & 2 & uF/cm2 & D. melanogaster model & As above & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_tau\_membrane & 20 & ms & D. melanogaster model & DERIVED: Cm x Rm = 2 uF/cm2 x 10 kOhm cm2 & 10.1038/s41586-024-07763-9 & high (derived from full-text values) \\
+LIF\_tau\_synapse & 5 & ms & D. melanogaster model & Synaptic conductance decay & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_delay & 1.8 & ms & D. melanogaster model & Spike-to-PSP delay & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_refractory & 2.2 & ms & D. melanogaster model & As above & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_W\_syn & 0.275 & mV per synapse & D. melanogaster model & Single free parameter & 10.1038/s41586-024-07763-9 & high (full text) \\
+LIF\_protocol & 30 trials x 1000 ms; Poisson input to sensory neurons (e.g.~10--200 Hz sugar GRNs); baseline firing 0 Hz & --- & D. melanogaster model & Brian2 implementation & 10.1038/s41586-024-07763-9 & high (full text) \\
+FAFB\_neurons & 139255 & neurons & D. melanogaster female brain & FlyWire; \textasciitilde5e7 chemical synapses & 10.1038/s41586-024-07558-y & high (abstract) \\
+MCNS\_neurons & 166700 & neurons & D. melanogaster male CNS & 11,710 neuron types & 10.1016/j.cell.2026.08.015 & high (abstract) \\
+NaK\_pump\_share\_total\_brain\_ATP & \textasciitilde50 (commonly cited); abstract states only that the great majority of energy goes to signalling, particularly Na+ transport & \% of brain ATP & mammal & Exact share not stated in the retrieved abstract & 10.1016/S0165-0173(00)00038-2 & UNVERIFIED (numeric); qualitative claim verified \\
+hypothermia\_Bernard\_protocol & 33 for 12 h & °C & human & Induced within 2 h of ROSC after out-of-hospital cardiac arrest & 10.1056/NEJMoa003289 & high (abstract) \\
+hypothermia\_Bernard\_good\_outcome & 49 vs 26 (adj. OR 5.25, 95\% CI 1.47--18.76) & \% patients & human & Good outcome at discharge, hypothermia vs normothermia & 10.1056/NEJMoa003289 & high (abstract) \\
+BD\_apnoea\_test\_targets & pH \textless{} 7.30 and PaCO2 \textgreater= 60 & pH / mmHg & human & No spontaneous respiration at these targets (BD/DNC criterion) & 10.1001/jama.2020.11586 & high (abstract) \\
+penumbra\_survival\_time & a few & h & rat (focal ischaemia) & Penumbra disappears into core over a few hours & 10.1002/ana.410360404 & medium (qualitative, abstract) \\
+\end{longtable}
+}
+
+\subsection{S4. Structural percolation (all four connectomes)}\label{s4.-structural-percolation-all-four-connectomes}
+
+\subsubsection{Table S4a. Data and pairing QC}\label{table-s4a.-data-and-pairing-qc}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 22\tabcolsep) * \real{0.0833}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+dataset
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+neurons
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+conn. ids found in annotation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+annotated ids present in conn.
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+pair-level synapse floor in file
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+pairs (all)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+pairs ≥5
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+sources (sensory)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+sinks
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+of which DN / MN
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+removable interneurons
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+modality groups
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFB & 139255 & 100.00\% & 99.52\% & ≥5 & 3732460 & 3732460 & 17550 & 1415 & 1305 / 110 & 120290 & 22 \\
+BANC & 158262 & 100.00\% & 97.28\% & ≥3 & 3037361 & 1528585 & 17086 & 2347 & 1316 / 1031 & 138356 & 50 \\
+MCNS & 166700 & 100.00\% & 99.48\% & ≥5 & 6242118 & 6242118 & 17937 & 2241 & 1320 / 921 & 146522 & 41 \\
+MANC & 23665 & 100.00\% & 99.90\% & ≥1 & 5305638 & 1372588 & 6460 & 838 & 0 / 838 & 16352 & 21 \\
+\end{longtable}
+}
+
+\subsubsection{Table S4b. Baseline reachability (intact, strict)}\label{table-s4b.-baseline-reachability-intact-strict}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+dataset
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N L4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N L6
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N ∞
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_G L6
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_G,loose L6
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+hops to converge
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFB & 0.4132 & 0.8687 & 0.8890 & 0.9808 & 0.9866 & 12 \\
+BANC & 0.3940 & 0.7291 & 0.7869 & 0.9417 & 0.9587 & 18 \\
+MCNS & 0.6360 & 0.9019 & 0.9394 & 0.9938 & 0.9960 & 10 \\
+MANC & 0.9733 & 0.9754 & 0.9754 & 0.9988 & 0.9988 & 10 \\
+\end{longtable}
+}
+
+\subsubsection{Table S4c. Damage curves, primary metric Reach\_N(L≤6)}\label{table-s4c.-damage-curves-primary-metric-reach_nl6}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 20\tabcolsep) * \real{0.0909}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+dataset
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+regime
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+orders
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+f\_c
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+w (10--90\%)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+ΔAIC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+best alternative
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+H1 category (prereg)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+D50
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+f\_c ratio vs random {[}95\% CI{]}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+D50 ratio vs random {[}95\% CI{]}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFB & random & 13 & 0.800 & 0.671 & -830.1 & linear & falsified & 0.759 & --- & --- \\
+FAFB & metabolic\_area & 10 & 0.277 & 0.421 & -436.2 & exponential & falsified & 0.288 & 0.346 {[}0.337, 0.356{]} & 0.380 {[}0.371, 0.388{]} \\
+FAFB & metabolic\_syn & 5 & 0.228 & 0.419 & -253.5 & exponential & falsified & 0.245 & 0.285 {[}0.278, 0.291{]} & 0.323 {[}0.316, 0.330{]} \\
+FAFB & degree\_finegrid & 2 & 0.033 & 0.231 & -35.7 & exponential & indeterminate (graded transition) & 0.073 & 0.041 {[}0.041, 0.041{]} & 0.097 {[}0.096, 0.098{]} \\
+FAFB & degree & 3 & 0.035 & 0.246 & -40.2 & exponential & indeterminate (graded transition) & 0.075 & 0.044 {[}0.044, 0.044{]} & 0.099 {[}0.098, 0.100{]} \\
+FAFB & degree\_matched\_random & 3 & 0.035 & 0.246 & -43.8 & exponential & indeterminate (graded transition) & 0.075 & 0.044 {[}0.044, 0.045{]} & 0.099 {[}0.098, 0.101{]} \\
+FAFB & focal & 5 & 0.683 & 1.702 & 3.8 & linear & falsified & 0.690 & 0.854 {[}0.227, 1.008{]} & 0.910 {[}0.662, 1.048{]} \\
+BANC & random & 15 & 0.750 & 0.734 & -829.9 & linear & falsified & 0.706 & --- & --- \\
+BANC & metabolic\_syn & 8 & 0.107 & 0.232 & -269.3 & exponential & indeterminate (graded transition) & 0.120 & 0.143 {[}0.135, 0.150{]} & 0.170 {[}0.165, 0.176{]} \\
+BANC & degree\_finegrid & 2 & 0.017 & 0.086 & -84.7 & exponential & supported (structural criteria) & 0.028 & 0.022 {[}0.022, 0.023{]} & 0.040 {[}0.040, 0.041{]} \\
+BANC & degree & 3 & 0.017 & 0.083 & -147.0 & exponential & supported (structural criteria) & 0.030 & 0.023 {[}0.022, 0.024{]} & 0.042 {[}0.041, 0.043{]} \\
+BANC & degree\_matched\_random & 2 & 0.019 & 0.081 & -120.4 & exponential & supported (structural criteria) & 0.031 & 0.025 {[}0.024, 0.025{]} & 0.043 {[}0.043, 0.044{]} \\
+BANC & focal & 4 & 0.031 & 0.337 & 2.3 & exponential & falsified & 0.283 & 0.041 {[}0.038, 0.913{]} & 0.401 {[}0.134, 0.912{]} \\
+MCNS & random & 6 & 0.951 (extrapolated) & 0.744 & -184.4 & linear & falsified & 0.869 & --- & --- \\
+MCNS & metabolic\_syn & 6 & 0.304 & 0.440 & -242.4 & exponential & falsified & 0.316 & 0.319 {[}0.309, 0.329{]} & 0.364 {[}0.358, 0.368{]} \\
+MCNS & degree\_finegrid & 2 & 0.058 & 0.378 & -2.0 & exponential & falsified & 0.115 & 0.061 {[}0.059, 0.062{]} & 0.133 {[}0.131, 0.134{]} \\
+MCNS & degree & 2 & 0.076 & 0.306 & -40.1 & exponential & falsified & 0.115 & 0.080 {[}0.077, 0.083{]} & 0.132 {[}0.131, 0.134{]} \\
+MCNS & degree\_matched\_random & 2 & 0.072 & 0.327 & -41.1 & exponential & falsified & 0.118 & 0.076 {[}0.074, 0.078{]} & 0.135 {[}0.134, 0.136{]} \\
+MCNS & focal & 3 & 0.028 & 0.521 & 2.6 & exponential & falsified & 0.368 & 0.029 {[}0.029, 0.997{]} & 0.423 {[}0.137, 0.990{]} \\
+MANC & random & 20 & 1.027 (extrapolated) & 0.393 & -1045.2 & linear & falsified & \textgreater0.9 & --- & --- \\
+MANC & metabolic\_syn & 20 & 0.677 & 0.315 & -1805.5 & linear & falsified & 0.673 & 0.660 {[}0.644, 0.672{]} & \textless{} 0.748 (random never fell to 50\%) \\
+MANC & degree\_finegrid & 2 & 0.421 (extrapolated beyond fine-grid max f = 0.3) & 0.467 & -142.4 & linear & falsified & \textgreater0.3 & 0.410 {[}0.402, 0.418{]} & n/a (both censored) \\
+MANC & degree & 5 & 0.388 & 0.412 & -572.5 & exponential & falsified & 0.384 & 0.377 {[}0.369, 0.384{]} & \textless{} 0.426 (random never fell to 50\%) \\
+MANC & degree\_matched\_random & 5 & 0.394 & 0.421 & -632.1 & linear & falsified & 0.396 & 0.384 {[}0.375, 0.391{]} & \textless{} 0.440 (random never fell to 50\%) \\
+MANC & focal & 10 & 0.847 & 0.660 & -86.9 & linear & falsified & 0.727 & 0.825 {[}0.758, 0.917{]} & \textless{} 0.808 (random never fell to 50\%) \\
+\end{longtable}
+}
+
+\subsubsection{Table S4d. D50 (f at 50\% of baseline) per structural metric}\label{table-s4d.-d50-f-at-50-of-baseline-per-structural-metric}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 16\tabcolsep) * \real{0.1111}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+dataset
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+regime
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+weighted influence
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+GSCC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N L4
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N L6
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_N ∞
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+redundancy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reach\_G L6
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFB & random & 0.497 & 0.506 & 0.626 & 0.759 & 0.853 & 0.858 & \textgreater0.9 \\
+FAFB & metabolic\_syn & 0.162 & 0.414 & 0.133 & 0.245 & 0.437 & 0.302 & 0.436 \\
+FAFB & metabolic\_area & 0.188 & 0.433 & 0.167 & 0.288 & 0.468 & 0.347 & 0.450 \\
+FAFB & degree\_finegrid & 0.086 & \textgreater0.3 & 0.031 & 0.073 & 0.266 & 0.118 & 0.195 \\
+BANC & random & 0.295 & 0.417 & 0.554 & 0.706 & 0.825 & 0.804 & 0.862 \\
+BANC & metabolic\_syn & 0.065 & 0.183 & 0.071 & 0.120 & 0.218 & 0.173 & 0.230 \\
+BANC & degree\_finegrid & 0.031 & 0.108 & 0.014 & 0.028 & 0.065 & 0.055 & 0.074 \\
+MCNS & random & 0.327 & 0.528 & 0.806 & 0.869 (1 cens.) & \textgreater0.9 & 0.896 (1 cens.) & \textgreater0.9 \\
+MCNS & metabolic\_syn & 0.091 & 0.462 & 0.204 & 0.316 & 0.503 & 0.357 & 0.490 \\
+MCNS & degree\_finegrid & 0.057 & \textgreater0.3 & 0.056 & 0.115 & 0.275 & 0.175 & 0.237 \\
+MANC & random & 0.240 & 0.656 & 0.884 (1 cens.) & \textgreater0.9 & \textgreater0.9 & \textgreater0.9 & \textgreater0.9 \\
+MANC & metabolic\_syn & 0.133 & 0.584 & 0.516 & 0.673 & 0.759 & 0.634 & 0.824 \\
+MANC & degree\_finegrid & 0.091 & \textgreater0.3 & 0.223 & \textgreater0.3 & \textgreater0.3 & \textgreater0.3 & \textgreater0.3 \\
+\end{longtable}
+}
+
+\textbf{Controls.} Degree-preserving rewired null: FAFB random f\_c 0.893 (real 0.800), hub-targeted 0.266 (real 0.035); MANC random 1.107 (extrapolated; real 1.027), hub-targeted 0.613 (real 0.388). Edge cut-off ≥10: FAFB random f\_c 0.607, w 0.960; hub-targeted f\_c 0.013, w 0.087, ΔAIC 0.2 (falsified). MANC ≥1: random f\_c 0.787, w 0.124 (indeterminate); hub-targeted f\_c 0.770. The H1 category for the hub-targeted regime (FAFB) and the random regime (MANC) is therefore not robust to the edge cut-off. Negative control (off-path neurons removed): Δ = 0 for every metric in every dataset (off-path fractions FAFB 2.1\%, BANC 27.0\%, MCNS 2.4\%, MANC 3.2\%).
+
+\textbf{Keystones.} Max relative ΔReach\_N(L6) for single-type removal: FAFB 0.88\% (CB1231; 154 types evaluated), BANC 1.03\% (IN13B010; 218), MCNS 0.86\% (AN04A001; 194), MANC 0.00\% (161). Top-50 membership overlap did not exceed chance once the universe was restricted to types evaluated in both datasets (p = 0.129--0.634). Graded importance replicated (Spearman ρ of influence loss: FAFB--BANC 0.730, FAFB--MCNS 0.710, BANC--MCNS 0.911, BANC--MANC 0.652, MCNS--MANC 0.776).
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure S1. (a) FAFB random loss, all structural metrics; (b, c) degree-preserving null and edge cut-off controls for FAFB and MANC.}]{figures/FigS1_structure_metrics_controls.png}
+\caption{\textbf{Figure S1.} (a) FAFB random loss, all structural metrics; (b, c) degree-preserving null and edge cut-off controls for FAFB and MANC.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure S2. (a) Relative reach lost when all neurons of one cell type are removed (each dot a type; bar = median); (b--d) cross-dataset agreement of relative weighted-influence loss for shared types (Spearman ρ).}]{figures/FigS2_keystone_types.png}
+\caption{\textbf{Figure S2.} (a) Relative reach lost when all neurons of one cell type are removed (each dot a type; bar = median); (b--d) cross-dataset agreement of relative weighted-influence loss for shared types (Spearman ρ).}
+\end{figure}
+
+\subsection{S5. Dynamics: brain-death map, protocols, tolerance, neuroprotection}\label{s5.-dynamics-brain-death-map-protocols-tolerance-neuroprotection}
+
+\subsubsection{Table S5a. Recoverability boundary (20-s block reset)}\label{table-s5a.-recoverability-boundary-20-s-block-reset}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+T (°C)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SD onset (s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+D\_max (model s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead at 240 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+outcome at 480 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+brain death from
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+17 & 15.0 & 359 {[}342, 381{]} & 0.5 \% & structural loss (16.8 \% dead, FII\_norm 0.68) & not reached (960 s: 98.7 \% dead, survivors in runaway) \\
+22 & 12.5 & 271 {[}261, 278{]} & 3.8 \% & structural loss (66 \% dead) & 960 s (100 \% dead) \\
+29 & 8.5 & 149 {[}145, 153{]} & 40 \% & brain death (99.7 \% dead) & 480 s \\
+33 & 6.5 & 124 {[}112, 129{]} & 81 \% & brain death & 480 s \\
+\end{longtable}
+}
+
+\subsubsection{Table S5b. All 32 reperfusion protocols, ranked by mean FII\_norm (30/180/360 s anoxia, 5 seeds)}\label{table-s5b.-all-32-reperfusion-protocols-ranked-by-mean-fii_norm-30180360-s-anoxia-5-seeds}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 12\tabcolsep) * \real{0.1429}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+rank
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+protocol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+30 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+180 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+360 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead @360 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+outcome 30/180/360
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & revive\_reset & 1.001 & 1.001 & 1.001 & 0.000 & recovered/recovered/recovered \\
+2 & clr3\_reset & 1.001 & 0.963 & 0.588 & 0.244 & recovered/recovered/structural\_loss \\
+3 & noise\_reset & 1.001 & 0.960 & 0.585 & 0.236 & recovered/recovered/structural\_loss \\
+4 & adapt\_reset & 1.001 & 0.959 & 0.577 & 0.248 & recovered/recovered/structural\_loss \\
+5 & block20\_del5 & 1.001 & 0.959 & 0.577 & 0.248 & recovered/recovered/structural\_loss \\
+6 & staged\_fwd & 1.001 & 0.959 & 0.577 & 0.248 & recovered/recovered/structural\_loss \\
+7 & block40 & 1.001 & 0.959 & 0.577 & 0.248 & recovered/recovered/structural\_loss \\
+8 & block20 & 1.001 & 0.953 & 0.578 & 0.248 & recovered/recovered/structural\_loss \\
+9 & staged\_rev & 1.001 & 0.953 & 0.578 & 0.248 & recovered/recovered/structural\_loss \\
+10 & sdblock\_reset & 1.001 & 0.953 & 0.577 & 0.248 & recovered/recovered/structural\_loss \\
+11 & block20\_del20 & 1.001 & 0.957 & 0.566 & 0.250 & recovered/recovered/structural\_loss \\
+12 & block10 & 1.001 & 0.959 & 0.428 & 0.248 & recovered/recovered/runaway \\
+13 & adapt & 0.734 & 0.731 & 0.548 & 0.248 & runaway/runaway/runaway \\
+14 & voff-10 & 0.155 & 0.361 & 0.464 & 0.246 & runaway/runaway/runaway \\
+15 & voff-20 & 0.137 & 0.320 & 0.435 & 0.243 & runaway/runaway/runaway \\
+16 & sdblock & 0.409 & 0.010 & 0.319 & 0.252 & runaway/runaway/runaway \\
+17 & clr3 & 0.718 & -0.170 & 0.020 & 0.244 & runaway/runaway/runaway \\
+18 & ramp10 & 0.402 & 0.161 & -0.157 & 0.267 & runaway/runaway/runaway \\
+19 & gaba4 & 0.183 & 0.349 & -0.173 & 0.239 & runaway/runaway/runaway \\
+20 & noise & 0.260 & 0.015 & 0.008 & 0.240 & runaway/runaway/runaway \\
+21 & naive & -0.058 & 0.084 & 0.085 & 0.252 & runaway/runaway/runaway \\
+22 & gaba2 & 0.191 & 0.100 & -0.195 & 0.239 & runaway/runaway/runaway \\
+23 & block5 & -0.060 & 0.097 & 0.018 & 0.252 & runaway/runaway/runaway \\
+24 & block2 & -0.088 & 0.098 & 0.010 & 0.252 & runaway/runaway/runaway \\
+25 & naive\_noinj & -0.079 & -0.078 & 0.105 & 0.250 & runaway/runaway/runaway \\
+26 & pulsed6x5 & -0.104 & -0.032 & -0.123 & 0.281 & runaway/runaway/runaway \\
+27 & pulsed3x10 & -0.057 & -0.093 & -0.136 & 0.273 & runaway/runaway/runaway \\
+28 & ramp60 & -0.104 & -0.065 & -0.212 & 0.318 & runaway/runaway/runaway \\
+29 & ramp30\_noinj & -0.305 & 0.064 & -0.175 & 0.281 & runaway/runaway/runaway \\
+30 & ramp30 & -0.301 & 0.063 & -0.246 & 0.292 & runaway/runaway/runaway \\
+31 & cool12 & -0.161 & -0.127 & -0.227 & 0.260 & runaway/runaway/runaway \\
+32 & cool17 & -0.229 & -0.305 & -0.161 & 0.256 & runaway/runaway/runaway \\
+\end{longtable}
+}
+
+Protocol key: \texttt{naive} = abrupt step to S = 1; \texttt{blockN} = total spike + synaptic block for N s from reperfusion; \texttt{block20\_delN} = block starting N s after reperfusion; \texttt{rampN} = linear supply ramp over N s; \texttt{pulsedAxB} = A cycles of B-s reperfusion; \texttt{voff-N} = −N mV offset; \texttt{gabaN} = N× GABAergic gain; \texttt{sdblock} = k\_rel × 0.2; \texttt{clr3} = 3× clearance; \texttt{noise} = low-level background Poisson; \texttt{adapt} = spike-frequency adaptation k\_adapt 0.2; \texttt{coolN} = cooling to N °C during reperfusion; \texttt{staged\_fwd/rev} = staged release sensory → central → descending (or reverse), 10 s per stage after a 20-s block; \texttt{revive\_reset} = counterfactual revival of dead neurons + reset; \texttt{\_noinj} = injury off; \texttt{\_reset} suffix = followed by 20-s block.
+
+\subsubsection{Table S5c. Tolerance and preconditioning (arm D; reset protocol)}\label{table-s5c.-tolerance-and-preconditioning-arm-d-reset-protocol}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+SD onset (s)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead 180 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm 180 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead 360 s
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm 360 s
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+hypomet0.2 & 33.0 & 0.001 & 0.995 & 0.088 & 0.704 {[}0.573, 0.784{]} \\
+hypomet0.5 & 19.5 & 0.005 & 0.983 & 0.198 & 0.631 {[}0.576, 0.662{]} \\
+hypomet0.8 & 14.5 & 0.008 & 0.970 & 0.235 & 0.568 {[}0.452, 0.657{]} \\
+precool12 & 17.0 & 0.000 & 1.001 & 0.006 & 0.977 {[}0.966, 0.997{]} \\
+precool17 & 15.0 & 0.001 & 0.985 & 0.041 & 0.908 {[}0.890, 0.938{]} \\
+precond15 & 12.5 & 0.009 & 0.961 & 0.249 & 0.591 {[}0.442, 0.681{]} \\
+arrest0.05 & 12.5 & 0.001 & 0.983 & 0.059 & 0.711 {[}0.608, 0.785{]} \\
+unprotected (C block20) & 12.5 & 0.009 & 0.953 & 0.248 & 0.578 \\
+\end{longtable}
+}
+
+\subsubsection{Table S5d. Targeted (hub) neuroprotection (arm H; 360-s anoxia)}\label{table-s5d.-targeted-hub-neuroprotection-arm-h-360-s-anoxia}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+protected set
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+n neurons
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm (reset)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII gain per 1,000 protected
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm (naive)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+top-degree 1\% & 1393 & 0.703 {[}0.668, 0.743{]} & 0.245 & 0.090 & -0.218 \\
+random 1\% & 1393 & 0.568 {[}0.530, 0.591{]} & 0.246 & -0.007 & 0.236 \\
+top-degree 2\% & 2785 & 0.744 {[}0.714, 0.791{]} & 0.243 & 0.059 & -0.254 \\
+random 2\% & 2785 & 0.590 {[}0.559, 0.617{]} & 0.243 & 0.004 & 0.172 \\
+top-degree 5\% & 6963 & 0.847 {[}0.789, 0.905{]} & 0.235 & 0.039 & -0.253 \\
+random 5\% & 6963 & 0.574 {[}0.531, 0.596{]} & 0.236 & -0.001 & 0.117 \\
+top-degree 10\% & 13926 & 0.906 {[}0.845, 0.944{]} & 0.222 & 0.024 & 0.342 \\
+random 10\% & 13926 & 0.588 {[}0.563, 0.637{]} & 0.224 & 0.001 & -0.118 \\
+whole brain & 139255 & 1.001 {[}1.001, 1.001{]} & 0.000 & 0.0030 & -0.041 \\
+none (C block20 / naive) & 0 & 0.578 & 0.248 & -- & 0.085 \\
+\end{longtable}
+}
+
+\subsection{S6. Mechanism follow-up}\label{s6.-mechanism-follow-up}
+
+\subsubsection{Table S6a. Latin-hypercube ranges (48 sets + calibrated set)}\label{table-s6a.-latin-hypercube-ranges-48-sets-calibrated-set}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+parameter & range \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+w\_syn & 0.15--0.25 \\
+τ\_ATP & 15--60 s, log scale \\
+J50 & 300--1,200 s, log scale \\
+g\_K & 0.3--0.9 \\
+k\_rel & 20--120, log scale \\
+k\_clr & 0.5--2, log scale \\
+reserve & 2--8, log scale \\
+demand β & 0.25--1 \\
+K\_max & 50--100 mM \\
+glutamate & inhibitory or excitatory \\
+\end{longtable}
+}
+
+\subsubsection{Table S6b. Runaway and rescue across parameter sets}\label{table-s6b.-runaway-and-rescue-across-parameter-sets}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+anoxia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+protocol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+sets with runaway (majority of seeds)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+sets rescued (FII\_norm ≥ 0.8)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+mean FII\_norm {[}95 \% CI{]}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+30 s & abrupt & \textbf{48/48 = 1.00 {[}1.00, 1.00{]}} & 4/48 = 0.08 {[}0.02, 0.17{]} & 0.24 {[}0.14, 0.34{]} \\
+30 s & abrupt + 20-s block & 0/48 & \textbf{48/48 = 1.00 {[}1.00, 1.00{]}} & 1.001 {[}1.000, 1.001{]} \\
+180 s & abrupt & \textbf{48/48 = 1.00 {[}1.00, 1.00{]}} & 2/48 = 0.04 {[}0.00, 0.10{]} & 0.17 {[}0.08, 0.27{]} \\
+180 s & abrupt + 20-s block & 11/48 = 0.23 {[}0.13, 0.35{]} & \textbf{34/48 = 0.71 {[}0.58, 0.83{]}} & 0.75 {[}0.63, 0.85{]} \\
+\end{longtable}
+}
+
+\subsubsection{Table S6c. Excitotoxic term calibration (180-s anoxia)}\label{table-s6c.-excitotoxic-term-calibration-180-s-anoxia}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+k\_exc & dead, abrupt & dead, + block \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 & 0.9 \% & 0.9 \% \\
+0.3 & 0.9 \% & 0.9 \% \\
+1 & 1.1 \% & 0.9 \% \\
+3 & 3.5 \% & 0.9 \% \\
+10 & 39.5 \% & 1.0 \% \\
+\end{longtable}
+}
+
+\subsubsection{Table S6d. Driver-set connectivity}\label{table-s6d.-driver-set-connectivity}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+set (same size)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+in largest SCC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+excitatory edges per node
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+sustain drivers & 96 \% & 31 \\
+top-degree hubs & 40 \% & 9.4 \\
+random & 0.4 \% & 0.1 \\
+\end{longtable}
+}
+
+\subsubsection{Table S6e. Targeted 20-s block on held-out seeds}\label{table-s6e.-targeted-20-s-block-on-held-out-seeds}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1667}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+anoxia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+sustain drivers
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+earliest igniters
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+top-degree hubs
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+random
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+whole brain
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+30 s: smallest rescuing set & \textbf{0.5 \% (696 neurons), 5/5 seeds, FII\_norm 0.947 {[}0.943, 0.951{]}} & \textbf{0.5 \%, 5/5, 0.945} & 2 \% (2,785), 5/5 & none up to 20 \% (best 0.33) & 1.000 \\
+180 s: smallest rescuing set & \textbf{20 \% (27,851), 5/5, 0.979} (10 \%: 0/5) & \textbf{20 \%, 5/5} (10 \%: 0/5) & none up to 20 \% (0/5) & none up to 20 \% (0/5) & 0.979 \\
+\end{longtable}
+}
+
+\subsubsection{Table S6f. Dissection (rate in last 10 s of a 40-s manipulation, Hz/neuron, 30 s / 180 s anoxia)}\label{table-s6f.-dissection-rate-in-last-10-s-of-a-40-s-manipulation-hzneuron-30-s-180-s-anoxia}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+manipulation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+rate during manipulation
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+late rate after release
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+all synapses off & 109 / 134 & 138 / 120 \\
+excitatory synapses off & 14 / 120 & 38 / 91 \\
+inhibitory synapses off & 133 / 135 & 111 / 115 \\
+\textbf{K⁺ clamped at 5 mM} & \textbf{2.4 / 2.3} & 4.3 / 3.9 \\
+\textbf{no spike-driven K⁺ release (k\_spk = 0)} & \textbf{2.4 / 2.3} & 4.3 / 4.1 \\
+no SD K⁺ release (k\_rel = 0) & 56 / 153 & 129 / 25 \\
+\end{longtable}
+}
+
+\subsubsection{Table S6g. Basin boundary: minimal K⁺ kick reaching the high-rate state vs tonic offset δ}\label{table-s6g.-basin-boundary-minimal-k-kick-reaching-the-high-rate-state-vs-tonic-offset-ux3b4}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+offset δ
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
++6 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
++4 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
++2 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+0 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+−2 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+−4 mV
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+−6 mV
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+minimal kick & 6 mM & 7 mM & 8 mM & 9 mM & 12 mM & 15 mM & none up to 30 mM \\
+analytic K\_th & 5.3 & 6.1 & 6.9 & 7.9 & 9.0 & 10.2 & 11.7 mM \\
+\end{longtable}
+}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure S3. (a) Dead fraction after 180-s anoxia vs excitotoxic gain k\_exc (n = 5 seeds per point). (b) Paired Δ dead, graded − abrupt, no block. (c) Paired Δ FII\_norm, graded + block − abrupt + matched block. Dots = means with paired-bootstrap 95\% CIs.}]{figures/FigS3_excitotoxic_H3.png}
+\caption{\textbf{Figure S3.} (a) Dead fraction after 180-s anoxia vs excitotoxic gain k\_exc (n = 5 seeds per point). (b) Paired Δ dead, graded − abrupt, no block. (c) Paired Δ FII\_norm, graded + block − abrupt + matched block. Dots = means with paired-bootstrap 95\% CIs.}
+\end{figure}
+
+\subsubsection{S6h. Transmitter-sign robustness (antennal-lobe local neurons inhibitory)}\label{s6h.-transmitter-sign-robustness-antennal-lobe-local-neurons-inhibitory}
+
+Variant A sets every neuron with class ALLN or primary type matching lLN/vLN/v2LN/ilLN/il2LN to inhibitory. In FAFB the mask covers 431 neurons; 284 were already inhibitory and 147 changed sign (90 predicted cholinergic, 57 predicted monoaminergic). The same rule changed 147 neurons in the FAFB-proxy model and 219 in MCNS.
+
+\textbf{Table S6h-1. FAFB full model, variant A, 30-s anoxia, naive reperfusion (per seed; local runs).} FII is raw (vs the default-sign intact baseline; no variant-A baseline was run); FII\_norm ≈ FII/0.9940. Runaway rule: late rate \textgreater{} 0.5 Hz/neuron or FSA \textgreater{} 0.05. Default-sign comparison (dynamics arm C, 5 seeds): FII\_norm −0.058, runaway 5/5; anatomy runs N\_anat\_D30 s0--s4: mean observation rate 91.3--104.3 Hz/neuron, 64.0--69.5 \% of neurons ≥ 20 Hz.
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 18\tabcolsep) * \real{0.1000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+seed
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+late rate (Hz/neuron)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FSA
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII (raw)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII/0.9940
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+surge peak (Hz)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+K⁺ peak (mM)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+runaway
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+S\_A\_D30\_naive\_s0 & 0 & 0.000 & 0.168 & 0.0050 & 0.915 & 0.920 & 68.4 & 44.9 & no \\
+S\_A\_D30\_naive\_s1 & 1 & 0.000 & 0.160 & 0.0049 & 0.928 & 0.933 & 69.6 & 45.0 & no \\
+S\_A\_D30\_naive\_s2 & 2 & 0.000 & 0.035 & 0.0008 & 0.936 & 0.942 & 68.9 & 45.0 & no \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+anatomy run
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+seed
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+mean observation rate (Hz/neuron)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+fraction of neurons ≥ 20 Hz
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+median first spike (ms)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+SN\_A\_anat\_D30\_s0 & 0 & 0.172 & 0.0028 & 105 \\
+SN\_A\_anat\_D30\_s1 & 1 & 0.160 & 0.0027 & 105 \\
+SN\_A\_anat\_D30\_s2 & 2 & 0.035 & 0.0005 & 105 \\
+\end{longtable}
+}
+
+\textbf{Table S6h-2. MCNS and FAFB-proxy, default signs vs antennal-lobe local neurons inhibitory (\texttt{\_alln}), 5 seeds per condition.}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 14\tabcolsep) * \real{0.1250}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+n
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+outcomes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FII\_norm {[}95\% CI{]}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+late rate (Hz/neuron)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FSA
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+dead
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFBproxy & D180\_T22\_naive & 5 & \{``runaway'': 5\} & 0.288 {[}0.086, 0.505{]} & 124.09 & 0.044 & 0.009 \\
+FAFBproxy\_alln & D180\_T22\_naive & 5 & \{``runaway'': 5\} & -0.125 {[}-0.155, -0.093{]} & 126.62 & 0.743 & 0.009 \\
+MCNS & D180\_T22\_naive & 5 & \{``runaway'': 5\} & 0.856 {[}0.810, 0.901{]} & 127.79 & 0.001 & 0.009 \\
+MCNS\_alln & D180\_T22\_naive & 5 & \{``runaway'': 5\} & -0.135 {[}-0.234, -0.041{]} & 120.53 & 0.897 & 0.009 \\
+FAFBproxy & D180\_T22\_reset & 5 & \{``recovered'': 5\} & 0.971 {[}0.961, 0.984{]} & 0.00 & 0.000 & 0.009 \\
+FAFBproxy\_alln & D180\_T22\_reset & 5 & \{``recovered'': 5\} & 0.965 {[}0.948, 0.978{]} & 0.00 & 0.000 & 0.009 \\
+MCNS & D180\_T22\_reset & 5 & \{``recovered'': 5\} & 0.997 {[}0.992, 1.001{]} & 0.00 & 0.000 & 0.009 \\
+MCNS\_alln & D180\_T22\_reset & 5 & \{``recovered'': 5\} & 0.989 {[}0.970, 1.000{]} & 0.00 & 0.000 & 0.009 \\
+FAFBproxy & D30\_T22\_naive & 5 & \{``runaway'': 5\} & 0.146 {[}0.057, 0.228{]} & 47.11 & 0.140 & 0.000 \\
+FAFBproxy\_alln & D30\_T22\_naive & 5 & \{``runaway'': 5\} & 0.859 {[}0.852, 0.867{]} & 0.82 & 0.008 & 0.000 \\
+MCNS & D30\_T22\_naive & 5 & \{``runaway'': 5\} & 0.050 {[}0.022, 0.078{]} & 90.86 & 0.084 & 0.000 \\
+MCNS\_alln & D30\_T22\_naive & 5 & \{``runaway'': 5\} & 1.000 {[}0.996, 1.002{]} & 3.00 & 0.022 & 0.000 \\
+FAFBproxy & D30\_T22\_reset & 5 & \{``recovered'': 5\} & 1.002 {[}1.001, 1.003{]} & 0.00 & 0.000 & 0.000 \\
+FAFBproxy\_alln & D30\_T22\_reset & 5 & \{``recovered'': 5\} & 1.002 {[}1.001, 1.003{]} & 0.00 & 0.000 & 0.000 \\
+MCNS & D30\_T22\_reset & 5 & \{``recovered'': 5\} & 0.999 {[}0.994, 1.001{]} & 0.00 & 0.000 & 0.000 \\
+MCNS\_alln & D30\_T22\_reset & 5 & \{``recovered'': 5\} & 1.000 {[}0.997, 1.002{]} & 0.00 & 0.000 & 0.000 \\
+FAFBproxy & base & 5 & \{``recovered'': 5\} & 1.003 {[}1.001, 1.003{]} & & 0.000 & 0.000 \\
+FAFBproxy\_alln & base & 5 & \{``recovered'': 5\} & 1.003 {[}1.001, 1.003{]} & & 0.000 & 0.000 \\
+MCNS & base & 10 & \{``recovered'': 10\} & 0.999 {[}0.996, 1.001{]} & & 0.000 & 0.000 \\
+MCNS\_alln & base & 5 & \{``recovered'': 5\} & 1.000 {[}0.997, 1.002{]} & & 0.000 & 0.000 \\
+\end{longtable}
+}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+contrast (AL local neurons inhibitory − default signs; closed-loop − 20-s block)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Δ FII\_norm {[}95\% CI{]}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+MCNS\_alln\_minus\_main\_D30\_naive & +0.949 {[}+0.918, +0.977{]} \\
+FAFBproxy\_alln\_minus\_main\_D30\_naive & +0.714 {[}+0.632, +0.801{]} \\
+MCNS\_alln\_minus\_main\_D180\_naive & -0.991 {[}-1.119, -0.883{]} \\
+FAFBproxy\_alln\_minus\_main\_D180\_naive & -0.413 {[}-0.622, -0.192{]} \\
+MCNS\_closedloop\_minus\_reset20\_D180 & -0.071 {[}-0.081, -0.058{]} \\
+FAFBproxy\_closedloop\_minus\_reset20\_D180 & -0.674 {[}-0.742, -0.624{]} \\
+\end{longtable}
+}
+
+Variants B (all low-confidence calls inhibitory) and C (neurons without a call silenced) were prepared in code but not run. FAFB variant A was not run at 180 s, with the reset, for bistability kicks, or for targeted blocks.
+
+\subsection{S7. Cross-connectome dynamic replication (MCNS v1.0; BANC v888 not analysed)}\label{s7.-cross-connectome-dynamic-replication-mcns-v1.0-banc-v888-not-analysed}
+
+Source: \texttt{research/followup/replication/REPLICATION\_RESULTS.md} (211 analysed runs: MCNS 146, FAFB-proxy 65). MCNS: 166,700 neurons, 6,242,085 edges (≥5 synapses), w\_syn 0.0538 mV (same distance below the reverberation threshold as FAFB). Proxy substitutions: demand = total synapse count; K⁺ coupling = connection-based Jaccard 9-nearest-neighbour neuropil graph. A dense shared-neuron K⁺ adjacency was numerically unstable (spurious oscillation and runaway in sham runs) and was replaced; the FAFB dynamics track used the stable geometric adjacency and is unaffected. Responsive probes only (sugar → MN9 is silent in MCNS); noise ceilings MCNS 0.9972, FAFB-proxy 0.9922.
+
+\subsubsection{Table S7a. Condition summary}\label{table-s7a.-condition-summary}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+condition
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\textbf{MCNS} FII\_norm {[}95 \% CI{]} · dead · outcomes
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FAFB-proxy
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+FAFB (dynamics track)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+30 s anoxia, naive & 0.050 {[}0.022, 0.078{]} · dead 0.000 · runaway 5/5 & 0.146 {[}0.057, 0.228{]} · dead 0.000 · runaway 5/5 & -0.058 {[}-0.180, 0.153{]} · runaway 5/5 \\
+30 s, 20-s block & 0.999 {[}0.994, 1.001{]} · dead 0.000 · recovered 5/5 & 1.002 {[}1.001, 1.003{]} · dead 0.000 · recovered 5/5 & 1.001 {[}1.000, 1.001{]} · recovered 5/5 \\
+180 s, naive & 0.856 {[}0.810, 0.901{]} · dead 0.009 · runaway 5/5 & 0.288 {[}0.086, 0.505{]} · dead 0.009 · runaway 5/5 & 0.084 {[}-0.118, 0.410{]} · runaway 5/5 \\
+180 s, 20-s block & 0.997 {[}0.992, 1.001{]} · dead 0.009 · recovered 5/5 & 0.971 {[}0.961, 0.984{]} · dead 0.009 · recovered 5/5 & 0.953 {[}0.936, 0.967{]} · recovered 5/5 \\
+180 s @17 °C, naive & 0.915 {[}0.874, 0.943{]} · dead 0.001 · runaway 5/5 & -- & -- \\
+180 s @17 °C, block & 0.992 {[}0.984, 0.998{]} · dead 0.001 · recovered 5/5 & -- & -- \\
+180 s @29 °C, naive & 0.483 {[}0.374, 0.592{]} · dead 0.128 · runaway 5/5 & -- & -- \\
+180 s @29 °C, block & 0.806 {[}0.738, 0.868{]} · dead 0.127 · recovered 3/5, structural\_loss 2/5 & -- & -- \\
+360 s, naive & -0.033 {[}-0.275, 0.255{]} · dead 0.251 · runaway 5/5 & -- & 0.085 {[}-0.120, 0.311{]} · runaway 5/5 \\
+360 s, block & 0.759 {[}0.691, 0.833{]} · dead 0.246 · structural\_loss 5/5 & 0.613 {[}0.562, 0.671{]} · dead 0.246 · structural\_loss 5/5 & 0.578 {[}0.559, 0.602{]} · structural\_loss 5/5 \\
+360 s hub 1 \%, naive & 0.235 {[}0.042, 0.396{]} · dead 0.249 · runaway 5/5 & -- & -0.218 {[}-0.286, -0.093{]} · runaway 3/3 \\
+360 s hub 1 \%, block & 0.960 {[}0.948, 0.973{]} · dead 0.244 · structural\_loss 5/5 & 0.707 {[}0.678, 0.737{]} · dead 0.244 · structural\_loss 5/5 & 0.703 {[}0.668, 0.743{]} · structural\_loss 3/3 \\
+360 s hub 10 \%, naive & -0.137 {[}-0.197, -0.071{]} · dead 0.223 · runaway 5/5 & -- & 0.342 {[}0.300, 0.378{]} · runaway 3/3 \\
+360 s hub 10 \%, block & 0.977 {[}0.972, 0.980{]} · dead 0.219 · recovered 5/5 & -- & 0.906 {[}0.845, 0.944{]} · recovered 3/3 \\
+360 s random 1 \%, block & 0.769 {[}0.704, 0.837{]} · dead 0.244 · structural\_loss 5/5 & -- & 0.568 {[}0.530, 0.591{]} · structural\_loss 3/3 \\
+360 s random 10 \%, block & 0.813 {[}0.775, 0.851{]} · dead 0.222 · structural\_loss 5/5 & -- & 0.588 {[}0.563, 0.637{]} · structural\_loss 3/3 \\
+360 s whole-brain, block & 0.999 {[}0.994, 1.001{]} · dead 0.000 · recovered 5/5 & -- & 1.001 {[}1.001, 1.001{]} · recovered 3/3 \\
+180 s, closed-loop release & 0.926 {[}0.919, 0.939{]} · dead 0.007 · runaway 5/5 & 0.296 {[}0.228, 0.346{]} · dead 0.007 · runaway 5/5 & -- \\
+sham (0 s), naive & 1.001 {[}1.000, 1.001{]} · dead 0.000 · recovered 3/3 & -- & -- \\
+sham (0 s), block & 1.001 {[}1.000, 1.001{]} · dead 0.000 · recovered 3/3 & -- & -- \\
+\end{longtable}
+}
+
+\subsubsection{Table S7b. Hub-protection efficiency in MCNS (360-s anoxia + 20-s block)}\label{table-s7b.-hub-protection-efficiency-in-mcns-360-s-anoxia-20-s-block}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+protected set (MCNS, n neurons)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+gain in FII\_norm vs none
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+gain per 1,000 protected
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+top-degree 1 \% (1,667) & +0.201 {[}+0.127, +0.278{]} & 0.1208 \\
+top-degree 10 \% (16,670) & +0.218 {[}+0.143, +0.293{]} & 0.0131 \\
+random 1 \% & +0.010 {[}-0.089, +0.114{]} & 0.0061 \\
+random 10 \% & +0.054 {[}-0.028, +0.140{]} & 0.0032 \\
+whole CNS (166,700) & +0.239 {[}+0.165, +0.315{]} & 0.0014 \\
+\end{longtable}
+}
+
+\subsubsection{Table S7c. Replication verdicts}\label{table-s7c.-replication-verdicts}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.5000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+test
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+verdict (MCNS; BANC not analysed)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+(a) runaway attractor after naive reperfusion & \textbf{replicates} (5/5 at 30, 180, 360 s and 17/22/29 °C; continuous at 30 s, episodic at ≥180 s) \\
+(b) 20-s block reset rescue & \textbf{replicates} (5/5 recovered at 30 and 180 s) \\
+(c) hub-protection efficiency & \textbf{replicates, stronger} (\textasciitilde84× per neuron vs FAFB \textasciitilde30×; random controls null) \\
+(d) temperature effect & \textbf{replicates in direction} (17 °C − 29 °C = +0.185); magnitude not comparable to FAFB at matched D \\
+VNC vs brain & the VNC crosses 1 Hz/neuron first and is the most persistent part of the attractor \\
+\end{longtable}
+}
+
+\textbf{BANC.} A BANC sweep (146 result files on the Modal Volume \texttt{flysim-data:/results\_rep\_v4/BANC*}) completed but was not retrieved or analysed because further cloud work was stopped (job recorded as failed; cost unknown, ≤ USD 1.76 by the container cap). MANC was not simulated dynamically.
+
+\subsection{S8. Recoverability index (cross-validated; FAFB)}\label{s8.-recoverability-index-cross-validated-fafb}
+
+Source: \texttt{research/followup/index/tables/model\_results.json} and \texttt{univariate\_*.csv}; 1,118 of 1,209 dynamics runs processed (91 not processed); condition-grouped 5-fold cross-validation (4--20 repeats depending on the model) with cluster-bootstrap 95\% CIs. Indices were computed on default-sign graphs. Intact FAFB: R\_eff (mean-field) 19.62; confident-transmitter R\_eff 7.38; signed 17.05 (\texttt{index/data/fafb\_intact\_index.json}). \texttt{ecore100} = fraction of neurons in the excitatory bootstrap core (maximal set in which every member receives enough excitatory synapses from other members to sustain firing at an assumed 100 Hz); \texttt{recip\_n} = surviving reciprocal excitatory pairs relative to intact; \texttt{reach\_sim} = simulator Reach.
+
+\subsubsection{Table S8a. Post-reset FII\_norm, non-runaway runs (top single indices)}\label{table-s8a.-post-reset-fii_norm-non-runaway-runs-top-single-indices}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+index & n & CV R² {[}95\% CI{]} & Spearman ρ \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+ecore100 & 562 & 0.964 {[}0.940, 0.978{]} & 0.949 \\
+ecore200 & 562 & 0.964 {[}0.937, 0.980{]} & 0.940 \\
+recip\_n & 562 & 0.961 {[}0.934, 0.975{]} & 0.943 \\
+reach\_sim & 562 & 0.938 {[}0.891, 0.965{]} & 0.857 \\
+hub5 & 562 & 0.923 {[}0.856, 0.955{]} & 0.824 \\
+hub10 & 562 & 0.922 {[}0.857, 0.957{]} & 0.843 \\
+hub1 & 562 & 0.914 {[}0.851, 0.950{]} & 0.795 \\
+gscc\_exc & 562 & 0.908 {[}0.807, 0.951{]} & 0.920 \\
+\end{longtable}
+}
+
+\subsubsection{Table S8b. Runaway after naive reperfusion among viable networks (top single indices)}\label{table-s8b.-runaway-after-naive-reperfusion-among-viable-networks-top-single-indices}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+index
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+n (runaway)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+a-priori AUC {[}95\% CI{]}
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+CV AUC
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Spearman ρ
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+exc\_in\_frac & 482 (457) & 0.532 {[}0.450, 0.653{]} & 0.529 & 0.025 \\
+rich1\_n & 482 (457) & 0.526 {[}0.484, 0.570{]} & 0.525 & 0.021 \\
+EI\_syn & 482 (457) & 0.510 {[}0.466, 0.549{]} & 0.488 & 0.008 \\
+ipr\_exc & 482 (457) & 0.479 {[}0.310, 0.790{]} & 0.297 & 0.016 \\
+loop3\_super & 482 (457) & 0.364 {[}0.174, 0.738{]} & 0.297 & -0.109 \\
+loop2\_super & 482 (457) & 0.379 {[}0.194, 0.742{]} & 0.263 & -0.098 \\
+reach\_sim & 482 (457) & 0.351 {[}0.158, 0.800{]} & 0.254 & -0.118 \\
+Reff\_mf\_known & 482 (457) & 0.342 {[}0.146, 0.726{]} & 0.254 & -0.124 \\
+\end{longtable}
+}
+
+Combined models: post-reset FII random forest CV R² 0.986 {[}0.974, 0.992{]}; recovered-after-reset logistic CV AUC 0.999; runaway among viable networks random forest CV AUC 0.61 {[}0.38, 0.76{]} (chance). Leave-arm-out transfer of \texttt{ecore100} for post-reset FII: arm D R² 0.89, arm H 0.84, arm E (ageing) −0.50. The planned BANC/MCNS/MANC recoverability maps were started (FAFB random-removal grid to f = 0.6 only) and not completed; no standalone INDEX\_RESULTS report was written.
+
+\subsection{S9. Deviations from the preregistration and task plan (all tracks)}\label{s9.-deviations-from-the-preregistration-and-task-plan-all-tracks}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Seeds and stimulus rates.} 3--5 seeds per condition (preregistered ≥10); one rate per probe (preregistered 3). Baseline used 10 seeds.
+\item
+  \textbf{Spontaneous-activity metric.} The Shiu model is silent at rest, so FSA\_baseline = 0 and the preregistered ratio is undefined. H5 used an evoked-neuron count (Act).
+\item
+  \textbf{Brain-death definition as run.} Spontaneous fraction \textless{} 0.01 and no readout response \textgreater{} 8 Hz (preregistered: \textless{} 2 SD of noise).
+\item
+  \textbf{Calibration choices made after inspecting runs.} J50 60 → 600 s, τ\_ATP 20 → 30 s, q10\_injury 2.5 added, w\_syn 0.275 → 0.185. All are reported with the rejected alternatives.
+\item
+  \textbf{H1 dynamical test} was fitted on FII vs dead fraction from insult runs, not on removal curves.
+\item
+  \textbf{H2(a)} (death-time correlation with demand) was not computed.
+\item
+  \textbf{H3 protocols} were not matched for integrated supply.
+\item
+  \textbf{Temperatures} 20 and 26 °C were not run (17/22/29/33 °C were).
+\item
+  \textbf{Reach in dynamics} used the ≥5 matrix only, with no cut-off sensitivity. Ageing synapse loss is not reflected in Reach.
+\item
+  \textbf{LT50} was extrapolated, not simulated (≤1 h anoxia simulated).
+\item
+  \textbf{Structural removal orders} were below the preregistered ≥20 for several regimes (FAFB random 13, metabolic\_area 10, metabolic\_syn 5, degree 3 + 2 fine-grid, focal 5, matched 3; BANC 15/8/3/4/2; MCNS 6/6/2/3/2; MANC full) because of CPU contention. The f grid was reduced from 24 to 13 points mid-run, L∞ was capped at 30 hops for later orders, and GSCC was computed for orders 0--2 only. The primary metric samples 128 source neurons.
+\item
+  \textbf{Structural controls reduced.} One rewired null (FAFB, MANC only); ≥1 cut-off only for MANC (FAFB/MCNS files are floored at 5).
+\item
+  \textbf{A CSV column-shift bug} (rows without GSCC) affected 143 FAFB, 78 BANC and 65 MCNS rows. These were repaired deterministically.
+\item
+  \textbf{MAOL v1.1} was not available locally and was not analysed (planned deviation).
+\item
+  \textbf{Mechanism follow-up of 605 runs not executed} (Modal spend limit): 40/60-s blocks for all LHS sets, the full k\_exc = 10 H3 grid, finer targeted-set brackets (0.2--0.3\% at 30 s; 12.5--17.5\% at 180 s), and a hysteresis ramp to −30 mV.
+\item
+  \textbf{Per-set FII baselines in arm L} used 4 seeds. Arm X k\_exc = 0 cells reused dynamics arm C runs (identical code path).
+\item
+  \textbf{Dynamic replication.} Earlier MCNS sweeps (v1, adjacency bug; v2, infrastructure failure) were discarded. The v4 sweep gave 211 analysed runs (MCNS + FAFB-proxy). The BANC v4 sweep (146 files) was not harvested or analysed. MCNS and FAFB-proxy use proxies for demand and K⁺ coupling. MANC was not simulated dynamically.
+\item
+  \textbf{Recoverability index.} 91 of 1,209 runs were not processed. Cross-connectome maps were not completed. Indices use default signs. No standalone report was written; results are taken from \texttt{model\_results.json}.
+\item
+  \textbf{Sign robustness.} Only the antennal-lobe local-neuron variant was run: FAFB full model 3 seeds at 30 s naive only (no variant-A intact baseline, so FII is relative to the default-sign baseline); MCNS and FAFB-proxy 5 seeds at 30/180 s naive and reset. Variants B and C were not run.
+\item
+  \textbf{Closed-loop release} was tested only in MCNS and the FAFB-proxy (180 s, default signs), not in the FAFB full model or across LHS sets.
+\end{enumerate}
+
+\subsection{S10. Negative and null results (reported in full)}\label{s10.-negative-and-null-results-reported-in-full}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  No sharp percolation threshold under random structural loss in any of four connectomes (H1 falsified; FAFB w 0.671).
+\item
+  No sharp threshold for FII vs dead fraction (ΔAIC +0.11 vs linear; width 1.56).
+\item
+  Graded, ramped or pulsed reperfusion was worse than abrupt reperfusion for identity and survival (H3 reversed). Adding an excitotoxic term did not change this for any comparison that included a reset.
+\item
+  Hyperpolarization (−10/−20 mV), GABA gain ×2--4, SD-release block, 3× clearance, noise, adaptation and cooling during reperfusion all failed to prevent the runaway.
+\item
+  Blocks of 2 and 5 s failed, and 10 s was unreliable at 360 s.
+\item
+  Preconditioning gave no protection (24.9\% vs 24.8\% dead).
+\item
+  Hyperthermia without hypoxia (33/37/40 °C) had no effect.
+\item
+  Metabolic support (reserve boost, clearance boost, mild hypometabolism) did not rescue the aged network.
+\item
+  ``Resuscitated but different'' did not exist outside the runaway state (0.0\% coverage with the reset).
+\item
+  No single cell type is a structural keystone (≤1.03\% reach loss).
+\item
+  Fly-like metabolic arrest alone did not produce hours-scale tolerance (extrapolated LT50 ≈ 1.51 h at J50 14,400 s vs fly 8.3 h).
+\item
+  No connectome index predicted naive-reperfusion runaway among viable networks (cross-validated best single-index AUC 0.53; combined 0.61 {[}0.38, 0.76{]}).
+\item
+  Targeted driver or hub blocks failed after 180 s of anoxia up to 10\% of the brain.
+\item
+  A closed-loop release at K⁺ \textless{} 6 mM and ATP \textgreater{} 0.9 (reached after 11 s) re-ignited the runaway in MCNS (runaway 5/5) and the FAFB-proxy.
+\item
+  With antennal-lobe local neurons inhibitory, the 30-s high-rate runaway did not form (FAFB 0/3 runaway; MCNS and FAFB-proxy kept a weak 3.0 / 0.82 Hz/neuron oscillation classed runaway by the preregistered rule). The 30-s driver-core result is therefore not established.
+\end{enumerate}
+
+\subsection{S11. Provenance and compute}\label{s11.-provenance-and-compute}
+
+\begin{itemize}
+\tightlist
+\item
+  Dynamics: Modal jobs a4ddd6e8-9ca3-4803-a889-fa5fdd58ccf9, 31c05682-cf05-4a51-b769-97b562f60172, 4d88396b-d4af-4b98-935c-ea62f206acfb, 937a47ef-8836-46d7-8764-a2a4d3655763 (smoke 79482286-adfb-4c8d-b57c-64d67726799e); 1,209 runs, 0 errors, 24.3 CPU-h.
+\item
+  Mechanism: smoke 900ff527-e669-4ffa-bcd0-5eed11e9297e; shard A 65780d67-c068-43a9-8cf0-1976a09783a9; shard B c6fe6ce5-53f5-4e4e-afe0-dc930dc25632; 2,061 runs, 0 errors. Follow-up 12a56f59-2ec3-4e3c-8934-253f564c9204 was killed by the spend limit and its results discarded.
+\item
+  Replication: calibration 6fd134b9-a8a3-4e02-8438-143947ce30ea; v1 MCNS 6e86553b-044e-4155-becd-21845a5eb524 (invalid); v2 04f516ec-6e0a-4889-86d3-d5d9a903a4f6 (infrastructure failure).
+\item
+  Replication (v4, analysed): smoke 14de3ae1-d0bf-412c-8841-c1a279754447 (MCNS 360-s hub arm, 45 runs); job A a9ef9894-0c76-4de2-89c9-6879f59167ff (166 runs). BANC job ef7d8554-1bbc-4a61-a027-11bb646177dc recorded as failed; 146 files on the Volume, not analysed.
+\item
+  Sign variant (FAFB full model): local runs, \texttt{research/followup/mechanism/raw/sign\_res/} (S\_A\_D30\_naive\_s0--2, SN\_A\_anat\_D30\_s0--2).
+\item
+  Recoverability index: local; \texttt{research/followup/index/}.
+\item
+  Structure: local 16-core host; pure NumPy bitset engine.
+\item
+  Identity check: the mechanism-track simulator with k\_exc = 0 reproduced dynamics run \texttt{C\_D30\_naive\_s0} exactly (FII 0.3617, late rate 122.998 Hz/neuron).
+\item
+  Run totals in the paper: 1,209 dynamics + 2,061 mechanism (784 of them in the LHS arm) + 211 replication + 6 FAFB sign-variant = 3,487 analysed simulated condition--seed runs.
+\end{itemize}
+
+\end{document}

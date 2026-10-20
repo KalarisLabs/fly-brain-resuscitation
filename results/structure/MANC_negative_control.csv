@@ -1,0 +1,2 @@
+dataset,n_removable,n_offpath_removed,f_offpath,base_reachN_L6,neg_reachN_L6,delta_reachN_L6,base_reachN_Linf,neg_reachN_Linf,delta_reachN_Linf,base_reachG_L6,neg_reachG_L6,delta_reachG_L6,base_redund_L6,neg_redund_L6,delta_redund_L6,base_influence_L6,neg_influence_L6,delta_influence_L6
+MANC,16352,519,0.031739236790606654,0.975397150954654,0.975397150954654,0.0,0.975397150954654,0.975397150954654,0.0,0.9988066825775657,0.9988066825775657,0.0,21528.817498557095,21528.817498557095,0.0,330.6782662664444,330.6782662664444,0.0

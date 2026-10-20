@@ -1,0 +1,21 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/
+# data and outputs are never committed (see data/README.md)
+data/raw/
+outputs/
+*.csv.gz
+!results/**/*.csv.gz
+*.parquet
+*.zip
+*.tar
+*.tar.gz
+*.pkl
+*.npz
+!experiments/mechanism/drivers.npz
+!experiments/mechanism/drivers_extra.npz
+modal/bundles/

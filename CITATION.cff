@@ -1,0 +1,40 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and cite the FlyWire/Codex datasets as described in DATA_LICENSE.md."
+title: "fly-brain-resuscitation: in-silico anoxia, brain death and resuscitation on Drosophila connectomes"
+type: software
+authors:
+  - family-names: Muralikrishnan
+    given-names: Srihari
+    orcid: "https://orcid.org/0009-0004-0220-0361"
+    affiliation: "Kalaris Labs"
+license: MIT
+repository-code: "https://github.com/KalarisLabs/fly-brain-resuscitation"
+url: "http://kalarislabs.com/"
+contact:
+  - name: "Kalaris Labs"
+    email: hello@kalarislabs.com
+version: "0.1.0"
+date-released: "2026-10-20"
+keywords:
+  - Drosophila
+  - connectome
+  - FlyWire
+  - leaky integrate-and-fire
+  - anoxia
+  - spreading depolarization
+  - brain death
+  - resuscitation
+  - computational neuroscience
+references:
+  - type: article
+    title: "Neuronal wiring diagram of an adult brain"
+    authors: [{family-names: Dorkenwald, given-names: Sven}]
+    journal: Nature
+    volume: 634
+    year: 2024
+  - type: article
+    title: "A Drosophila computational brain model reveals sensorimotor processing"
+    authors: [{family-names: Shiu, given-names: Philip K.}]
+    journal: Nature
+    volume: 634
+    year: 2024

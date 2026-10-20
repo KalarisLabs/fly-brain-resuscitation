@@ -1,0 +1,1189 @@
+\documentclass[11pt]{article}
+
+\usepackage{fontspec}
+\setmainfont{LibertinusSerif}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic,BoldItalicFont=*-BoldItalic,SmallCapsFont=*-Regular,SmallCapsFeatures={Letters=SmallCaps}]
+\setsansfont{LibertinusSans}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,BoldFont=*-Bold,ItalicFont=*-Italic]
+\setmonofont{LibertinusMono}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/,Extension=.otf,UprightFont=*-Regular,Scale=0.9]
+\usepackage{unicode-math}\setmathfont{LibertinusMath-Regular.otf}[Path=D:/FRUITFLY/tools/libertinus/Libertinus-7.051/static/OTF/]
+\usepackage[a4paper,margin=2.3cm]{geometry}
+\usepackage[protrusion=true]{microtype}
+\usepackage{booktabs,longtable,array,calc,etoolbox,graphicx,xcolor,caption,float}
+\usepackage{cite}
+\usepackage[hidelinks=false,colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black,pdfauthor={Srihari Muralikrishnan},pdftitle={A whole-brain Drosophila connectome model predicts a duration- and sign-dependent potassium trap after anoxia and a reset-based route to functional recovery},pdfsubject={Computational neuroscience preprint},pdfkeywords={connectome, Drosophila, anoxia, spreading depolarization, reperfusion, bistability, brain death}]{hyperref}
+\usepackage{fancyhdr}\pagestyle{fancy}\fancyhf{}\renewcommand{\headrulewidth}{0pt}
+\fancyfoot[L]{\footnotesize\color{black!60}Muralikrishnan --- preprint v1.0 (not peer reviewed). Model predictions only.}\fancyfoot[R]{\footnotesize\thepage}
+\captionsetup{font=small,labelformat=empty,justification=justified,singlelinecheck=false}
+\setlength{\LTcapwidth}{\textwidth}
+\newcounter{none}
+\AtBeginEnvironment{longtable}{\footnotesize\setlength{\tabcolsep}{2.5pt}}
+\setcounter{secnumdepth}{0}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{\sbox\pandoc@box{#1}\Gscale@div\@tempa{0.82\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}\Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}\ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi\ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}\else\usebox{\pandoc@box}\fi}
+\def\fps@figure{tbp}
+\makeatother
+\setlength{\parskip}{3pt plus 1pt}\setlength{\parindent}{0pt}
+\renewcommand{\refname}{References}
+\urlstyle{same}
+\graphicspath{{../}}
+\emergencystretch=2em
+\begin{document}
+\begin{center}
+{\LARGE\bfseries A whole-brain \emph{Drosophila} connectome model predicts a duration- and sign-dependent potassium trap after anoxia and a reset-based route to functional recovery\par}
+\vspace{1.2em}
+{\large Srihari Muralikrishnan\textsuperscript{1}\par}
+\vspace{0.4em}
+{\small \textsuperscript{1}Kalaris Labs, \url{http://kalarislabs.com/}\\
+ORCID: \href{https://orcid.org/0009-0004-0220-0361}{0009-0004-0220-0361} \quad GitHub: \href{https://github.com/sriharideveloper}{@sriharideveloper}\\
+Correspondence: \href{mailto:hello@kalarislabs.com}{hello@kalarislabs.com}\par}
+\vspace{0.6em}
+{\footnotesize Preprint v1.0, 20 October 2026. Not peer reviewed. Research article (computational neuroscience).\par
+\begin{minipage}{0.85\linewidth}\centering All results are predictions of a connectome-constrained leaky integrate-and-fire model with a phenomenological metabolic layer; none is evidence about living tissue or the reversibility of clinical brain death.\end{minipage}\par}
+\end{center}
+\vspace{0.4em}
+\begin{abstract}
+\noindent Clinical series and ex vivo perfusion experiments address whether a brain can be brought back after energy failure, and whether it returns as the same circuit. They cannot identify which network properties set the limit.
+
+We built a whole-brain spiking model of the adult female \emph{Drosophila} brain (FlyWire FAFB v783; 139,255 neurons, 3,732,460 connections). We added ATP, Na⁺/K⁺-pump, extracellular K⁺ and injury dynamics to a published leaky integrate-and-fire connectome model and tested six preregistered hypotheses. The analysis covered 3,487 simulated condition--seed runs; structural analyses used four connectomes and dynamic replication used the male CNS (MCNS). The model reproduced the anoxic spreading-depolarization latency of real flies (12.5 vs 14.2 s).
+
+\textbf{Runaway after reoxygenation.} After 180 s of anoxia, abrupt reoxygenation drove the network into a self-sustained high-rate state in every parameter set tested (48/48), in MCNS, and under a corrected transmitter-sign assignment. The maintained state is ionic: it persisted with all synapses removed and vanished when activity-dependent K⁺ release was removed. Quiet and active states coexisted in the intact network, with hysteresis at least 13 mV wide.
+
+\textbf{Sign dependence at short durations.} After 30 s of anoxia, the high-rate runaway depended on the transmitter sign of antennal-lobe local neurons that the default sign rule treats as excitatory (147 in FAFB, 219 in MCNS). With these neurons inhibitory, no runaway occurred in the FAFB model (0/3 seeds). The stimulus--response map was preserved in MCNS (identity index 1.000), leaving only a weak residual oscillation.
+
+\textbf{Reset rescue.} A total activity block of 10--20 s after reperfusion restored the stimulus--response map at both durations and under both sign assignments. Releasing the block as soon as K⁺ and ATP had normalised (11 s) let the network re-ignite.
+
+\textbf{Other results.} Graded reperfusion did not help. Remaining loss after the reset came from neuron death, and protecting the 1\% most connected neurons was 30-fold (FAFB) to 84-fold (MCNS) more efficient per neuron than whole-brain protection. Silent, unresponsive ``brain death'' occurred only when ≥97.9\% of neurons had died. Across four connectomes, targeted loss of hub or high-demand neurons cut sensorimotor reachability at a third or less of the damage required by random loss.
+
+These predictions can be tested in flies with optogenetic silencing during reoxygenation.
+
+\end{abstract}
+\noindent\textbf{Keywords:} connectome; \emph{Drosophila}; anoxia; spreading depolarization; reperfusion; bistability; extracellular potassium; brain death; resuscitation; neuroprotection
+
+\vspace{0.6em}
+\noindent\fcolorbox{black!35}{black!3}{\begin{minipage}{\dimexpr\linewidth-2\fboxsep-2\fboxrule\relax}\small\textbf{Significance statement.} It is unclear whether a brain that stops working after oxygen deprivation can be restarted as the same circuit, and what network property decides this. We simulated this question on a complete fly brain wiring diagram, using a spiking model with a simple energy and potassium layer. In the model, the main obstacle was usually not dead neurons. Reoxygenation could lock the network into a self-sustaining, potassium-driven hyperactive state. A brief, complete pause of activity released it and restored the original stimulus--response map, provided the pause outlasted energy recovery. After long oxygen loss this trap was robust. After short loss it depended on predicted neurotransmitter identities. These are model predictions and can be tested in flies with optogenetic silencing during reoxygenation.\end{minipage}}
+\clearpage
+
+\subsection{1. Introduction}\label{introduction}
+
+Death by neurologic criteria is defined clinically as the irreversible loss of all brain function, operationalised as coma, absent brainstem reflexes and apnoea after confounders are excluded \cite{greer2020,greer2023}. Irreversibility is the contested term. Philosophical analyses index it to what current technology can reverse \cite{gligorov2023}, and experimental work has repeatedly moved that boundary. Cat brains recovered neuronal function after periods of complete ischaemia longer than the classical few-minute rule allowed \cite{hossmann1973,hossmann1973b}. In the BrainEx experiments, pig brains perfused from 4 h post-mortem regained cellular, vascular and spontaneous synaptic activity, yet showed no global electrocorticographic activity \cite{vrselja2019}. OrganEx extended cellular recovery to the whole body after 1 h of warm ischaemia \cite{andrijevic2022}. These results raise ethical questions \cite{farahany2019,long2025} and a scientific one. If cells can be restored but organised network activity does not return, what network-level process prevents it, and is it reversible?
+
+Mammalian data constrain the cellular side of this question. Electrical failure and ion-pump failure occur at distinct perfusion thresholds \cite{astrup1981,hossmann1994}. Anoxic depolarization begins 2--5 min after severe ischaemia, and in dying human patients terminal spreading depolarization (SD) follows the final perfusion drop by a median of 3.9 min \cite{dreier2018}. SD is a continuum, from reversible waves in the penumbra to persistent depolarization in the core \cite{dreier2011,dreier2015,hartings2016}. Reperfusion can itself injure \cite{eltzschig2011,choi1988}, and in rodents gradual reperfusion and postconditioning reduce infarct size \cite{gao2008,zhao2009}. Clinically, mild hypothermia after cardiac arrest improves neurological outcome \cite{haca2002,bernard2002}. What is missing is a whole-network account of how these processes interact with the wiring that carries function.
+
+Insects provide a natural comparison. Adult \emph{Drosophila} enter anoxic coma within 30 s, survive several hours of anoxia and recover \cite{krishnan1997,campbell2018,callier2015}. Their brains generate SD with K⁺ surges similar to mammalian anoxic depolarization \cite{spong2016,armstrong2011,andersen2018}, but in insects SD acts as a protective shutdown \cite{rodgers2010,robertson2020}. The insect CNS still has an irreversible end state. Repeated ouabain comas end in a terminal extracellular K⁺ plateau and death \cite{armstrong2011}, and repetitive anoxia at warm temperatures degrades K⁺ homeostasis \cite{rodriguez2012}. SD temperature dependence has been measured \cite{andersen2025}, as has the role of pump kinetics \cite{andersen2022} and glial K⁺ channels \cite{andersen2026}.
+
+Connectomes now make it possible to ask these questions of a complete nervous system. The FlyWire reconstruction of the adult female brain \cite{zheng2018,dorkenwald2024,schlegel2024} has been turned into a leaky integrate-and-fire (LIF) model with a single free parameter. That model predicted sensorimotor pathways that were then validated in flies \cite{shiu2024}. Connectome-constrained models also predict activity in the fly visual system \cite{lappalainen2024}. Further connectomes exist for the male ventral nerve cord (MANC; \cite{takemura2024,marin2024,cheong2026}), the female brain and nerve cord (BANC; \cite{bates2026}) and the male CNS (MCNS; \cite{berg2026}). They allow the same questions to be asked of independent wiring diagrams.
+
+Here we extend the Shiu et al.~model with a phenomenological metabolic and ionic layer and use it as a proxy brain for anoxia, ``brain death'' and resuscitation. Before running any insult simulation, we preregistered six hypotheses:
+
+\begin{itemize}
+\tightlist
+\item
+  H1: a sharp percolation-like damage threshold.
+\item
+  H2: targeted vulnerability of high-demand and hub neurons.
+\item
+  H3: a benefit of graded over abrupt reperfusion.
+\item
+  H4: widening of the recoverable window by hypothermia in proportion to Q10.
+\item
+  H5: loss of functional identity before loss of activity or structure.
+\item
+  H6: replication across connectomes.
+\end{itemize}
+
+Three of these were falsified (H1, H3, and H5 as preregistered); H2 and H6 were partly supported and H4 supported.
+
+The main finding was not anticipated. Reoxygenation can place the model in a self-sustained, K⁺-coupled attractor, and a timed activity reset releases the network from it. Recovery is then limited only by neuron death. After long anoxia the trap is robust to parameters, connectome and transmitter-sign assignment. After short anoxia it depends on the sign assigned to a small set of antennal-lobe neurons.
+
+\subsection{2. Results}\label{results}
+
+\subsubsection{2.1 A calibrated whole-brain LIF model with an energy and ion layer}\label{a-calibrated-whole-brain-lif-model-with-an-energy-and-ion-layer}
+
+We reimplemented the Shiu et al.~LIF model \cite{shiu2024} in NumPy/SciPy (V\_rest = V\_reset = −52 mV, V\_th = −45 mV, τ\_m = 20 ms, τ\_syn = 5 ms, refractory 2.2 ms, delay 1.8 ms). It ran on the Princeton FAFB v783 connection table (≥5 synapses per pair; 3,732,460 edges, 50,666,648 synapses). Signs follow the presynaptic predicted transmitter: GABA and glutamate inhibitory; acetylcholine, monoamines and unknown transmitters excitatory. We call this the default sign rule.
+
+\textbf{Weight calibration.} With the published synaptic weight w\_syn = 0.275 mV this matrix was supercritical. After a 150-ms sugar-receptor stimulus the active population kept growing (538 → 1,805 → 2,721 neurons at 0--150, 200--400 and 1,000--1,200 ms), whereas Shiu's own matrix returned to silence (326 → 33 → 0). We therefore used w\_syn = 0.185 mV. This gave 344 → 0 → 0 active neurons and an MN9 response of 107 Hz (97 Hz on Shiu's matrix) to 150-Hz sugar drive (Fig. 1A shows the response curves at the published weight). At this weight:
+
+\begin{itemize}
+\tightlist
+\item
+  sugar input at 50/100/200 Hz drove MN9 at 3.3/117.7/148.3 Hz;
+\item
+  LC4 drove the giant fibre DNp01 (L/R) at 213/229 Hz;
+\item
+  LC9 drove DNg100 at 116 Hz.
+\end{itemize}
+
+\textbf{Slow layer.} The added layer (Methods) tracks:
+
+\begin{itemize}
+\tightlist
+\item
+  per-neuron ATP and pump-dependent depolarization;
+\item
+  extracellular K⁺ in 79 neuropil compartments coupled by a geometric contact adjacency;
+\item
+  regenerative K⁺ release (SD) and depolarization block;
+\item
+  a Ca²⁺-load proxy driving permanent death;
+\item
+  reversible synaptic failure.
+\end{itemize}
+
+At full supply the layer left the LIF unchanged. With activity-dependent K⁺ release off, spike counts were bit-identical to the pure LIF model; with it on, the rate correlation was 0.999 (MN9 141 vs 140 Hz).
+
+\textbf{Calibration against fly data.} After calibration (τ\_ATP = 30 s, J50 = 600 s; Methods), anoxic SD began 12.5 model-s after anoxia onset at 22 °C. Wild-type flies show anoxic SD at 14.2 ± 0.3 s \cite{andersen2018}. Peak extracellular K⁺ during 30--60 s of anoxia was 45.2 mM, inside the 44--58 mM range recorded in fly brain \cite{andersen2018,armstrong2011}. Fig. 1B shows the layer's behaviour at the pre-calibration constants. SD onset scaled with τ\_ATP (9.0--10.0 s at 20 s; 14.0--16.5 s at 40 s). It moved by only 2--3 s across a fourfold change in the slow-time compression factor (Methods).
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 1. Model validation. (A) Sensorimotor responses of the LIF model on the Princeton ≥5-synapse FAFB v783 matrix (blue) and on Shiu et al.'s connectivity (grey), at the published w\_syn = 0.275 mV (5 trials × 1 s; mean ± s.d.). a, sugar GRNs → MN9; b, LC4 → giant fibre (DNp01); c, LC9 → walking DNs; d, turn presets lateralize DNa02. The calibrated w\_syn = 0.185 mV used for all insult simulations lowers these curves (values in text). (B) Metabolic-layer unit tests at the default (pre-calibration) constants, speedup 50. a, raster: anoxia (S = 0, grey) silences the brain and naive reoxygenation re-ignites it; b, population rate with and without a 20-s post-reperfusion block; c, mean ATP, depolarized fraction and synaptic release; d, extracellular K⁺ per neuropil (no reset); e, f, focal ischaemia of the right optic lobe: K⁺ time courses coloured by distance to the core, and peak K⁺ vs centroid distance.}]{figures/Figure1_model_validation.png}
+\caption{\textbf{Figure 1. Model validation.} (A) Sensorimotor responses of the LIF model on the Princeton ≥5-synapse FAFB v783 matrix (blue) and on Shiu et al.'s connectivity (grey), at the published w\_syn = 0.275 mV (5 trials × 1 s; mean ± s.d.). a, sugar GRNs → MN9; b, LC4 → giant fibre (DNp01); c, LC9 → walking DNs; d, turn presets lateralize DNa02. The calibrated w\_syn = 0.185 mV used for all insult simulations lowers these curves (values in text). (B) Metabolic-layer unit tests at the default (pre-calibration) constants, speedup 50. a, raster: anoxia (S = 0, grey) silences the brain and naive reoxygenation re-ignites it; b, population rate with and without a 20-s post-reperfusion block; c, mean ATP, depolarized fraction and synaptic release; d, extracellular K⁺ per neuropil (no reset); e, f, focal ischaemia of the right optic lobe: K⁺ time courses coloured by distance to the core, and peak K⁺ vs centroid distance.}
+\end{figure}
+
+\subsubsection{2.2 Metabolic vulnerability targets hubs, and the effect replicates across four connectomes}\label{metabolic-vulnerability-targets-hubs-and-the-effect-replicates-across-four-connectomes}
+
+We first asked whether connectome structure alone has a damage threshold. We measured strict sensory-to-sink reachability as interneurons were removed (Fig. 2A). Reachability is the fraction of (sensory neuron, descending/motor neuron) pairs joined by a ≤6-hop path through surviving interneurons. Baseline reach was 0.8687 (FAFB), 0.7291 (BANC), 0.9019 (MCNS) and 0.9754 (MANC).
+
+\textbf{Random loss was graceful in every dataset.} Reach stayed ≥0.8 of baseline up to f = 0.50 (FAFB), 0.45 (BANC), 0.65 (MCNS) and 0.85 (MANC). The logistic transition width (FAFB w = 0.671) exceeded the preregistered falsification bound of 0.25, so H1 was falsified for random structural loss in all four datasets. The verdict held at a ≥10-synapse edge cut-off (w = 0.960).
+
+\textbf{Loss weighted by metabolic demand was far more destructive.} In FAFB:
+
+\begin{itemize}
+\tightlist
+\item
+  removing neurons with probability proportional to membrane area gave f\_c = 0.277 (ratio to random 0.346 {[}95\% CI 0.337, 0.356{]});
+\item
+  synapse-count weighting gave f\_c = 0.228 (ratio 0.285 {[}0.278, 0.291{]});
+\item
+  hub-targeted removal halved reach after removing 7.3\% of interneurons (fine-grid f\_c 0.033; ratio 0.041 {[}0.041, 0.041{]}) (Fig. 2B).
+\end{itemize}
+
+The preregistered H2(b) criterion (ratio ≤0.7, CI excluding 1) was met in all four connectomes for synapse-weighted and hub-targeted loss.
+
+Two controls located the effect:
+
+\begin{itemize}
+\tightlist
+\item
+  Degree-bin-matched random removal reproduced the hub-targeted curve (ratio 0.044 {[}0.044, 0.045{]}). Vulnerability is therefore carried by degree, not by the identity of particular hubs.
+\item
+  A degree-preserving rewired null was much less fragile (hub-targeted f\_c 0.266 vs 0.035 in the real graph). Real sensorimotor routes are therefore concentrated on hubs beyond what the degree sequence implies.
+\end{itemize}
+
+Magnitudes did not replicate. The f\_c max/min ratio across datasets was 6.32 for synapse-weighted and 23.35 for hub-targeted loss, because the VNC-only MANC was much more hub-tolerant (f\_c 0.388).
+
+\textbf{No single cell type acted as a structural keystone.} Removing every neuron of any one evaluated type reduced reach by at most 0.88\% (FAFB, CB1231), 1.03\% (BANC), 0.86\% (MCNS) and 0.00\% (MANC) (Fig. S2). Graded type-level importance did replicate (Spearman ρ of influence loss 0.65--0.91 across dataset pairs).
+
+Under random loss, weighted influence and the giant strongly connected component fell to 50\% before binary reach did, in all four datasets (FAFB D50 0.497 and 0.506 vs 0.759; Fig. S1). This is a structural precondition for a network that keeps its routes but processes signals differently.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 2. Structural vulnerability across four connectomes (FAFB, BANC, MCNS, MANC). (A) Strict sensory→sink reach (≤6 hops) vs fraction of interneurons removed under random, metabolic (area- or synapse-weighted), hub-targeted, degree-matched and focal regimes; band = 2.5--97.5 percentile across removal orders. (B) Targeted/random ratio of logistic midpoints and D50 with 95\% bootstrap CIs; dashed line = preregistered H2 cut-off 0.7.}]{figures/Figure2_structural_vulnerability.png}
+\caption{\textbf{Figure 2. Structural vulnerability across four connectomes (FAFB, BANC, MCNS, MANC).} (A) Strict sensory→sink reach (≤6 hops) vs fraction of interneurons removed under random, metabolic (area- or synapse-weighted), hub-targeted, degree-matched and focal regimes; band = 2.5--97.5 percentile across removal orders. (B) Targeted/random ratio of logistic midpoints and D50 with 95\% bootstrap CIs; dashed line = preregistered H2 cut-off 0.7.}
+\end{figure}
+
+\subsubsection{2.3 Reoxygenation drives the network into a self-sustained runaway state}\label{reoxygenation-drives-the-network-into-a-self-sustained-runaway-state}
+
+\textbf{Protocol.} We simulated whole-brain anoxia of duration D at 17--33 °C (1,209 condition--seed runs, 274 conditions; default sign rule). Each run was followed by:
+
+\begin{itemize}
+\tightlist
+\item
+  60 s of reperfusion protocol;
+\item
+  20 s of free observation;
+\item
+  a seven-probe stimulus battery read out at all 1,415 descending and motor neurons.
+\end{itemize}
+
+\textbf{Identity metric.} Functional identity was scored by the preregistered functional identity index (FII). FII is the Pearson correlation of the post-protocol stimulus × readout response matrix with the intact baseline, normalised by the noise ceiling (0.9940). FII is insensitive to gain: a 0.5×-scaled baseline gives r = 1.000, and a readout-shuffled baseline gives −0.220.
+
+\textbf{Naive reoxygenation failed at every insult.} At 22 °C, abrupt (``naive'') reoxygenation ignited a self-sustained high-activity state in all 30 runs from 7 to 480 s of anoxia (6 durations × 5 seeds; Fig. 3B). This included 7 s, which is shorter than SD onset. In this state:
+
+\begin{itemize}
+\tightlist
+\item
+  13--49\% of neurons fired spontaneously;
+\item
+  late firing averaged 105--119 Hz per neuron;
+\item
+  FII\_norm was ≈0.
+\end{itemize}
+
+The runaway appeared at time-compression factors 25, 50 and 100 (FII\_norm −0.10, −0.06, 0.065 after 30 s), so it is not a compression artefact. Sham protocols gave FII\_norm 1.001. At 17 °C, 7 s of anoxia did not ignite it (FII\_norm 0.988). Section 2.6 shows that the short-duration part of this result depends on transmitter-sign assignment.
+
+\textbf{Two boundaries (Fig. 3A).}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Functional boundary.} Under the default signs it lies at \textasciitilde7 s of anoxia, beyond which naive reperfusion produces runaway.
+\item
+  \emph{Structural boundary.} Even when the runaway was prevented (Section 2.4), neuron death removed identity beyond a recoverable duration D\_max. D\_max was 359 {[}342, 381{]}, 271 {[}261, 278{]}, 149 {[}145, 153{]} and 124 {[}112, 129{]} model-s at 17, 22, 29 and 33 °C.
+\end{itemize}
+
+\textbf{Brain death required near-total neuron death.} Silent, unresponsive ``brain death'' was defined as a spontaneously active fraction \textless0.01 and no readout response \textgreater8 Hz after the protocol. It occurred in 92 runs, always with ≥97.9\% of neurons dead. The model never produced a silent but structurally intact unresponsive state: every surviving network either responded to probes or ran away. In this model, therefore, irreversible functional death required near-total structural death.
+
+\textbf{Other insults.}
+
+\begin{itemize}
+\tightlist
+\item
+  Partial supply at 25\% of normal was tolerated indefinitely (960 s: no SD, no deaths).
+\item
+  At 10\% supply, SD began at 17 s and 97.9\% of neurons were dead at 960 s.
+\item
+  Hyperthermia without hypoxia (33/37/40 °C for 300 s) had no effect.
+\item
+  Focal ischaemia of the right optic lobe killed 32.5\% of the brain at 960 s but left FII\_norm at 0.997--1.000, because the probe battery barely uses that lobe. Identity in this model is defined relative to the battery.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 3. Brain-death map and the reperfusion runaway (calibrated set; default sign rule; speedup 50). (A) FII\_norm with naive reperfusion and with a 20-s block reset, and dead fraction, by anoxia duration × temperature; letters give the modal outcome class (n = 5 seeds per cell). (B) 180-s anoxia, seed 0: naive reperfusion (red) vs a 20-s total activity block at reperfusion (blue).}]{figures/Figure3_brain_death_map_runaway.png}
+\caption{\textbf{Figure 3. Brain-death map and the reperfusion runaway (calibrated set; default sign rule; speedup 50).} (A) FII\_norm with naive reperfusion and with a 20-s block reset, and dead fraction, by anoxia duration × temperature; letters give the modal outcome class (n = 5 seeds per cell). (B) 180-s anoxia, seed 0: naive reperfusion (red) vs a 20-s total activity block at reperfusion (blue).}
+\end{figure}
+
+\subsubsection{2.4 A brief total activity reset rescues function, with a therapeutic window and temperature dependence}\label{a-brief-total-activity-reset-rescues-function-with-a-therapeutic-window-and-temperature-dependence}
+
+\textbf{Protocol comparison.} We compared 32 reperfusion protocols at 30, 180 and 360 s of anoxia (5 seeds each; Fig. 4A). Every protocol without a total activity block of ≥10 s failed at all three durations. The failures included:
+
+\begin{itemize}
+\tightlist
+\item
+  −10 and −20 mV hyperpolarization;
+\item
+  two- to fourfold GABAergic gain;
+\item
+  SD-release blockade and threefold K⁺ clearance;
+\item
+  ramped (10/30/60 s) or pulsed (3×10 s, 6×5 s) reperfusion;
+\item
+  cooling to 12 or 17 °C during reperfusion;
+\item
+  low-level noise and spike-frequency adaptation (the best of these, at FII\_norm 0.73).
+\end{itemize}
+
+\textbf{The block.} A 20-s block of all spiking and synaptic transmission at reperfusion is the model analogue of a pharmacological isoelectric state. It recovered FII\_norm 1.001, 0.953 and 0.578 at 30, 180 and 360 s.
+
+\begin{itemize}
+\tightlist
+\item
+  Blocks of 2 and 5 s failed.
+\item
+  A 10-s block worked at 30 and 180 s but not reliably at 360 s (0.428).
+\item
+  Blocks of 20--40 s worked at every duration.
+\item
+  The block also worked when started 5 or 20 s after reperfusion, once the runaway was established (FII\_norm 0.841--0.846 at 360 s, the same as an immediate block). The attractor can therefore be erased after it has formed.
+\end{itemize}
+
+\textbf{After the reset, the remaining loss was structural.} At 360 s, 24.8\% of neurons were dead and FII\_norm was 0.578. A counterfactual that revived all dead neurons before the reset gave 1.001 at every duration. Adding clearance, noise, adaptation, SD blockade or staged release to the block changed FII\_norm by ≤0.01. Staged reawakening (sensory → central → descending, or the reverse) made no difference (0.846 vs 0.844).
+
+\textbf{H3 was falsified, with the direction reversed.} At 360 s, ramped and pulsed reperfusion gave lower FII\_norm than abrupt reperfusion:
+
+\begin{itemize}
+\tightlist
+\item
+  ramp 30 s: Δ = −0.331 {[}−0.583, −0.130{]};
+\item
+  ramp 60 s: −0.297 {[}−0.540, −0.092{]};
+\item
+  pulsed 3×10 s: −0.221 {[}−0.460, −0.011{]}.
+\end{itemize}
+
+They also caused more deaths (ramp 60 s +6.6 percentage points), because slower re-energization prolongs depolarization. The baseline model has no spike-driven injury term, so we added one in a follow-up (Section 2.7; Fig. S3). With it, no graded protocol beat abrupt reperfusion plus a block at any tested gain or duration. Without a block, pulsed reperfusion reduced death slightly at the highest calibrated gain (−1.6 pp {[}−1.8, −1.4{]} at 180 s), but the network stayed in runaway.
+
+\textbf{H4 was supported.} Cooling widened the recoverable window. The D\_max ratio 17 °C/29 °C had CI {[}2.29, 2.57{]}, giving Q10\_window = 2.09 {[}1.99, 2.19{]} at model Q10 2.5. This lies inside the preregistered ``approximately Q10'' band. The same pattern held at model Q10 2.0 (1.71) and 3.0 (2.44), with each value close to Q10\^{}0.8. That exponent is what the Hill-4 injury hazard predicts (Methods). The widening is therefore set by the damage rule, as the preregistration warned, and not by network nonlinearity (Fig. 4B).
+
+Timing of cooling mattered:
+
+\begin{itemize}
+\tightlist
+\item
+  Cooling to 12 °C before and during the insult gave 0.6\% dead and FII\_norm 0.977 after 360 s, the strongest tolerance intervention tested.
+\item
+  Cooling applied only during reperfusion was harmful (runaway; FII\_norm −0.30 to −0.13).
+\item
+  Reducing demand to 20\% delayed SD to 33 s and gave FII\_norm 0.704 at 360 s.
+\item
+  Preconditioning (15 s anoxia plus reset 60 s earlier) gave no protection, as expected for a model without gene expression or plasticity.
+\end{itemize}
+
+\textbf{H5 was not supported as preregistered.} With the reset, the D50 values of identity, evoked activity and reach coincided: FII\_norm 374 s {[}363, 385{]}; evoked-neuron count 368 s {[}365, 373{]}; reach 390 s {[}388, 391{]}. The ``resuscitated but different'' region (active, connected, FII\_norm ≤0.5) covered 0.0\% of non-runaway runs. A dissociation between identity and activity did exist, covering 22.1\% of runs, all of them in the runaway state. In this model, ``resuscitated but different'' exists only as the pathological attractor; once that is cleared, identity tracks structure. Pooled over 372 non-runaway reset runs, FII declined approximately linearly with dead fraction (logistic ΔAIC +0.11 vs linear; width 1.56), which also falsifies H1 for dynamical damage.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 4. Resuscitation protocols and temperature. (A) FII\_norm per protocol after 30-, 180- and 360-s anoxia (n = 5 seeds; 95\% bootstrap CI). (B) Left: D\_max vs temperature with Q10 scaling predictions. Right: FII\_norm vs dead fraction for non-runaway reset runs (n = 372).}]{figures/Figure4_resuscitation_temperature.png}
+\caption{\textbf{Figure 4. Resuscitation protocols and temperature.} (A) FII\_norm per protocol after 30-, 180- and 360-s anoxia (n = 5 seeds; 95\% bootstrap CI). (B) Left: D\_max vs temperature with Q10 scaling predictions. Right: FII\_norm vs dead fraction for non-runaway reset runs (n = 372).}
+\end{figure}
+
+\subsubsection{2.5 The maintained runaway is an ionic attractor with bistability and hysteresis}\label{the-maintained-runaway-is-an-ionic-attractor-with-bistability-and-hysteresis}
+
+\textbf{Dissection.} To find what sustains the runaway, we applied manipulations from 20 to 60 s after abrupt reperfusion (5 seeds; Fig. 5A-c). Rates below are given after 30 and 180 s of anoxia; unmanipulated rates were 105 and 121 Hz per neuron.
+
+\begin{itemize}
+\tightlist
+\item
+  Removing all synaptic transmission did not stop it (109 and 134 Hz per neuron during the manipulation).
+\item
+  Clamping extracellular K⁺ at 5 mM collapsed it (2.4 / 2.3 Hz), as did removing spike-driven K⁺ release (2.4 / 2.3 Hz).
+\item
+  Removing regenerative SD release did not abolish it.
+\item
+  Synaptic excitation contributed after short anoxia: removing excitatory synapses cut the 30-s runaway to 14 Hz.
+\item
+  Releasing the K⁺ clamp left a third, low-rate (≈4 Hz) synaptic reverberation with FII\_norm 0.71--0.72.
+\end{itemize}
+
+\textbf{Bistability in the intact network} (Fig. 5A-a,b). The same mechanism produced bistability in a network that had never been insulted. With identical parameters, the unperturbed network stayed silent (5/5 seeds; K⁺ 5.0 mM). A 2-s K⁺ clamp to ≥9 mM drove it into a self-sustained state (5/5; 65--129 Hz per neuron; K⁺ ≈15 mM).
+
+\begin{itemize}
+\tightlist
+\item
+  The minimal ignition kick tracked the analytic single-neuron K⁺ threshold, K\_th = K0·exp((V\_th − V\_rest − δ)/(g\_K·RT/F)). For tonic offsets δ ≥ 0 it sat one grid step above it (simulated 6--9 mM vs analytic 5.3--7.9 mM for δ = +6 to 0 mV).
+\item
+  Synaptic gain between 0.5× and 1.5× did not move the boundary.
+\item
+  Spike kicks without a K⁺ rise produced only the low-rate state.
+\end{itemize}
+
+\textbf{Hysteresis.} Ramping δ upward ignited the silent network at +7.15 mV in 3/3 seeds, matching V\_th − V\_rest = 7 mV. Ramping back down, the active state persisted to −6 mV (252--276 Hz per neuron), sustained by falling ATP (0.94 → 0.73) and rising K⁺ (9.5 → 20 mM). The hysteresis loop is therefore at least 13 mV wide; its lower edge was not reached. A total block quenched a kicked runaway only if it lasted ≥10 model-s at δ = 0 (1, 2 and 5 s failed) or ≥20 s at δ = +4 mV. These durations match those needed after anoxia.
+
+\textbf{Interpretation within the model.} These results fit a positive feedback loop: spiking releases K⁺, K⁺ depolarizes neurons through the Nernst term, and depolarization raises spiking. The loop creates two stable states, separated by a K⁺ threshold set by the gap between rest and spike threshold:
+
+\begin{itemize}
+\tightlist
+\item
+  quiet (K⁺ 5 mM);
+\item
+  active (K⁺ ≈10--20 mM).
+\end{itemize}
+
+Anoxia does not create the active state; on reoxygenation it supplies the perturbation. As neurons repolarize, a K⁺ load of 45--80 mM passes through the window between K\_th and depolarization block. Whether that perturbation lands in the active basin also depends on synaptic recruitment after short anoxia (Section 2.6). The reset holds the network silent until K⁺ and ATP relax back into the quiet basin.
+
+\textbf{Robustness to parameters.} We varied ten uncertain constants over wide ranges in 48 Latin-hypercube parameter sets (784 runs; Fig. 5B). Abrupt reperfusion produced runaway in 48/48 sets (288/288 runs), of the high-rate type in 41/48. The 20-s block rescued 48/48 sets after 30 s of anoxia but only 34/48 (0.71 {[}0.58, 0.83{]}) after 180 s.
+
+\begin{itemize}
+\tightlist
+\item
+  Eleven failing sets re-ignited after the block ended. These had slow ATP recovery (median τ\_ATP 44 vs 26 s; PRCC +0.55, Holm p = 0.02) and low reserve.
+\item
+  Three failed through neuron death (J50 ≈ 325 s).
+\end{itemize}
+
+The existence of the attractor is robust across the explored parameter box, but the adequacy of a fixed 20-s reset is not. We therefore tested a closed-loop release in MCNS and the FAFB-proxy (Section 2.9): it ended the block when the maximum compartment K⁺ fell below 6 mM and mean ATP exceeded 0.9. The criterion was met after 11 s in every run, and the network re-ignited (Section 2.9). Normalised K⁺ and ATP are therefore not a sufficient release signal in this model. The planned 40/60-s blocks for all 48 parameter sets were not run (Modal spend limit; Supplement S9).
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 5. Ionic bistability and robustness (FAFB, default sign rule). (A) a, intact network: state 30--40 s after a 2-s K⁺ clamp kick vs tonic offset δ (5 seeds at δ = 0, 3 otherwise); blue line = analytic intrinsic threshold K\_th; b, slow ramp of δ, −6 → +10 → −6 mV over 2 × 160 s (3 seeds); c, manipulations applied 20--60 s after abrupt reperfusion (n = 5); d, quench of a kicked runaway by a total block of duration B (n = 3). (B) a, set-mean FII\_norm in 48 Latin-hypercube parameter sets × 3 seeds (diamond = calibrated set; dashed line = 0.8); b, PRCC of set-level outcomes with each parameter (* Holm p \textless{} 0.05); c, outcome of the 20-s block after 180-s anoxia in the (τ\_ATP, reserve) plane.}]{figures/Figure5_ionic_bistability_robustness.png}
+\caption{\textbf{Figure 5. Ionic bistability and robustness (FAFB, default sign rule).} (A) a, intact network: state 30--40 s after a 2-s K⁺ clamp kick vs tonic offset δ (5 seeds at δ = 0, 3 otherwise); blue line = analytic intrinsic threshold K\_th; b, slow ramp of δ, −6 → +10 → −6 mV over 2 × 160 s (3 seeds); c, manipulations applied 20--60 s after abrupt reperfusion (n = 5); d, quench of a kicked runaway by a total block of duration B (n = 3). (B) a, set-mean FII\_norm in 48 Latin-hypercube parameter sets × 3 seeds (diamond = calibrated set; dashed line = 0.8); b, PRCC of set-level outcomes with each parameter (* Holm p \textless{} 0.05); c, outcome of the 20-s block after 180-s anoxia in the (τ\_ATP, reserve) plane.}
+\end{figure}
+
+\subsubsection{2.6 Transmitter-sign robustness: short-anoxia runaway depends on antennal-lobe local-neuron sign}\label{transmitter-sign-robustness-short-anoxia-runaway-depends-on-antennal-lobe-local-neuron-sign}
+
+The default sign rule maps unknown and monoaminergic transmitters to +1. Many antennal-lobe (AL) local neurons are GABAergic in flies, yet in FAFB they enter the model as excitatory. A connectome index computed on the intact FAFB graph flagged this. The mean-field excitatory reproduction number R\_eff was 19.6 with all neurons and fell to 7.4 when only confidently predicted ACh/GABA/Glu neurons were counted (Section 2.10).
+
+\textbf{Variant tested.} We set every neuron of class ALLN or of type lLN/vLN/v2LN/ilLN/il2LN to inhibitory. In FAFB this mask contains 431 neurons. Of these, 284 were already inhibitory and 147 changed sign (90 predicted cholinergic, 57 predicted monoaminergic). The same rule flipped 147 neurons in the FAFB-proxy model and 219 in MCNS. We tested the corrected signs:
+
+\begin{itemize}
+\tightlist
+\item
+  in the FAFB full model (variant A; 30-s anoxia, naive reperfusion; 3 seeds, run locally);
+\item
+  in MCNS and the FAFB-proxy model (30 and 180 s, naive and reset; 5 seeds each; Table 1, Fig. 8c).
+\end{itemize}
+
+\textbf{Table 1. Effect of setting antennal-lobe local neurons inhibitory (22 °C).} FII\_norm with 95\% bootstrap CI where n = 5. Late rate = mean firing in the last part of free observation (Hz per neuron; \texttt{obs\_late\_Hz}, the metric used by the runaway rule). For the FAFB default-sign row it is the dynamics-track arm-C value (n = 5); the separate anatomy runs report a different metric, the mean rate over the whole observation window (91.3--104.3 Hz per neuron; Supplement Table S6h-1). Runaway class = late rate \textgreater{} 0.5 Hz per neuron or spontaneous fraction \textgreater{} 0.05 (preregistered rule).
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1556}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0667}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.0889}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2556}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.2889}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 10\tabcolsep) * \real{0.1444}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+model
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+anoxia
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+protocol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+default signs: FII\_norm (late rate; runaway)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+AL local neurons inhibitory: FII\_norm (late rate; runaway)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Δ FII\_norm {[}95\% CI{]}
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+FAFB full model (variant A) & 30 s & naive & −0.058 {[}−0.180, 0.152{]} (111.0 Hz {[}103.2, 119.2{]}; 5/5) & FII 0.915--0.936 (0.035--0.17 Hz; \textbf{0/3}) & not computed (n = 3) \\
+MCNS & 30 s & naive & 0.050 {[}0.022, 0.078{]} (90.9 Hz; 5/5) & \textbf{1.000 {[}0.996, 1.002{]}} (3.0 Hz; 5/5) & +0.949 {[}+0.918, +0.977{]} \\
+FAFB-proxy & 30 s & naive & 0.146 {[}0.057, 0.228{]} (47.1 Hz; 5/5) & 0.859 {[}0.852, 0.867{]} (0.82 Hz; 5/5) & +0.714 {[}+0.632, +0.801{]} \\
+MCNS & 180 s & naive & 0.856 {[}0.810, 0.901{]} (127.8 Hz, episodic; 5/5) & −0.135 {[}−0.234, −0.041{]} (120.5 Hz, FSA 0.897; 5/5) & −0.991 {[}−1.119, −0.883{]} \\
+FAFB-proxy & 180 s & naive & 0.288 {[}0.086, 0.505{]} (124.1 Hz; 5/5) & −0.125 {[}−0.155, −0.093{]} (126.6 Hz; 5/5) & −0.413 {[}−0.622, −0.192{]} \\
+MCNS & 30 / 180 s & 20-s block & 0.999 / 0.997 (recovered 5/5) & 1.000 / 0.989 (recovered 5/5) & --- \\
+FAFB-proxy & 30 / 180 s & 20-s block & 1.002 / 0.971 (recovered 5/5) & 1.002 / 0.965 (recovered 5/5) & --- \\
+\end{longtable}
+}
+
+\textbf{Short anoxia (30 s): the high-rate runaway and the identity loss disappeared.}
+
+\begin{itemize}
+\tightlist
+\item
+  In the FAFB full model all three seeds stayed below both runaway thresholds (spontaneous fraction ≤0.005).
+\item
+  Only 0.05--0.28\% of neurons fired ≥20 Hz, against 64--70\% under the default signs.
+\item
+  Raw FII was 0.915--0.936. It was computed against the default-sign intact baseline, because no variant-A baseline was run.
+\item
+  In MCNS and the FAFB-proxy, identity was preserved, but a weak oscillation persisted (3.0 and 0.82 Hz per neuron). The preregistered classifier still counts this as runaway, so the runaway did not vanish entirely in these two models.
+\end{itemize}
+
+\textbf{Long anoxia (180 s): the runaway persisted under corrected signs.} It became continuous rather than episodic in MCNS (spontaneous fraction 0.897), and the total block still rescued.
+
+\textbf{Interpretation within the model.} After short anoxia, the excitatory AL local-neuron loop supplies the synaptic recruitment that carries the network into the ionic basin. After long anoxia, the K⁺ load alone is enough.
+
+Consequences for other results:
+
+\begin{itemize}
+\tightlist
+\item
+  Under corrected signs, the duration at which naive reperfusion first produces runaway lies between 30 and 180 s. It was not localised further.
+\item
+  The ``\textasciitilde7 s'' functional boundary of Section 2.3 holds only for the default signs.
+\item
+  The driver-core result of Section 2.7 inherits this caveat.
+\item
+  Sign variants assigning inhibition to all low-confidence calls (variant B) or silencing neurons without a call (variant C) were prepared but not run.
+\end{itemize}
+
+\subsubsection{2.7 A recurrent excitatory driver core and targeted reset (default signs)}\label{a-recurrent-excitatory-driver-core-and-targeted-reset-default-signs}
+
+\textbf{Ignition.} After 30 s of anoxia, ignition was near-synchronous: population rate rose from \textasciitilde0 to \textasciitilde100 Hz per neuron within ≈1.5 model-s, starting ≈4 model-s after reoxygenation. Only 13--20\% of neurons were intrinsically suprathreshold at the end of reperfusion, so most firing was recruited (Fig. 6a).
+
+\textbf{Driver set.} We ranked excitatory neurons by their contribution to sustaining the state (rate × excitatory synapses onto active neurons) using training seeds, and tested targeted 20-s blocks on held-out seeds. The top 0.5\% ``sustain'' set (696 neurons) formed a single strongly connected excitatory core. 96\% of it lay in one strongly connected component (31 excitatory edges per node), against 40\% for top-degree hubs and 0.4\% for random sets of the same size.
+
+\textbf{Targeted blocks.}
+
+\begin{itemize}
+\tightlist
+\item
+  After 30 s of anoxia, blocking this 0.5\% set rescued 5/5 held-out seeds (FII\_norm 0.947 {[}0.943, 0.951{]}). Hubs needed 2\% (2,785 neurons), and random sets failed up to 20\%.
+\item
+  After 180 s of anoxia, 20\% of the brain had to be blocked (bracket 10--20\%), consistent with near-ceiling K⁺ everywhere.
+\end{itemize}
+
+\textbf{This result is not established for the real fly.} 279 of the 696 driver neurons sit in the antennal lobes, centred on local neurons lLN1\_bc and lLN2P and on DA1/VA1v/VM5d/DL2v projection neurons. These are the populations re-signed in Section 2.6, and with the corrected signs there was no high-rate 30-s runaway to target. Targeted blocks under the corrected signs were not run.
+
+\textbf{Excitotoxic reperfusion term} (Fig. S3). We added an injury term that accrues only when neurons fire above 50 Hz in raised K⁺. It increased death under abrupt reperfusion: after 180 s of anoxia, 0.9\%, 1.1\%, 3.5\% and 39.5\% dead at gains 0.3, 1, 3 and 10, against 0.9--1.0\% with the block. The block's protective margin grew with gain (Δ dead −38.6 pp at gain 10). In this model the reset is also the best protection against excitotoxic injury, because it removes the surge that causes it. The gain-10 result covers only the abrupt-vs-block comparison and is provisional.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 6. Attractor anatomy and targeted reset (FAFB, default sign rule; see Section 2.6 for the sign caveat). (a) Population rate after reoxygenation (5 seeds thin, mean thick). (b, c) FII\_norm on held-out seeds 10--14 vs size of the set blocked for 20 s from reperfusion onset; black = whole-brain block, dotted = no block. (d) Fraction of each set in its largest strongly connected component of the excitatory subgraph.}]{figures/Figure6_driver_core_targeted_reset.png}
+\caption{\textbf{Figure 6. Attractor anatomy and targeted reset (FAFB, default sign rule; see Section 2.6 for the sign caveat).} (a) Population rate after reoxygenation (5 seeds thin, mean thick). (b, c) FII\_norm on held-out seeds 10--14 vs size of the set blocked for 20 s from reperfusion onset; black = whole-brain block, dotted = no block. (d) Fraction of each set in its largest strongly connected component of the excitatory subgraph.}
+\end{figure}
+
+\subsubsection{2.8 Hub neuroprotection and ageing}\label{hub-neuroprotection-and-ageing}
+
+Remaining loss after the reset was structural, and structural vulnerability concentrates on hubs (Section 2.2). We therefore tested protecting neuron subsets from injury during 360 s of anoxia followed by the reset (FAFB; Fig. 7b).
+
+\begin{itemize}
+\tightlist
+\item
+  Protecting the top 1\% of neurons by degree (1,393 neurons) raised FII\_norm from 0.578 to 0.703 {[}0.668, 0.743{]}.
+\item
+  Whole-brain protection reached 1.001, so per protected neuron hub protection was about 30× more efficient (0.090 vs 0.003 FII per 1,000 neurons).
+\item
+  The top 10\% reached 0.906, above the recovery criterion, although 22.2\% of neurons still died.
+\item
+  Random sets of the same sizes gave no gain (0.568--0.590), even though random 10\% prevented a similar number of deaths. What mattered was which neurons were saved.
+\item
+  Without the reset, all protected arms stayed in runaway (FII\_norm −0.25 to 0.34).
+\end{itemize}
+
+MCNS replicated this effect (Section 2.9).
+
+\textbf{Ageing.} An ageing parameter combined synapse loss with reduced energy reserve and K⁺ clearance. It lowered FII\_norm roughly linearly with synapse loss (Fig. 7a).
+
+\begin{itemize}
+\tightlist
+\item
+  Losing synapses in proportion to demand was more damaging than random loss at every level (30\% lost: 0.668 vs 0.745; 15\%: 0.803 vs 0.856).
+\item
+  Demand-weighted ageing crossed the 0.8 recovery line at \textasciitilde15\% synapse loss, and random ageing at \textasciitilde25\%.
+\item
+  Partial supply at 30\% triggered SD only at the oldest level.
+\item
+  Boosting reserve or clearance, or mild hypometabolism, did not restore identity in the oldest network (all 0.668). The age deficit in this model is in the wiring, and metabolic support does not reach it.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 7. Ageing and targeted neuroprotection (FAFB). (a) FII\_norm vs fraction of synapses lost, demand-weighted vs random (n = 3 seeds per point). (b) FII\_norm after 360-s anoxia with injury protection of top-degree vs random neuron sets of 1--10\%, and whole brain.}]{figures/Figure7_hub_protection_ageing.png}
+\caption{\textbf{Figure 7. Ageing and targeted neuroprotection (FAFB).} (a) FII\_norm vs fraction of synapses lost, demand-weighted vs random (n = 3 seeds per point). (b) FII\_norm after 360-s anoxia with injury protection of top-degree vs random neuron sets of 1--10\%, and whole brain.}
+\end{figure}
+
+\subsubsection{2.9 Dynamic replication in the male CNS connectome}\label{dynamic-replication-in-the-male-cns-connectome}
+
+We rebuilt the model on MCNS v1.0 (166,700 neurons, 6,242,085 edges at ≥5 synapses). w\_syn was set at the same distance below the reverberation threshold as in FAFB (0.0538 mV). Two substitutions were needed because MCNS lacks the corresponding FAFB data:
+
+\begin{itemize}
+\tightlist
+\item
+  demand was proxied by total synapse count;
+\item
+  K⁺ coupling used a connection-based Jaccard 9-nearest-neighbour neuropil graph.
+\end{itemize}
+
+To separate dataset from proxy effects, FAFB was re-run with the same proxies (``FAFB-proxy''). Identity used the responsive probes; sugar → MN9 is silent in MCNS and was excluded. The analysis covered 211 runs, with 5 seeds per core condition (Fig. 8).
+
+\textbf{All four tested FAFB dynamic results replicated in MCNS:}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Runaway.} Naive reperfusion produced runaway in 5/5 runs at 30, 180 and 360 s and at 17, 22 and 29 °C. At 30 s, FII\_norm was 0.050 {[}0.022, 0.078{]} with a late rate of 90.9 Hz per neuron. After ≥180 s the MCNS runaway was episodic: all-region bursts of up to \textasciitilde410 Hz per neuron were separated by silent gaps. The 180-s naive FII\_norm (0.856) was taken in such a gap and understates the pathology; the VNC motor pattern was lost (VNC FII\_norm 0.045).
+\item
+  \emph{Block rescue.} The 20-s block recovered 5/5 runs at 30 and 180 s. Reset minus naive at 30 s was +0.948 {[}+0.916, +0.976{]}. Sham runs were unaffected (1.001).
+\item
+  \emph{Hub protection.} After 360 s plus block, protecting the top 1\% (1,667 neurons) gained +0.201 {[}+0.127, +0.278{]}, 84× more efficient per neuron than whole-CNS protection. Random 1\% gained +0.010 {[}−0.089, +0.114{]}.
+\item
+  \emph{Temperature.} After 180 s plus block, 17 °C minus 29 °C was +0.185 {[}+0.123, +0.260{]}.
+\end{itemize}
+
+\textbf{Robustness and new observations.}
+
+\begin{itemize}
+\tightlist
+\item
+  The 30-s runaway persisted at 0.7× the reverberation-threshold gain (3/3).
+\item
+  After naive reoxygenation the VNC was the first region to exceed 1 Hz per neuron (1.5 s, vs 2.5 s for the central brain and 4.0 s for the optic lobe). It was also the most persistent part of the 30-s attractor (spontaneous fraction 0.43).
+\end{itemize}
+
+\textbf{Closed-loop release was insufficient.} Ending the block when K⁺ and ATP had normalised (11 s) left residual activity. In MCNS: 11.3 Hz per neuron, runaway 5/5, FII\_norm 0.926; Δ vs 20-s block −0.071 {[}−0.081, −0.058{]}. In the FAFB-proxy: 40.2 Hz per neuron, FII\_norm 0.296; Δ −0.674 {[}−0.742, −0.624{]}. Some slow state not captured by K⁺ and ATP must still relax before release; which one was not tested.
+
+\textbf{Not analysed.} A BANC sweep (146 result files) completed on the compute volume but was not retrieved or analysed. MANC was not simulated dynamically. MCNS is male and FAFB female, so dataset and sex are confounded.
+
+\begin{figure}
+\centering
+\includegraphics[width=1\linewidth,height=\textheight,keepaspectratio,alt={Figure 8. Cross-connectome replication, sign correction and release rule. FII\_norm on responsive probes; dots = runs (n = 5 seeds; FAFB reference arms in b used 3), bars = mean with 95\% bootstrap CI; dashed line = recovered threshold 0.8. Grey = FAFB (dynamics track: geometric K⁺ graph, area demand); lavender = FAFB re-run with the CNS-model proxies; orange = MCNS. (a) 30- and 180-s anoxia, naive vs 20-s block. (b) 360-s anoxia + block with injury protection of random or top-degree sets. (c) Left pair: 30-s naive reperfusion with the default signs (``Shiu'') vs antennal-lobe local neurons inhibitory (``AL-LN −1''). Right pair: 180-s anoxia, closed-loop release (K⁺ \textless{} 6 mM and ATP \textgreater{} 0.9; 11 s) vs fixed 20-s block.}]{figures/Figure8_mcns_replication_sign.png}
+\caption{\textbf{Figure 8. Cross-connectome replication, sign correction and release rule.} FII\_norm on responsive probes; dots = runs (n = 5 seeds; FAFB reference arms in b used 3), bars = mean with 95\% bootstrap CI; dashed line = recovered threshold 0.8. Grey = FAFB (dynamics track: geometric K⁺ graph, area demand); lavender = FAFB re-run with the CNS-model proxies; orange = MCNS. (a) 30- and 180-s anoxia, naive vs 20-s block. (b) 360-s anoxia + block with injury protection of random or top-degree sets. (c) Left pair: 30-s naive reperfusion with the default signs (``Shiu'') vs antennal-lobe local neurons inhibitory (``AL-LN −1''). Right pair: 180-s anoxia, closed-loop release (K⁺ \textless{} 6 mM and ATP \textgreater{} 0.9; 11 s) vs fixed 20-s block.}
+\end{figure}
+
+\subsubsection{2.10 A connectome-only recoverability index}\label{a-connectome-only-recoverability-index}
+
+We asked whether statistics computed on the surviving wiring alone, without simulation, predict the dynamical outcome. We computed 19 indices on the surviving FAFB graph of 1,118 of the 1,209 dynamics runs (91 runs unprocessed). Prediction was evaluated with condition-grouped 5-fold cross-validation (4--20 repeats depending on the model) and cluster-bootstrap CIs. All indices used the default sign rule.
+
+\textbf{Intact network.} The intact FAFB excitatory network is far above criticality. Using the model's own neuron parameters, its mean-field reproduction number (extra spikes per spike) is R\_eff ≈ 19.6, or 17.0 with inhibition included. Counting only confidently typed ACh/GABA/Glu neurons, R\_eff falls to 7.4, still above 1.
+
+\textbf{Post-reset recovery was predictable from wiring.} For non-runaway reset runs (n = 562), the best single index was the size of the excitatory bootstrap core. This is the maximal set of surviving neurons each of which receives enough excitatory synapses from other members to stay active at 100 Hz. It predicted FII\_norm with cross-validated R² 0.964 {[}0.940, 0.978{]}, an improvement over dead fraction alone of ΔR² +0.066 {[}+0.025, +0.122{]}. It separated recovered from non-recovered reset runs with cross-validated AUC 0.999 (n = 582).
+
+Transfer to held-out experimental arms was good for tolerance (arm D) and hub protection (arm H) but poor for ageing (single-index R² −0.50; combined model 0.59). Wiring metrics trained on acute death therefore do not fully capture synapse-loss ageing.
+
+\textbf{Runaway was not predictable from wiring.} Among viable networks after naive reperfusion (n = 482, 457 runaway), no index beat chance: best single-index AUC 0.53; combined random forest AUC 0.61 {[}0.38, 0.76{]}. Every brain-death run had R\_eff = 0.
+
+The structural index thus predicts how much of the original circuit can return, but not whether the network will be trapped. Whether it is trapped depends on protocol, temperature and (Section 2.6) sign assignment.
+
+These results have not been written up as a standalone report. The planned BANC/MCNS/MANC recoverability maps were started but not completed.
+
+\subsubsection{2.11 Summary of preregistered hypotheses}\label{summary-of-preregistered-hypotheses}
+
+{\def\LTcaptype{none} % do not increment counter
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1156}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1905}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4558}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2381}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Hypothesis
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Preregistered criterion
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Result
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Verdict
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+H1 sharp damage threshold & ΔAIC ≤ −10 and width ≤ 0.10 & Structural random loss: FAFB w 0.671 (4/4 datasets w \textgreater{} 0.25); dynamical: ΔAIC +0.11, width 1.56 & \textbf{Falsified} (hub-targeted structural loss: graded, not robust to edge cut-off) \\
+H2 targeted vulnerability & (a) ρ(demand, death time) ≤ −0.3; (b) f\_c ratio ≤ 0.7, CI excludes 1 & (b) area 0.346 {[}0.337, 0.356{]}, hub 0.041 in FAFB; met in 4/4 connectomes. (a) not computed & \textbf{Partial: (b) supported; (a) untested} \\
+H3 graded \textgreater{} abrupt reperfusion & ΔFII ≥ 0.05, negative control null & ΔFII −0.221 to −0.331 at 360 s; persists with excitotoxic term (k\_exc ≤ 3) & \textbf{Falsified (reversed)} \\
+H4 hypothermia ≈ Q10 & Q10\_window in {[}0.67, 1.5{]} × model Q10 & 2.09 {[}1.99, 2.19{]} at Q10 2.5 (≈ Q10\^{}0.8); MCNS direction replicates (+0.185) & \textbf{Supported} (set by the damage rule) \\
+H5 identity lost first & D50\_FII lowest; regime ≥5\% of grid & Reset: D50s coincide, 0.0\% coverage; runaway only: 22.1\% & \textbf{Not supported} for recovery; present only in runaway \\
+H6 replication & ≥3/4 connectomes match & Structural direction 4/4, magnitudes differ (f\_c max/min 6.32--23.35); dynamics: MCNS replicates runaway, rescue, hub protection, temperature; BANC not analysed, MANC not simulated & \textbf{Partial} \\
+\end{longtable}
+}
+
+\subsection{3. Discussion}\label{discussion}
+
+\subsubsection{3.1 What the model says}\label{what-the-model-says}
+
+In a model built from a complete fly brain wiring diagram, the obstacle to recovery after anoxia was a state, not damage. Reoxygenation could leave the network in a self-sustained, K⁺-coupled high-activity attractor that coexists with the normal quiet state.
+
+Ion handling maintains the attractor: it survives removal of every synapse and vanishes without activity-dependent K⁺ release. Entering it is a separate question. After 180 s of anoxia, entry was robust to parameters (48/48 sets), connectome (FAFB and MCNS) and transmitter-sign assignment. After 30 s of anoxia, entry depended on synaptic recruitment through antennal-lobe local neurons (147 in FAFB, 219 in MCNS) whose sign the default rule gets wrong. With these neurons inhibitory, the high-rate state did not form and identity was preserved.
+
+The headline is therefore duration-dependent. The trap is robust after long insults, but its short-insult form is sensitive to sign predictions and should not be generalised.
+
+\textbf{The reset.} A 10--20 s total block let K⁺ and ATP relax back into the quiet basin and restored the original stimulus--response map. This held at both durations, in both connectomes and under both sign assignments. After the reset, the brain that returned was the original one, minus the neurons that had died.
+
+The line between ``recoverable'' and ``dead'' was set by two separate processes:
+
+\begin{itemize}
+\tightlist
+\item
+  a reversible dynamical trap determined whether function returned at all;
+\item
+  slow injury kinetics determined how much of the original circuit was left to return.
+\end{itemize}
+
+\textbf{Failed expectations.} Three preregistered expectations failed, and each failure is informative.
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{H1.} No sharp percolation threshold appeared under random or dynamical damage. Identity fell roughly in proportion to dead fraction, and which neurons died mattered more than how many: hub-targeted loss collapsed reach at a small fraction of the random-loss damage, and protecting 1\% of hubs was 30--84× more efficient than whole-brain protection.
+\item
+  \emph{H3.} Graded reperfusion was worse, not better, because it lengthened the depolarized period and did not remove the attractor.
+\item
+  \emph{H5.} ``Resuscitated but different'' networks appeared only as the pathological runaway state. They were not a stable alternative identity.
+\end{itemize}
+
+\subsubsection{3.2 Relation to mammalian physiology}\label{relation-to-mammalian-physiology}
+
+The ingredients of the trap are familiar. Extracellular K⁺ accumulation driving further depolarization is the core positive feedback of spreading depolarization \cite{dreier2011,hartings2016}. Mammalian cortex after cardiac arrest often passes through burst-suppression, periodic discharges and seizures, which are associated with poor outcome. Our model does not reproduce these patterns, and we do not claim it does. The episodic bursting seen in MCNS after long anoxia resembles burst patterns only superficially.
+
+The model does suggest a specific question for post-arrest electrophysiology: do some post-anoxic hyperexcitable states persist because the ionic environment sits in a second stable state, rather than because of irreversible injury? If so, a time-limited, deep suppression of activity, ended only after energy has recovered, would be a mechanistically targeted intervention. The model also predicts that the timing of release matters:
+
+\begin{itemize}
+\tightlist
+\item
+  a block that ended before ATP recovered re-ignited the attractor in 11 of 48 parameter sets;
+\item
+  a release triggered as soon as K⁺ and ATP normalised (11 s) re-ignited it in MCNS and the FAFB-proxy.
+\end{itemize}
+
+\textbf{Temperature.} Temperature results agree with clinical and fly data in direction. Cooling before and during the insult was the strongest protective manipulation, consistent with fly K⁺ stability at 17 °C during repetitive anoxia \cite{rodriguez2012} and with clinical hypothermia after cardiac arrest \cite{haca2002,bernard2002,erecinska2003}. The size of the effect (Q10\^{}0.8) follows from our injury rule and should not be read as a prediction. Cooling applied only during reperfusion was harmful, because slower pump-mediated K⁺ clearance deepened the trap. This prediction can be tested.
+
+\textbf{Graded reperfusion.} The rodent postconditioning literature reports benefit from graded reperfusion \cite{gao2008,zhao2009}, which our model does not reproduce. The model lacks the oxidative, inflammatory and gene-expression mechanisms thought to mediate that benefit \cite{eltzschig2011,caraballo2014,vigne2009}. Our negative H3 result is therefore specific to the electrical and ionic component of reperfusion.
+
+\subsubsection{3.3 Relation to post-mortem restoration}\label{relation-to-post-mortem-restoration}
+
+BrainEx restored cellular function without global electrocorticographic activity \cite{vrselja2019}. That experiment used an activity-suppressing perfusate by design, so it does not test our model. Our results suggest that restoring cells and restoring organised network function are separate problems, with a reversible network state between them.
+
+In our model, a silent unresponsive state never arose while most neurons were alive. In vivo, such a state would require mechanisms the model lacks, such as persistent synaptic failure, glial dysfunction or neuromodulatory collapse. Whether original pathways persist after resuscitation depends here on neuron survival, and above all on survival of hubs.
+
+\subsubsection{3.4 Brain death and resuscitation: what this model can and cannot say}\label{brain-death-and-resuscitation-what-this-model-can-and-cannot-say}
+
+\textbf{What it can say, as model predictions.}
+
+\begin{itemize}
+\tightlist
+\item
+  In a network built from a complete fly wiring diagram, failure to recover after anoxia can be a reversible ionic state rather than structural damage.
+\item
+  Clearing that state with a time-limited total activity block returns the original stimulus--response map, minus dead neurons.
+\item
+  The block has to outlast energy recovery.
+\item
+  Silent, unresponsive and unrecoverable network failure required ≥97.9\% neuron death.
+\item
+  Which neurons survive matters more than how many.
+\end{itemize}
+
+\textbf{What it cannot say.}
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{Living tissue.} It cannot say whether any of this happens in living flies or mammals. The model has no glia beyond a clearance rate, no Ca²⁺ or Na⁺ dynamics, no neuromodulation, no oxidative or inflammatory injury, no plasticity and no gene expression.
+\item
+  \emph{Clinical questions.} It cannot address clinical death by neurologic criteria, organ donation practice or the care of any patient.
+\item
+  \emph{Persistence of pathways.} It cannot say whether ``original pathways persist'' in a biological sense. FII measures a seven-probe stimulus → descending/motor map and is blind to lesions outside those pathways (losing a third of the brain in the right optic lobe left FII ≈ 1.0).
+\item
+  \emph{Short-insult trap.} It cannot say whether the short-insult trap exists at all, since it hinges on transmitter-sign predictions for a small population.
+\item
+  \emph{Absolute timing.} It does not give absolute times: model seconds are compressed 50-fold, and injury constants were chosen for simulability, not fitted to flies.
+\end{itemize}
+
+Resuscitation of a brain-dead organism has not been demonstrated empirically, and this work does not demonstrate it either. It identifies, in a model, one class of network-level obstacle and one class of intervention that could be tested experimentally.
+
+\subsubsection{\texorpdfstring{3.5 Testable predictions in \emph{Drosophila}}{3.5 Testable predictions in Drosophila}}\label{testable-predictions-in-drosophila}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Reset rescue.} Consider flies exposed to N₂ anoxia beyond the duration that normally gives delayed recovery. They should recover faster, with fewer deficits, if neuronal activity is silenced pan-neuronally for a defined window at reoxygenation. Possible methods are GtACR1 optogenetic silencing, or shibire\^{}ts at restrictive temperature applied with care for its thermal confound. Readouts: time to righting, proboscis extension to sucrose, and giant-fibre escape latency.
+\item
+  \textbf{Duration dependence.} Under the corrected-sign model, a reset should matter more after long anoxia than after short anoxia. Silencing should therefore show a larger benefit at longer insults.
+\item
+  \textbf{K⁺ trap signature.} K⁺-selective microelectrodes in the fly brain \cite{armstrong2011,rodriguez2012} should show a post-reoxygenation K⁺ plateau of \textasciitilde10--20 mM with hyperactivity in poorly recovering flies. Silencing should abolish it.
+\item
+  \textbf{Timing window.} Silencing started 5--20 s after reoxygenation should still rescue. Silencing that ends before K⁺ clearance and energy recovery should fail.
+\item
+  \textbf{Cooling timing.} Pre-insult cooling should protect, and cooling only during reoxygenation should not.
+\item
+  \textbf{Hub protection.} Protecting large, high-degree neurons, for example by targeted expression of protective factors such as glial Hsp70 \cite{armstrong2011}, should preserve more sensorimotor function per protected cell than random protection.
+\end{enumerate}
+
+\subsubsection{3.6 Translational caution}\label{translational-caution}
+
+The fly brain is anoxia-tolerant and treats SD as a protective shutdown \cite{robertson2020,campbell2018}. Our injury parameters are mammal-like in timescale, chosen so that damage occurs within simulable durations. The extrapolated median-neuron LT50 under arrest was \textasciitilde1.5 h, while real adult flies have an LT50 of 8.3 h \cite{callier2015}. Because of time compression (Methods), model seconds are not biological seconds. Nothing here bears directly on human brain death determination, organ donation practice or the treatment of individual patients.
+
+\subsection{4. Limitations}\label{limitations}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Unfitted constants.} τ\_ATP, J50, the injury hazard, g\_K coupling, and the K⁺ release and clearance rates are phenomenological and not fitted to \emph{Drosophila} recordings. SD latency and K⁺ peaks were matched; ATP kinetics (fly whole-body ATP 35\% at 15 min; \cite{campbell2018}) were not. The Latin-hypercube analysis shows that the attractor exists across a 10-parameter box, while reset adequacy depends on τ\_ATP and reserve.
+\item
+  \textbf{LIF abstraction.} The model has point neurons and no voltage-gated K⁺ or Na⁺ conductances beyond threshold and reset. It has no gap junctions, dendrites or neuromodulation. Real K⁺-dependent conductances could abolish or create bistability.
+\item
+  \textbf{No glia, Ca²⁺ or Na⁺ dynamics.} Glial K⁺ buffering \cite{andersen2026,armstrong2011} is represented only as a clearance rate. Ca²⁺ load is a proxy integral, and excitotoxicity is a K⁺-based proxy.
+\item
+  \textbf{Time compression.} The slow layer runs 50× faster than spiking time (speedup 50). Outcome classes were invariant from 25× to 100×, but absolute escape times and therapeutic windows in biological units are uncertain.
+\item
+  \textbf{Sign assignment.} Transmitter signs come from predictions, with glutamate inhibitory and unknown or monoaminergic transmitters excitatory. Glutamate sign was the strongest determinant of runaway intensity (PRCC −0.71). Correcting antennal-lobe local neurons abolished the high-rate 30-s runaway (Section 2.6). This correction was tested with 3 seeds in the full FAFB model and 5 seeds in MCNS and the FAFB-proxy, at 30 and 180 s only. Broader sign variants (all low-confidence calls inhibitory; no-call neurons silent) were not run. Most FAFB results (Sections 2.3--2.8 and 2.10) use the default signs.
+\item
+  \textbf{Two-dataset dynamics.} Dynamic results come from FAFB and MCNS, and MCNS required proxies for demand and K⁺ coupling. A BANC sweep finished but was not analysed. MANC was not simulated dynamically. Sex and dataset are confounded.
+\item
+  \textbf{Readout dependence.} FII is defined by a seven-probe battery read at descending and motor neurons. Large lesions outside the battery's pathways leave FII intact. A single 500-ms evaluation window can fall in a silent gap of an episodic runaway (MCNS 180 s).
+\item
+  \textbf{Statistical design below preregistration.} We used 3--5 seeds per condition (preregistered ≥10) and one stimulus rate per probe (preregistered 3). Several structural regimes had fewer than 20 removal orders. Several between-seed CIs are degenerate because outcomes are nearly deterministic.
+\item
+  \textbf{No spontaneous activity.} The Shiu model is silent at rest, so the preregistered spontaneously-active-fraction metric was replaced by an evoked-neuron count.
+\item
+  \textbf{Incomplete follow-ups.} The following were not executed because the compute budget was reached:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    a 605-run mechanism follow-up: longer blocks for all parameter sets, the full high-gain excitotoxic grid, finer targeted-set brackets and a wider hysteresis ramp;
+  \item
+    the BANC analysis;
+  \item
+    the cross-connectome recoverability maps;
+  \item
+    H2(a), the correlation of death time with demand, which was never computed.
+  \end{itemize}
+\end{enumerate}
+
+\subsection{5. Methods}\label{methods}
+
+\subsubsection{5.1 Data}\label{data}
+
+The following connectomes were downloaded from FlyWire Codex (https://codex.flywire.ai/) \cite{dorkenwald2024,schlegel2024,bates2026,takemura2024,marin2024,berg2026}:
+
+\begin{itemize}
+\tightlist
+\item
+  FAFB v783 (FlyWire; 139,255 neurons; Princeton synapse table aggregated over neuropils, ≥5 synapses per pair; 3,732,460 pairs and 50,666,648 synapses);
+\item
+  BANC v888 (158,262 neurons; 3,037,361 pairs, release floored at ≥3 synapses);
+\item
+  MANC v1.2.1 (23,665 neurons; 5,305,638 pairs);
+\item
+  MCNS v1.0 (166,700 neurons; 6,242,118 pairs at ≥5).
+\end{itemize}
+
+Pair counts matched the Codex totals. MAOL v1.1 \cite{nern2025} was not available locally and was not analysed. Neuron annotations (super-class, class, cell type, side, predicted transmitter), FAFB cell size statistics and FlyWire skeletons were used as distributed with each release. Glia, trachea and non-neuronal objects were excluded (BANC 473 objects; MANC 15 glia).
+
+\subsubsection{5.2 Fast layer}\label{fast-layer}
+
+The Shiu et al.~LIF model \cite{shiu2024} was reimplemented in NumPy/SciPy (\texttt{flysim.py}; brian2 and numba were not installable on the host).
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Dynamics:} dv/dt = (v₀ − v + g)/τ\_m and dg/dt = −g/τ\_syn, with exact integration at dt = 0.1 ms.
+\item
+  \textbf{Synapses:} a presynaptic spike adds w\_syn·sign·n\_syn to g after a 1.8-ms delay.
+\item
+  \textbf{Refractory period:} 2.2 ms, during which v and g are frozen.
+\item
+  \textbf{Input:} Poisson input adds 68.75 mV to v.
+\item
+  \textbf{Integration:} the Brian2 schedule order was preserved. Integration is event-driven over an active set, which gave identical results to full integration.
+\item
+  \textbf{Weights:} FAFB used w\_syn = 0.185 mV (Section 2.1). For MCNS and BANC, w\_syn was matched by scaling each dataset's reverberation threshold by the FAFB ratio 0.185/0.2135 (MCNS 0.0538, BANC 0.2227).
+\end{itemize}
+
+\subsubsection{5.3 Slow metabolic and ionic layer}\label{slow-metabolic-and-ionic-layer}
+
+The slow layer was updated every 5 ms of spiking time, with all slow rates multiplied by a speedup factor (50 unless stated). Times are reported in model seconds.
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{ATP} a\_i: da/dt = {[}m·b\_i·Q\_s·S·(1−a)/(K\_adp+1−a) − d\_i·a{]}/τ\_ATP, with reserve m = 4 × resting demand and a₀ = 0.95.
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Demand: d\_i = b\_i·Q\_d·(1 + r\_i/r\_half + k\_K·(K\_i−K₀)/K₀), with b\_i = clip((area\_i/median)\^{}β, 0.25, 4), β = 0.5 and r\_half = 100 Hz.
+  \item
+    τ\_ATP = 30 s (calibrated).
+  \item
+    Temperature: Q\_d = 2.5\^{}((T−22)/10); supply Q10 1.5; pump/clearance Q10 1.8; injury Q10 2.5.
+  \end{itemize}
+\item
+  \textbf{Pump failure}: dV\_atp = 40·((e\_ok − e)/e\_ok)\^{}1.5 for e \textless{} e\_ok = 0.75 (zero at full supply).
+\item
+  \textbf{Extracellular K⁺} in 79 neuropil compartments (K₀ = 5 mM), with four terms:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    spike-driven release (k\_spk);
+  \item
+    regenerative release dep·R·(1 − K/K\_max), with K\_max = 80 mM and a depleting release store (τ 8 s; recovery τ 30 s);
+  \item
+    pump-dependent leak and clearance (k\_clr = 1 s⁻¹ × pump, half glial);
+  \item
+    diffusion over a geometric adjacency (neuropil contact area / centroid distance, from 80,215,790 synapse positions).
+  \end{itemize}
+
+  Neuron K\_i is the synapse-weighted mixture of its compartments. dV\_K = g\_K·(RT/F)·ln(K/K₀), with g\_K = 0.6, and total depolarization is soft-capped at 50 mV.
+\item
+  \textbf{SD and depolarization block}: dep = σ((v\_rest,eff − V\_sd)/2), with V\_sd = −30 ± 2 mV. Block h → 1 − σ((v\_rest,eff + 32)/2), raising threshold by 100·(1 − h) mV.
+\item
+  \textbf{Injury and death}: dJ/dt = dep·(1 − e) − k\_rep·e·(1 − dep)·J. Death hazard h\_max·J⁴/(J⁴ + J50⁴), with h\_max = 1/30 s⁻¹ and J50 = 600 s (calibrated; 60 s killed 90.6\% after 120 s and was rejected). Death is permanent. Under this hazard the cumulative hazard scales as rate⁴·D⁵, so D\_max ∝ rate\^{}(−4/5), which explains Q10\_window ≈ Q10\^{}0.8.
+\item
+  \textbf{Synaptic failure} (reversible): release fraction clip((e − 0.3)/0.3, 0, 1).
+\item
+  \textbf{Excitotoxic term} (follow-up only): dJ\_i/dt += q·k\_exc·max(r\_i − r₀, 0)/r₀·Kex\_i/(Kex\_i + K₀), with r₀ = 50 Hz and k\_exc ∈ \{0, 0.3, 1, 3, 10\}.
+\end{itemize}
+
+Parameter provenance and literature anchors are listed in the Supplement (Table S1, from the project parameter table of 81 values, 6 flagged unverified).
+
+\subsubsection{5.4 Protocols and readouts}\label{protocols-and-readouts}
+
+\textbf{Run timeline:} 2 s normoxia; anoxia (supply S = 0) for D s; 60 s of reperfusion protocol; 20 s free observation (S = 1, no interventions); evaluation at speedup 1.
+
+\textbf{Probe battery:}
+
+\begin{itemize}
+\tightlist
+\item
+  sugar GRNs, bitter GRNs, and Johnston's-organ auditory and wind/gravity neurons (150 Hz);
+\item
+  bilateral LC4 and LC9 (100 Hz);
+\item
+  left turn (LC9\_L + DNa02\_L, 180 Hz).
+\end{itemize}
+
+Each probe ran for 250 ms from a copy of the post-protocol state, with readout at all 1,415 descending and motor neurons. Response = probe rate − rate in a 500-ms unstimulated window.
+
+\textbf{Interventions:}
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{block\_all} (total spike and synaptic block);
+\item
+  hyperpolarizing offsets, GABA gain, SD-release scaling and clearance scaling;
+\item
+  ramps and pulses of supply, and temperature schedules;
+\item
+  noise and adaptation;
+\item
+  per-neuron injury protection and counterfactual revival;
+\item
+  in MCNS and the FAFB-proxy, a closed-loop block released when the maximum compartment K⁺ \textless{} 6 mM and mean ATP e \textgreater{} 0.9.
+\end{itemize}
+
+The protocol list is in Table S5b.
+
+\subsubsection{5.5 Metrics and outcome classes}\label{metrics-and-outcome-classes}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{FII} = Pearson r of vec(R\_condition) vs vec(R\_baseline) over entries \textgreater{} 0 in either, with baseline = mean of 10 intact seeds.
+\item
+  \textbf{Noise ceiling} = median leave-one-out single-seed r (FAFB 0.9940; MCNS 0.9972; FAFB-proxy 0.9922); FII\_norm = FII/ceiling.
+\item
+  \textbf{Reach} = fraction of (probe, readout) pairs joined by ≤6 hops through surviving neurons.
+\item
+  \textbf{Outcome classes:}
+
+  \begin{itemize}
+  \tightlist
+  \item
+    runaway: late rate \textgreater{} 0.5 Hz per neuron or spontaneous fraction \textgreater{} 0.05;
+  \item
+    brain death: spontaneous fraction \textless{} 0.01 and no readout response \textgreater{} 8 Hz;
+  \item
+    recovered: FII\_norm ≥ 0.8 and Reach ≥ 0.8 × baseline;
+  \item
+    structural loss: ≥10\% dead, not recovered;
+  \item
+    impaired: otherwise.
+  \end{itemize}
+\item
+  \textbf{D\_max} = duration at which mean FII\_norm crosses 0.8 (log-interpolated).
+\end{itemize}
+
+\subsubsection{5.6 Structural percolation}\label{structural-percolation}
+
+\textbf{Reach computation.} Strict reach used 128 sensory source neurons stratified by modality, with sinks = descending + motor (+ efferent) neurons and relays only through removable interneurons. It was computed with uint64 bitset propagation.
+
+\textbf{Removal regimes:}
+
+\begin{itemize}
+\tightlist
+\item
+  random;
+\item
+  demand-weighted (Efraimidis--Spirakis order, weights ∝ membrane area or synapse count);
+\item
+  hub-targeted by total degree;
+\item
+  degree-bin-matched random (40 log-degree bins);
+\item
+  focal neuropil lesions.
+\end{itemize}
+
+\textbf{Fits and statistics.} Fits compared 4-parameter logistic, linear and exponential models by Gaussian AIC. Ratios used bootstrap over removal orders (2,000 resamples for the primary metric).
+
+\textbf{Controls:}
+
+\begin{itemize}
+\tightlist
+\item
+  degree-preserving directed rewiring (FAFB, MANC);
+\item
+  edge cut-offs ≥10 (all datasets) and ≥1 (MANC);
+\item
+  removal of off-path neurons (Δ = 0 in all datasets).
+\end{itemize}
+
+Keystone analysis evaluated top-flow-centrality cell types (Supplement S4).
+
+\subsubsection{5.7 Mechanism experiments}\label{mechanism-experiments}
+
+The mechanism track comprised 2,061 runs in total:
+
+\begin{itemize}
+\tightlist
+\item
+  Latin-hypercube robustness (48 sets × 10 parameters, 784 runs);
+\item
+  the excitotoxic grid (12 protocols × 3 durations × 5 seeds at k\_exc 1 and 3);
+\item
+  ignition anatomy with 5-ms first-spike resolution;
+\item
+  driver-set ranking on seeds 0--4, with targeted blocks tested on held-out seeds 10--14;
+\item
+  dissection (synaptic removal, K⁺ clamp, k\_spk = 0, k\_rel = 0);
+\item
+  bistability (2-s K⁺ clamp kicks, tonic offsets δ, slow δ ramps in both directions, and block quench).
+\end{itemize}
+
+\subsubsection{5.8 Transmitter-sign variant}\label{transmitter-sign-variant}
+
+Variant A set the sign of every neuron with class ALLN or primary type matching lLN, vLN, v2LN, ilLN or il2LN to −1. In FAFB this covers 431 neurons, of which 147 changed sign. In the FAFB full model, variant A was run for 30-s anoxia with naive reperfusion: 3 seeds of the probe protocol plus 3 anatomy runs with first-spike recording. These runs were made locally with independent processes. In MCNS and the FAFB-proxy, the equivalent variant (``AL-LN −1'') was run with its own 5-seed intact baseline for 30 and 180 s, naive and reset (25 runs each).
+
+\subsubsection{5.9 Cross-connectome dynamic replication}\label{cross-connectome-dynamic-replication}
+
+\textbf{MCNS and BANC models.} These were built with \texttt{flysim\_cns.py}, using:
+
+\begin{itemize}
+\tightlist
+\item
+  the same LIF and slow-layer code;
+\item
+  demand proxied by total synapse count;
+\item
+  a connection-based Jaccard 9-nearest-neighbour neuropil graph for K⁺ coupling (a dense shared-neuron adjacency was numerically unstable and was replaced);
+\item
+  w\_syn matched to the FAFB distance below the reverberation threshold.
+\end{itemize}
+
+\textbf{Probes and readouts.} Probes were matched by cell type. A probe counted as responsive if ≥3 brain readouts exceeded 8 Hz in the baseline mean. VNC identity used VNC motor and efferent readouts with the LC4 probe.
+
+\textbf{Runs.} The MCNS sweep (106 main runs, 25 sign-variant runs, 15 low-gain runs) and the FAFB-proxy control (40 + 25 runs) ran on cloud CPU containers. Core contrasts used 5 seeds, the MCNS baseline 10, and sham and sensitivity arms 3.
+
+\subsubsection{5.10 Recoverability index}\label{recoverability-index}
+
+Nineteen graph indices were computed on the surviving FAFB graph of each processed dynamics run:
+
+\begin{itemize}
+\tightlist
+\item
+  mean-field reproduction numbers (all neurons and confident-transmitter neurons), and a signed leading eigenvalue;
+\item
+  excitatory/inhibitory synapse balance;
+\item
+  hub survival;
+\item
+  rich-club density;
+\item
+  reciprocal and 3-cycle survival;
+\item
+  giant excitatory SCC;
+\item
+  excitatory bootstrap-core size;
+\item
+  simulator Reach.
+\end{itemize}
+
+Prediction used condition-grouped 5-fold cross-validation (4--20 repeats depending on the model), with cluster-bootstrap CIs, as well as logistic and random-forest models and leave-arm-out transfer.
+
+\subsubsection{5.11 Statistics}\label{statistics}
+
+Bootstrap 95\% CIs (2,000--4,000 resamples) were computed over seeds, removal orders or parameter sets. Protocol and variant contrasts used a paired-by-seed bootstrap. PRCC used Holm correction over 250 tests. The six primary tests were judged on preregistered effect-size criteria, and Holm correction across them changes no verdict.
+
+\subsubsection{5.12 Preregistration and deviations}\label{preregistration-and-deviations}
+
+Hypotheses, definitions and thresholds were registered on 2026-10-16, before any insult simulation (Supplement S1). Deviations are listed in Supplement S9. They include:
+
+\begin{itemize}
+\tightlist
+\item
+  seed counts and single-rate probes;
+\item
+  replacement of the spontaneous-activity metric;
+\item
+  J50/τ\_ATP calibration;
+\item
+  unmatched integrated supply in H3 protocols;
+\item
+  reduced removal orders;
+\item
+  the unexecuted follow-ups.
+\end{itemize}
+
+\subsubsection{5.13 Compute}\label{compute}
+
+Dynamics, mechanism and replication sweeps ran on Modal CPU containers:
+
+\begin{itemize}
+\tightlist
+\item
+  dynamics: 4 × 32 CPU, 24.3 CPU-h;
+\item
+  mechanism: 2 × 32 CPU, 34--37 min wall;
+\item
+  replication: 32-CPU containers, 217 s and 269 s wall for the analysed jobs.
+\end{itemize}
+
+Structural analyses, the FAFB sign variant and the recoverability index ran locally on a 16-core Windows host.
+
+\subsection{Data availability}\label{data-availability}
+
+Connectome data (FAFB v783, BANC v888, MANC v1.2.1, MCNS v1.0) are available from FlyWire Codex (https://codex.flywire.ai/) under the terms described at https://codex.flywire.ai/about\_codex and https://flywire.ai/principles.html; they are not redistributed. All derived result tables (per-condition summaries, per-run metrics, contrasts) and figure source data will be deposited with the archived code release (Zenodo; DOI to be minted at publication). Raw per-run outputs (neuron-level spike counts and alive masks) will be deposited where size permits. The 146 BANC replication result files remain on the compute volume and were not analysed for this version.
+
+\subsection{Code availability}\label{code-availability}
+
+All code (the simulator \texttt{flysim.py} and its variants, sweep drivers, and analysis and figure scripts) will be released at https://github.com/KalarisLabs/fly-brain-resuscitation (planned; not yet public at the time of this version) under an open-source licence, with an archived Zenodo release (DOI to be minted). The build scripts that generate this manuscript and its supplementary tables directly from the result files are included.
+
+\subsection{AI-use disclosure}\label{ai-use-disclosure}
+
+This study was carried out with substantial assistance from an AI system, Claude (Anthropic), under the direction of the author. The agentic tooling came from Kalaris Labs: Research Agent Skills (https://github.com/KalarisLabs/research-agent-skills) and Myriad (https://github.com/KalarisLabs/myriad). Aryan Kumar Jha (Kalaris Labs) is credited for AI (Claude) development work.
+
+The AI system:
+
+\begin{itemize}
+\tightlist
+\item
+  retrieved and verified literature (all 82 bibliography entries were checked against Crossref records);
+\item
+  wrote and ran simulation and analysis code;
+\item
+  drafted text and figures.
+\end{itemize}
+
+The author set the questions and scope, directed the research and is responsible for all content. The AI system is not an author. All numerical results were copied programmatically or verbatim from analysis outputs, not generated by the language model.
+
+\subsection{Author contributions (CRediT)}\label{author-contributions-credit}
+
+\textbf{Srihari Muralikrishnan} (sole author; Kalaris Labs; ORCID 0009-0004-0220-0361): Conceptualization, Methodology, Software (AI-assisted), Formal analysis, Investigation, Resources (primary compute), Data curation, Visualization, Writing -- original draft (AI-assisted), Writing -- review \& editing, Supervision, Project administration.
+
+\textbf{Non-author contributor.} Sayan Chowdhury (Founder \& CEO, Kalaris Labs): Resources (secondary compute provision), institutional support.
+
+\subsection{Competing interests}\label{competing-interests}
+
+The author is a co-founder of Kalaris Labs. Sayan Chowdhury, who provided secondary compute and institutional support, is Founder \& CEO of Kalaris Labs. No other competing interests are declared.
+
+\subsection{Funding}\label{funding}
+
+This work received no external funding. It was self-funded by the author, who paid the primary compute costs. Secondary compute was provided in kind by Sayan Chowdhury (Kalaris Labs).
+
+\subsection{Ethics statement}\label{ethics-statement}
+
+This is a purely computational study. No animals, human participants or human data were used. All simulations used publicly released connectome reconstructions.
+
+\subsection{Acknowledgments}\label{acknowledgments}
+
+We thank Sayan Chowdhury (Founder \& CEO, Kalaris Labs) for secondary compute provision and institutional support, and Aryan Kumar Jha (Kalaris Labs) for AI development work.
+
+We acknowledge the FlyWire Consortium, the Princeton FlyWire team, and the teams that produced the BANC, MANC and male CNS connectomes. They made their data openly available through FlyWire Codex (https://codex.flywire.ai/about\_codex; https://codex.flywire.ai/about\_flywire). Use of these data follows the FlyWire principles (https://flywire.ai/principles.html), and we cite the dataset publications \cite{dorkenwald2024,schlegel2024,bates2026,takemura2024,marin2024,berg2026}.
+
+The LIF model builds on Shiu et al.~\cite{shiu2024}. The Kalaris Labs Myriad and Research Agent Skills were used throughout.
+
+\begin{thebibliography}{99}
+\small
+\setlength{\itemsep}{1pt}
+\bibitem{greer2020} Greer DM, Shemie SD, Lewis A, Torrance S, Varelas P, Goldenberg FD, et al. (2020). Determination of Brain Death/Death by Neurologic Criteria. \emph{JAMA} 324, 1078. \href{https://doi.org/10.1001/jama.2020.11586}{\nolinkurl{doi:10.1001/jama.2020.11586}}.
+\bibitem{greer2023} Greer DM, Kirschen MP, Lewis A, Gronseth GS, Rae-Grant A, Ashwal S, et al. (2023). Pediatric and Adult Brain Death/Death by Neurologic Criteria Consensus Guideline. \emph{Neurology} 101, 1112-1132. \href{https://doi.org/10.1212/WNL.0000000000207740}{\nolinkurl{doi:10.1212/WNL.0000000000207740}}.
+\bibitem{gligorov2023} Gligorov N (2023). Is Death Irreversible?. \emph{The Journal of Medicine and Philosophy: A Forum for Bioethics and Philosophy of Medicine} 48, 492-503. \href{https://doi.org/10.1093/jmp/jhad027}{\nolinkurl{doi:10.1093/jmp/jhad027}}.
+\bibitem{hossmann1973} Hossmann KA, Kleihues P (1973). Reversibility of Ischemic Brain Damage. \emph{Archives of Neurology} 29, 375-384. \href{https://doi.org/10.1001/archneur.1973.00490300037004}{\nolinkurl{doi:10.1001/archneur.1973.00490300037004}}.
+\bibitem{hossmann1973b} Hossmann V, Hossmann KA (1973). Return of neuronal functions after prolonged cardiac arrest. \emph{Brain Research} 60, 423-438. \href{https://doi.org/10.1016/0006-8993(73)90800-7}{\nolinkurl{doi:10.1016/0006-8993(73)90800-7}}.
+\bibitem{vrselja2019} Vrselja Z, Daniele SG, Silbereis J, Talpo F, Morozov YM, Sousa AMM, et al. (2019). Restoration of brain circulation and cellular functions hours post-mortem. \emph{Nature} 568, 336-343. \href{https://doi.org/10.1038/s41586-019-1099-1}{\nolinkurl{doi:10.1038/s41586-019-1099-1}}.
+\bibitem{andrijevic2022} Andrijevic D, Vrselja Z, Lysyy T, Zhang S, Skarica M, Spajic A, et al. (2022). Cellular recovery after prolonged warm ischaemia of the whole body. \emph{Nature} 608, 405-412. \href{https://doi.org/10.1038/s41586-022-05016-1}{\nolinkurl{doi:10.1038/s41586-022-05016-1}}.
+\bibitem{farahany2019} Farahany NA, Greely HT, Giattino CM (2019). Part-revived pig brains raise slew of ethical quandaries. \emph{Nature} 568, 299-302. \href{https://doi.org/10.1038/d41586-019-01168-9}{\nolinkurl{doi:10.1038/d41586-019-01168-9}}.
+\bibitem{long2025} Long B, Resnik D (2025). Precautionary Principle and Post-Mortem Brain Resuscitation. \emph{Neuroethics} 18. \href{https://doi.org/10.1007/s12152-025-09605-5}{\nolinkurl{doi:10.1007/s12152-025-09605-5}}.
+\bibitem{astrup1981} Astrup J, Siesjö BK, Symon L (1981). Thresholds in cerebral ischemia - the ischemic penumbra. \emph{Stroke} 12, 723-725. \href{https://doi.org/10.1161/01.STR.12.6.723}{\nolinkurl{doi:10.1161/01.STR.12.6.723}}.
+\bibitem{hossmann1994} Hossmann K (1994). Viability thresholds and the penumbra of focal ischemia. \emph{Annals of Neurology} 36, 557-565. \href{https://doi.org/10.1002/ana.410360404}{\nolinkurl{doi:10.1002/ana.410360404}}.
+\bibitem{dreier2018} Dreier JP, Major S, Foreman B, Winkler MKL, Kang E, Milakara D, et al. (2018). Terminal spreading depolarization and electrical silence in death of human cerebral cortex. \emph{Annals of Neurology} 83, 295-310. \href{https://doi.org/10.1002/ana.25147}{\nolinkurl{doi:10.1002/ana.25147}}.
+\bibitem{dreier2011} Dreier JP (2011). The role of spreading depression, spreading depolarization and spreading ischemia in neurological disease. \emph{Nature Medicine} 17, 439-447. \href{https://doi.org/10.1038/nm.2333}{\nolinkurl{doi:10.1038/nm.2333}}.
+\bibitem{dreier2015} Dreier JP, Reiffurth C (2015). The Stroke-Migraine Depolarization Continuum. \emph{Neuron} 86, 902-922. \href{https://doi.org/10.1016/j.neuron.2015.04.004}{\nolinkurl{doi:10.1016/j.neuron.2015.04.004}}.
+\bibitem{hartings2016} Hartings JA, Shuttleworth CW, Kirov SA, Ayata C, Hinzman JM, Foreman B, et al. (2016). The continuum of spreading depolarizations in acute cortical lesion development: Examining Leão’s legacy. \emph{Journal of Cerebral Blood Flow \&amp; Metabolism} 37, 1571-1594. \href{https://doi.org/10.1177/0271678X16654495}{\nolinkurl{doi:10.1177/0271678X16654495}}.
+\bibitem{eltzschig2011} Eltzschig HK, Eckle T (2011). Ischemia and reperfusion—from mechanism to translation. \emph{Nature Medicine} 17, 1391-1401. \href{https://doi.org/10.1038/nm.2507}{\nolinkurl{doi:10.1038/nm.2507}}.
+\bibitem{choi1988} CHOI D (1988). Glutamate neurotoxicity and diseases of the nervous system. \emph{Neuron} 1, 623-634. \href{https://doi.org/10.1016/0896-6273(88)90162-6}{\nolinkurl{doi:10.1016/0896-6273(88)90162-6}}.
+\bibitem{gao2008} Gao X, Ren C, Zhao H (2008). Protective effects of ischemic postconditioning compared with gradual reperfusion or preconditioning. \emph{Journal of Neuroscience Research} 86, 2505-2511. \href{https://doi.org/10.1002/jnr.21703}{\nolinkurl{doi:10.1002/jnr.21703}}.
+\bibitem{zhao2009} Zhao H (2009). Ischemic Postconditioning as a Novel Avenue to Protect against Brain Injury after Stroke. \emph{Journal of Cerebral Blood Flow \&amp; Metabolism} 29, 873-885. \href{https://doi.org/10.1038/jcbfm.2009.13}{\nolinkurl{doi:10.1038/jcbfm.2009.13}}.
+\bibitem{haca2002} HACA Group (2002). Mild Therapeutic Hypothermia to Improve the Neurologic Outcome after Cardiac Arrest. \emph{New England Journal of Medicine}. \href{https://doi.org/10.1056/NEJMoa012689}{\nolinkurl{doi:10.1056/NEJMoa012689}}.
+\bibitem{bernard2002} Bernard SA, Gray TW, Buist MD, Jones BM, Silvester W, Gutteridge G, et al. (2002). Treatment of Comatose Survivors of Out-of-Hospital Cardiac Arrest with Induced Hypothermia. \emph{New England Journal of Medicine} 346, 557-563. \href{https://doi.org/10.1056/NEJMoa003289}{\nolinkurl{doi:10.1056/NEJMoa003289}}.
+\bibitem{krishnan1997} KRISHNAN SN, SUN YA, MOHSENIN A, WYMAN RJ, HADDAD GG (1997). Behavioral and Electrophysiologic Responses of Drosophila melanogaster to Prolonged Periods of Anoxia. \emph{Journal of Insect Physiology} 43, 203-210. \href{https://doi.org/10.1016/S0022-1910(96)00084-4}{\nolinkurl{doi:10.1016/S0022-1910(96)00084-4}}.
+\bibitem{campbell2018} Campbell JB, Andersen MK, Overgaard J, Harrison JF (2018). Paralytic hypo-energetic state facilitates anoxia tolerance despite ionic imbalance in adult\emph{Drosophila melanogaster}. \emph{Journal of Experimental Biology}. \href{https://doi.org/10.1242/jeb.177147}{\nolinkurl{doi:10.1242/jeb.177147}}.
+\bibitem{callier2015} Callier et al. (2015). Developmental changes in hypoxic exposure and responses to anoxia in Drosophila melanogaster. \emph{Journal of Experimental Biology}. \href{https://doi.org/10.1242/jeb.125849}{\nolinkurl{doi:10.1242/jeb.125849}}.
+\bibitem{spong2016} Spong KE, Rodríguez EC, Robertson RM (2016). Spreading depolarization in the brain of \emph{Drosophila} is induced by inhibition of the Na\textsuperscript{+}/K\textsuperscript{+}-ATPase and mitigated by a decrease in activity of protein kinase G. \emph{Journal of Neurophysiology} 116, 1152-1160. \href{https://doi.org/10.1152/jn.00353.2016}{\nolinkurl{doi:10.1152/jn.00353.2016}}.
+\bibitem{armstrong2011} Armstrong GAB, Xiao C, Krill JL, Seroude L, Dawson-Scully K, Robertson RM (2011). Glial Hsp70 Protects K+ Homeostasis in the Drosophila Brain during Repetitive Anoxic Depolarization. \emph{PLoS ONE} 6, e28994. \href{https://doi.org/10.1371/journal.pone.0028994}{\nolinkurl{doi:10.1371/journal.pone.0028994}}.
+\bibitem{andersen2018} Andersen MK, Jensen NJS, Robertson RM, Overgaard J (2018). Central nervous shutdown underlies acute cold tolerance in tropical and temperate\emph{Drosophila}species. \emph{Journal of Experimental Biology}. \href{https://doi.org/10.1242/jeb.179598}{\nolinkurl{doi:10.1242/jeb.179598}}.
+\bibitem{rodgers2010} Rodgers CI, Armstrong GAB, Robertson RM (2010). Coma in response to environmental stress in the locust: A model for cortical spreading depression. \emph{Journal of Insect Physiology} 56, 980-990. \href{https://doi.org/10.1016/j.jinsphys.2010.03.030}{\nolinkurl{doi:10.1016/j.jinsphys.2010.03.030}}.
+\bibitem{robertson2020} Robertson RM, Dawson-Scully KD, Andrew RD (2020). Neural shutdown under stress: an evolutionary perspective on spreading depolarization. \emph{Journal of Neurophysiology} 123, 885-895. \href{https://doi.org/10.1152/jn.00724.2019}{\nolinkurl{doi:10.1152/jn.00724.2019}}.
+\bibitem{rodriguez2012} Rodriguez EC, Robertson RM (2012). Protective effect of hypothermia on brain potassium homeostasis during repetitive anoxia in \emph{Drosophila melanogaster}. \emph{Journal of Experimental Biology}. \href{https://doi.org/10.1242/jeb.074468}{\nolinkurl{doi:10.1242/jeb.074468}}.
+\bibitem{andersen2025} Andersen MK, Robertson RM, MacMillan HA (2025). Temperature sensitivity of spreading depolarization in the CNS of \emph{Drosophila melanogaster}. \emph{American Journal of Physiology-Regulatory, Integrative and Comparative Physiology} 329, R134-R149. \href{https://doi.org/10.1152/ajpregu.00040.2025}{\nolinkurl{doi:10.1152/ajpregu.00040.2025}}.
+\bibitem{andersen2022} Andersen MK, Robertson RM, MacMillan HA (2022). Plasticity in Na+/K+-ATPase thermal kinetics drives variation in the temperature of cold-induced neural shutdown of adult \emph{Drosophila melanogaster}. \emph{Journal of Experimental Biology} 225. \href{https://doi.org/10.1242/jeb.244923}{\nolinkurl{doi:10.1242/jeb.244923}}.
+\bibitem{andersen2026} Andersen MK, Livingston DBH, Robertson RM, MacMillan HA (2026). Voltage-gated K+ channels modulate the neural abiotic stress tolerance of Drosophila melanogaster. \emph{Comparative Biochemistry and Physiology Part A: Molecular \&amp; Integrative Physiology} 313, 111969. \href{https://doi.org/10.1016/j.cbpa.2026.111969}{\nolinkurl{doi:10.1016/j.cbpa.2026.111969}}.
+\bibitem{zheng2018} Zheng Z, Lauritzen JS, Perlman E, Robinson CG, Nichols M, Milkie D, et al. (2018). A Complete Electron Microscopy Volume of the Brain of Adult Drosophila melanogaster. \emph{Cell} 174, 730-743.e22. \href{https://doi.org/10.1016/j.cell.2018.06.019}{\nolinkurl{doi:10.1016/j.cell.2018.06.019}}.
+\bibitem{dorkenwald2024} Dorkenwald S, Matsliah A, Sterling AR, Schlegel P, Yu Sc, McKellar CE, et al. (2024). Neuronal wiring diagram of an adult brain. \emph{Nature} 634, 124-138. \href{https://doi.org/10.1038/s41586-024-07558-y}{\nolinkurl{doi:10.1038/s41586-024-07558-y}}.
+\bibitem{schlegel2024} Schlegel P, Yin Y, Bates AS, Dorkenwald S, Eichler K, Brooks P, et al. (2024). Whole-brain annotation and multi-connectome cell typing of Drosophila. \emph{Nature} 634, 139-152. \href{https://doi.org/10.1038/s41586-024-07686-5}{\nolinkurl{doi:10.1038/s41586-024-07686-5}}.
+\bibitem{shiu2024} Shiu et al. (2024). A Drosophila computational brain model reveals sensorimotor processing. \emph{Nature}. \href{https://doi.org/10.1038/s41586-024-07763-9}{\nolinkurl{doi:10.1038/s41586-024-07763-9}}.
+\bibitem{lappalainen2024} Lappalainen JK, Tschopp FD, Prakhya S, McGill M, Nern A, Shinomiya K, et al. (2024). Connectome-constrained networks predict neural activity across the fly visual system. \emph{Nature} 634, 1132-1140. \href{https://doi.org/10.1038/s41586-024-07939-3}{\nolinkurl{doi:10.1038/s41586-024-07939-3}}.
+\bibitem{takemura2024} Takemura Sy, Hayworth KJ, Huang GB, Januszewski M, Lu Z, Marin EC, et al. (2024). A Connectome of the Male Drosophila Ventral Nerve Cord. \emph{}. \href{https://doi.org/10.7554/eLife.97769}{\nolinkurl{doi:10.7554/eLife.97769}}.
+\bibitem{marin2024} Marin EC, Morris BJ, Stürner T, Champion AS, Krzeminski D, Badalamente G, et al. (2024). Systematic annotation of a complete adult male Drosophila nerve cord connectome reveals principles of functional organisation. \emph{}. \href{https://doi.org/10.7554/eLife.97766}{\nolinkurl{doi:10.7554/eLife.97766}}.
+\bibitem{cheong2026} Cheong HS, Eichler K, Stürner T, Asinof SK, Champion AS, Marin EC, et al. (2026). Organization of circuits linking descending input to motor output in the Drosophila Male Adult Nerve Cord connectome. \emph{eLife} 13. \href{https://doi.org/10.7554/eLife.96084}{\nolinkurl{doi:10.7554/eLife.96084}}.
+\bibitem{bates2026} Bates AS, Phelps JS, Kim M, Yang HH, Matsliah A, Ajabi Z, et al. (2026). Distributed control circuits across a brain-and-cord connectome. \emph{Nature} 656, 957-970. \href{https://doi.org/10.1038/s41586-026-10735-w}{\nolinkurl{doi:10.1038/s41586-026-10735-w}}.
+\bibitem{berg2026} Berg S, Beckett IR, Costa M, Schlegel P, Januszewski M, Marin EC, et al. (2026). Sexual dimorphism in the complete Drosophila male central nervous system connectome. \emph{Cell} 189, 5504-5526.e15. \href{https://doi.org/10.1016/j.cell.2026.08.015}{\nolinkurl{doi:10.1016/j.cell.2026.08.015}}.
+\bibitem{erecinska2003} Erecinska et al. (2003). Effects of Hypothermia on Energy Metabolism in Mammalian Central Nervous System. \emph{Journal of Cerebral Blood Flow \& Metabolism}. \href{https://doi.org/10.1097/01.WCB.0000066287.21705.21}{\nolinkurl{doi:10.1097/01.WCB.0000066287.21705.21}}.
+\bibitem{caraballo2014} Caraballo JC, Borcherding J, Rector M, Hornick E, Stoltz D, Zabner J, et al. (2014). Role of PON in Anoxia-Reoxygenation Injury: A Drosophila Melanogaster Transgenic Model. \emph{PLoS ONE} 9, e84434. \href{https://doi.org/10.1371/journal.pone.0084434}{\nolinkurl{doi:10.1371/journal.pone.0084434}}.
+\bibitem{vigne2009} Vigne P, Tauc M, Frelin C (2009). Strong Dietary Restrictions Protect Drosophila against Anoxia/Reoxygenation Injuries. \emph{PLoS ONE} 4, e5422. \href{https://doi.org/10.1371/journal.pone.0005422}{\nolinkurl{doi:10.1371/journal.pone.0005422}}.
+\bibitem{nern2025} Nern A, Loesche F, Takemura Sy, Burnett LE, Dreher M, Gruntman E, et al. (2025). Connectome-driven neural inventory of a complete visual system. \emph{Nature} 641, 1225-1237. \href{https://doi.org/10.1038/s41586-025-08746-0}{\nolinkurl{doi:10.1038/s41586-025-08746-0}}.
+\end{thebibliography}
+\end{document}

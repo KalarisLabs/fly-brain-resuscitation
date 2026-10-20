@@ -1,0 +1,1 @@
+{"arm": "SN", "id": "SN_A_anat_D30_s0", "name": "A_anat_D30", "seed": 0, "insult": "anoxia", "D": 30, "reperf": "naive", "signvar": "A", "wall_s": 761.4, "dead_frac": 0.0, "obs_mean_Hz": 0.17236364942012855, "frac_active20": 0.002764712218591792, "frac_supra_end": 0.0, "frac_supra_rep_end": 0.0, "median_first_ms": 105.0}

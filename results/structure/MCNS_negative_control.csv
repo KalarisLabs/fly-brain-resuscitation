@@ -1,0 +1,2 @@
+dataset,n_removable,n_offpath_removed,f_offpath,base_reachN_L6,neg_reachN_L6,delta_reachN_L6,base_reachN_Linf,neg_reachN_Linf,delta_reachN_Linf,base_reachG_L6,neg_reachG_L6,delta_reachG_L6,base_redund_L6,neg_redund_L6,delta_redund_L6,base_influence_L6,neg_influence_L6,delta_influence_L6
+MCNS,146522,3494,0.023846248344958437,0.9019445838911201,0.9019445838911201,0.0,0.9394069332887104,0.9394069332887104,0.0,0.9937636725764848,0.9937636725764848,0.0,54648.727840588625,54648.727840588625,0.0,624.0952525768773,624.0952525768773,0.0
